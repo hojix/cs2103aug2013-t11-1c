@@ -20,49 +20,49 @@ void Parser::parseCommand(string commandString, vector<string>& inputBits)
 	try{
 		if(commandString.compare(COMMAND_A)==COMPARE_SUCCESS || commandString.compare(COMMAND_ADD)==COMPARE_SUCCESS || commandString.compare(COMMAND_NEW_TASK)==COMPARE_SUCCESS){
 			inputBits[SLOT_COMMAND] = COMMAND_ADD;
-			if(!separateInput(ADD, inputBits)){
+			if(!separateInput(commandAdd, inputBits)){
 				throw MESSAGE_ERROR_COMMAND_ADD;
 			}
 		}
 		else if(commandString.compare(COMMAND_DEL)==COMPARE_SUCCESS || commandString.compare(COMMAND_DELETE)==COMPARE_SUCCESS || commandString.compare(COMMAND_ERASE)==COMPARE_SUCCESS ||commandString.compare(COMMAND_REM)==COMPARE_SUCCESS || commandString.compare(COMMAND_REMOVE)==COMPARE_SUCCESS) {
 			inputBits[SLOT_COMMAND] = COMMAND_DELETE;
-			if(!separateInput(DELETE, inputBits)){
+			if(!separateInput(commandDelete, inputBits)){
 				throw MESSAGE_ERROR_COMMAND_DELETE;
 			}
 		}
 		else if(commandString.compare(COMMAND_DEL_ALL)==COMPARE_SUCCESS || commandString.compare(COMMAND_DELETE_ALL)==COMPARE_SUCCESS || commandString.compare(COMMAND_ERASE_ALL)==COMPARE_SUCCESS ||commandString.compare(COMMAND_REM_ALL)==COMPARE_SUCCESS || commandString.compare(COMMAND_REMOVE_ALL)==COMPARE_SUCCESS) {
 			inputBits[SLOT_COMMAND] = COMMAND_DELETE_ALL;
-			if(!separateInput(DELETE_ALL, inputBits)){
+			if(!separateInput(commandDeleteAll, inputBits)){
 				throw MESSAGE_ERROR_COMMAND_DELETE;
 			}
 		}
 		else if(commandString.compare(COMMAND_M)==COMPARE_SUCCESS || commandString.compare(COMMAND_MARK)==COMPARE_SUCCESS) {
 			inputBits[SLOT_COMMAND] = COMMAND_MARK;
-			if(!separateInput(MARK, inputBits)){
+			if(!separateInput(commandMark, inputBits)){
 				throw MESSAGE_ERROR_COMMAND_MARK;
 			}
 		}
 		else if(commandString.compare(COMMAND_M_DONE)==COMPARE_SUCCESS || commandString.compare(COMMAND_MARK_DONE)==COMPARE_SUCCESS) {
 			inputBits[SLOT_COMMAND] = COMMAND_MARK;
-			if(!separateInput(MARK_DONE, inputBits)){
+			if(!separateInput(commandMarkDone, inputBits)){
 				throw MESSAGE_ERROR_COMMAND_MARK;
 			}
 		}
 		else if(commandString.compare(COMMAND_MOD)==COMPARE_SUCCESS || commandString.compare(COMMAND_MODIFY)==COMPARE_SUCCESS) {
 			inputBits[SLOT_COMMAND] = COMMAND_MODIFY;
-			if(!separateInput(MODIFY, inputBits)){
+			if(!separateInput(commandModify, inputBits)){
 				throw MESSAGE_ERROR_COMMAND_MODIFY;
 			}
 		}
 		else if(commandString.compare(COMMAND_UNDO)==COMPARE_SUCCESS) {
 			inputBits[SLOT_COMMAND] = COMMAND_UNDO;
-			if(!separateInput(UNDO, inputBits)){
+			if(!separateInput(commandUndo, inputBits)){
 				throw MESSAGE_ERROR_COMMAND_UNDO;
 			}
 		}
 		else if(commandString.compare(COMMAND_UPDATE)==COMPARE_SUCCESS) {
 			inputBits[SLOT_COMMAND] = COMMAND_UPDATE;
-			if(!separateInput(UPDATE, inputBits)){
+			if(!separateInput(commandUpdate, inputBits)){
 				throw MESSAGE_ERROR_COMMAND_UPDATE;
 			}
 		}
@@ -88,21 +88,21 @@ bool Parser::separateInput(Command userCommand, vector<string>& inputBits)
 {
 
 	switch (userCommand){
-	case ADD: 
+	case commandAdd: 
 		return separateFunctionAdd(inputBits);
-	case DELETE:
+	case commandDelete:
 		return separateFunctionDelete(inputBits);
-	case DELETE_ALL:
+	case commandDeleteAll:
 		return separateFunctionDeleteAll(inputBits);
-	case MARK:
+	case commandMark:
 		return separateFunctionMark(inputBits);
-	case MARK_DONE:
+	case commandMarkDone:
 		return separateFunctionMarkDone(inputBits);
-	case MODIFY:
+	case commandModify:
 		return separateFunctionModify(inputBits);
-	case UNDO:
+	case commandUndo:
 		return separateFunctionUndo(inputBits);
-	case UPDATE:
+	case commandUpdate:
 		return separateFunctionUpdate(inputBits);
 	default:
 		return false;

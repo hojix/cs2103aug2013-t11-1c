@@ -9,23 +9,23 @@ void TaskRepeat::setRepeat(RepeatType repeat)
 {
 	switch(repeat)
 	{
-	case DAILY:
+	case daily:
 		{
 			break;
 		}
-	case WEEKLY:
+	case weekly:
 		{
 			break;
 		}
-	case FORTNIGHTLY:
+	case fortnightly:
 		{
 			break;
 		}
-	case MONTHLY:
+	case monthly:
 		{
 			break;
 		}
-	case ANNUALLY:
+	case annually:
 		{
 			break;
 		}

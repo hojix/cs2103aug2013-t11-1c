@@ -52,46 +52,46 @@ namespace Message{
 
 namespace Enum{
 	enum ListType{
-		toDo,
-		completed,
-		overdue,
+		toDoList,
+		completedList,
+		overdueList,
 	};
 
 	enum RepeatType{
-		NONE, 
-		DAILY, 
-		WEEKLY, 
-		FORTNIGHTLY, 
-		MONTHLY, 
-		ANNUALLY
+		none, 
+		daily, 
+		weekly, 
+		fortnightly, 
+		monthly, 
+		annually
 	};
 
 	enum Priority{
-		HIGH, 
-		NORMAL
+		high, 
+		normal
 	};
 
 	enum Status{
-		COMPLETED, 
-		INCOMPLETE, 
-		OVERDUED
+		completed, 
+		incomplete, 
+		overdued
 	};
 
 	enum TaskType{
-		FLOATING, 
-		TIMED, 
-		DEADLINE
+		floating, 
+		timed, 
+		deadline
 	};
 
 	enum Command{
-		ADD, 
-		DELETE, 
-		DELETE_ALL, 
-		MARK, 
-		MARK_DONE, 
-		MODIFY, 
-		UNDO, 
-		UPDATE
+		commandAdd, 
+		commandDelete, 
+		commandDeleteAll, 
+		commandMark, 
+		commandMarkDone, 
+		commandModify, 
+		commandUndo, 
+		commandUpdate
 	};
 };
 
