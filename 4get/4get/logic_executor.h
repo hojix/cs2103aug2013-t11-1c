@@ -26,7 +26,8 @@ class Executor
 	Task _task;
 	TaskList tasks;
 	string task;
-	vector<string> vectorOfInputs(int SLOT_SIZE);
+	vector<string> vectorOfInputs;
+	Parser parser;
 
 public:
 	Executor();
@@ -37,12 +38,13 @@ public:
 	void loadListOfTasks();
 	bool determineTaskType();
 	bool adderFunction(vector<string>& vectorOfInputs);
+	bool addToTaskList(TaskList tasks);
 
 
 	//helper functions
 	bool isEqual(string str1, const string str2);
 	string determineListType(tm);
-	tm* convertStringToTm(vector<string>& vectorOfInputs);
+	tm* convertStringToTm(vector<string> vectorOfInputs);
 	
 };
 #endif
