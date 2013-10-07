@@ -12,11 +12,16 @@ using namespace std;
 
 class UiConvert
 {
+public:
+	UiConvert();
+
 	static char systemMessage[BUFFER_SIZE];
 	static const bool isPrintSystemMessage = false;
 
 public:
+
 	static string trim(const string& s, const string& delimiters = " \f\n\r\t\v" );
-	bool stringObjToStdConversion(System::String^ source, string& result);
+	bool stringSysToStdConversion(System::String^ source, string& result);
+	bool stringStdToSysConversion(System::String^ result, string& source);
 };
 #endif

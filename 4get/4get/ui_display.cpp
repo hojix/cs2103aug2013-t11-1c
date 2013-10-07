@@ -3,10 +3,10 @@ using namespace UIDisplay;
 
 //constructor
 ui_display::ui_display(void){
+	execute = new Executor;
+	converter = new UiConvert;
+
 	InitializeComponent();
-	//
-	//TODO: Add the constructor code here
-	//
 }
 
 ui_display::~ui_display(){
@@ -19,12 +19,12 @@ void ui_display::InitializeComponent(void){
 	this->tabContainer = (gcnew System::Windows::Forms::TabControl());
 	this->tabTodo = (gcnew System::Windows::Forms::TabPage());
 	this->todoListView = (gcnew System::Windows::Forms::ListView());
-	this->taskIndex = (gcnew System::Windows::Forms::ColumnHeader());
-	this->taskDescription = (gcnew System::Windows::Forms::ColumnHeader());
-	this->taskLocation = (gcnew System::Windows::Forms::ColumnHeader());
-	this->taskTime = (gcnew System::Windows::Forms::ColumnHeader());
-	this->taskDueDate = (gcnew System::Windows::Forms::ColumnHeader());
-	this->taskPriority = (gcnew System::Windows::Forms::ColumnHeader());
+	this->columnHeader1 = (gcnew System::Windows::Forms::ColumnHeader());
+	this->columnHeader2 = (gcnew System::Windows::Forms::ColumnHeader());
+	this->columnHeader3 = (gcnew System::Windows::Forms::ColumnHeader());
+	this->columnHeader4 = (gcnew System::Windows::Forms::ColumnHeader());
+	this->columnHeader5 = (gcnew System::Windows::Forms::ColumnHeader());
+	this->columnHeader6 = (gcnew System::Windows::Forms::ColumnHeader());
 	this->tabCompleted = (gcnew System::Windows::Forms::TabPage());
 	this->completedListView = (gcnew System::Windows::Forms::ListView());
 	this->cTaskIndex = (gcnew System::Windows::Forms::ColumnHeader());
@@ -94,43 +94,42 @@ void ui_display::InitializeComponent(void){
 	this->todoListView->Activation = System::Windows::Forms::ItemActivation::OneClick;
 	this->todoListView->AutoArrange = false;
 	this->todoListView->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-	this->todoListView->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(6) {this->taskIndex, this->taskDescription, 
-		this->taskLocation, this->taskTime, this->taskDueDate, this->taskPriority});
+	this->todoListView->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(6) {this->columnHeader1, 
+		this->columnHeader2, this->columnHeader3, this->columnHeader4, this->columnHeader5, this->columnHeader6});
 	this->todoListView->FullRowSelect = true;
 	this->todoListView->GridLines = true;
 	this->todoListView->Location = System::Drawing::Point(-4, -4);
 	this->todoListView->Name = L"todoListView";
 	this->todoListView->Size = System::Drawing::Size(440, 259);
-	this->todoListView->TabIndex = 0;
+	this->todoListView->TabIndex = 2;
 	this->todoListView->UseCompatibleStateImageBehavior = false;
 	this->todoListView->View = System::Windows::Forms::View::Details;
-	this->todoListView->VirtualMode = true;
 	// 
-	// taskIndex
+	// columnHeader1
 	// 
-	this->taskIndex->Text = L"Index No.";
+	this->columnHeader1->Text = L"Index No.";
 	// 
-	// taskDescription
+	// columnHeader2
 	// 
-	this->taskDescription->Text = L"Description";
-	this->taskDescription->Width = 118;
+	this->columnHeader2->Text = L"Description";
+	this->columnHeader2->Width = 127;
 	// 
-	// taskLocation
+	// columnHeader3
 	// 
-	this->taskLocation->Text = L"Venue";
+	this->columnHeader3->Text = L"Venue";
 	// 
-	// taskTime
+	// columnHeader4
 	// 
-	this->taskTime->Text = L"Time";
+	this->columnHeader4->Text = L"Time";
 	// 
-	// taskDueDate
+	// columnHeader5
 	// 
-	this->taskDueDate->Text = L"Due Date";
-	this->taskDueDate->Width = 80;
+	this->columnHeader5->Text = L"Due Date";
+	this->columnHeader5->Width = 80;
 	// 
-	// taskPriority
+	// columnHeader6
 	// 
-	this->taskPriority->Text = L"Priority";
+	this->columnHeader6->Text = L"Priority";
 	// 
 	// tabCompleted
 	// 
@@ -152,9 +151,9 @@ void ui_display::InitializeComponent(void){
 		this->cTaskDescription, this->cTaskVenue, this->cTaskTime, this->cTaskDate, this->cTaskPriority});
 	this->completedListView->FullRowSelect = true;
 	this->completedListView->GridLines = true;
-	this->completedListView->Location = System::Drawing::Point(-7, -2);
+	this->completedListView->Location = System::Drawing::Point(-4, -4);
 	this->completedListView->Name = L"completedListView";
-	this->completedListView->Size = System::Drawing::Size(526, 259);
+	this->completedListView->Size = System::Drawing::Size(440, 259);
 	this->completedListView->TabIndex = 1;
 	this->completedListView->UseCompatibleStateImageBehavior = false;
 	this->completedListView->View = System::Windows::Forms::View::Details;
@@ -207,7 +206,7 @@ void ui_display::InitializeComponent(void){
 	this->overdueListView->GridLines = true;
 	this->overdueListView->Location = System::Drawing::Point(-4, -4);
 	this->overdueListView->Name = L"overdueListView";
-	this->overdueListView->Size = System::Drawing::Size(442, 259);
+	this->overdueListView->Size = System::Drawing::Size(440, 259);
 	this->overdueListView->TabIndex = 1;
 	this->overdueListView->UseCompatibleStateImageBehavior = false;
 	this->overdueListView->View = System::Windows::Forms::View::Details;
@@ -259,7 +258,7 @@ void ui_display::InitializeComponent(void){
 	this->listView1->GridLines = true;
 	this->listView1->Location = System::Drawing::Point(-4, -4);
 	this->listView1->Name = L"listView1";
-	this->listView1->Size = System::Drawing::Size(442, 259);
+	this->listView1->Size = System::Drawing::Size(440, 259);
 	this->listView1->TabIndex = 2;
 	this->listView1->UseCompatibleStateImageBehavior = false;
 	this->listView1->View = System::Windows::Forms::View::Details;
@@ -309,6 +308,7 @@ void ui_display::InitializeComponent(void){
 	this->textboxInput->Size = System::Drawing::Size(793, 42);
 	this->textboxInput->TabIndex = 1;
 	this->textboxInput->Text = L"Enter Command Here";
+	this->textboxInput->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &ui_display::textboxInput_KeyDown);
 	// 
 	// messageContainer
 	// 
@@ -342,7 +342,7 @@ void ui_display::InitializeComponent(void){
 	// checkedTaskList
 	// 
 	this->checkedTaskList->FormattingEnabled = true;
-	this->checkedTaskList->Location = System::Drawing::Point(0, 40);
+	this->checkedTaskList->Location = System::Drawing::Point(-3, 42);
 	this->checkedTaskList->Name = L"checkedTaskList";
 	this->checkedTaskList->Size = System::Drawing::Size(349, 139);
 	this->checkedTaskList->TabIndex = 1;
@@ -375,4 +375,19 @@ void ui_display::InitializeComponent(void){
 	this->messageContainer->ResumeLayout(false);
 	this->todayContainer->ResumeLayout(false);
 	this->ResumeLayout(false);
+
 }
+
+void ui_display::passUserInput(){
+	string stdCommand;
+	converter->stringSysToStdConversion(this->textboxInput->Text, stdCommand);
+	execute->stringCollector(stdCommand);
+}
+
+Void ui_display::textboxInput_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e){
+	if(e->KeyCode == Keys::Enter)
+	{
+		this->passUserInput();
+	}
+}
+

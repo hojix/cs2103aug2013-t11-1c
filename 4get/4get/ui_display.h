@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ui_convert.h"
+#include "logic_executor.h"
 #include <Windows.h>
 
 namespace UIDisplay {
@@ -21,20 +22,25 @@ namespace UIDisplay {
 		ui_display(void);
 	protected:
 		~ui_display();
+#pragma endregion
+
+#pragma region initialise
+	private: UiConvert* converter;
+	private: Executor* execute;
 	private: System::Windows::Forms::TabControl^  tabContainer;
 	private: System::Windows::Forms::TabPage^  tabTodo;
 	private: System::Windows::Forms::TabPage^  tabCompleted;
 	private: System::Windows::Forms::TabPage^  tabOverdue;
 	private: System::Windows::Forms::TextBox^  textboxInput;
 	private: System::Windows::Forms::FlowLayoutPanel^  inputContainer;
-	private: System::Windows::Forms::ListView^  todoListView;
 
-	private: System::Windows::Forms::ColumnHeader^  taskIndex;
-	private: System::Windows::Forms::ColumnHeader^  taskDescription;
-	private: System::Windows::Forms::ColumnHeader^  taskTime;
-	private: System::Windows::Forms::ColumnHeader^  taskDueDate;
-	private: System::Windows::Forms::ColumnHeader^  taskPriority;
-	private: System::Windows::Forms::ColumnHeader^  taskLocation;
+
+
+
+
+
+
+
 	private: System::Windows::Forms::FlowLayoutPanel^  messageContainer;
 	private: System::Windows::Forms::ListView^  completedListView;
 	private: System::Windows::Forms::ColumnHeader^  cTaskIndex;
@@ -64,6 +70,15 @@ namespace UIDisplay {
 	private: System::Windows::Forms::ColumnHeader^  fTaskTime;
 	private: System::Windows::Forms::ColumnHeader^  fTaskDate;
 	private: System::Windows::Forms::ColumnHeader^  fTaskPriority;
+	private: System::Windows::Forms::ListView^  todoListView;
+
+
+	private: System::Windows::Forms::ColumnHeader^  columnHeader1;
+	private: System::Windows::Forms::ColumnHeader^  columnHeader2;
+	private: System::Windows::Forms::ColumnHeader^  columnHeader3;
+	private: System::Windows::Forms::ColumnHeader^  columnHeader4;
+	private: System::Windows::Forms::ColumnHeader^  columnHeader5;
+	private: System::Windows::Forms::ColumnHeader^  columnHeader6;
 
 	private:
 		/// <summary>
@@ -78,12 +93,11 @@ namespace UIDisplay {
 		/// </summary>
 		void InitializeComponent(void);
 #pragma endregion
-	private: System::Void Display_Load(System::Object^  sender, System::EventArgs^  e){
-				 //UiConvert UI;
-			 }
-	private: System::Void messageBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-			 }
-	private: System::Void completedListView_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
-			 }
+
+	private: void loadList();
+	private: void printList();
+	private: void passUserInput();
+	          
+	private: System::Void textboxInput_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e);
 	};
 }
