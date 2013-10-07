@@ -16,8 +16,8 @@ class TaskList{
 private:
 	Storage storage;
 	list<Task> toDoList;
-	stack<Task> completedList;
-	queue<Task> overdueList;
+	list<Task> completedList;
+	list<Task> overdueList;
 	int nextTaskID;
 	
 public:
@@ -38,4 +38,6 @@ public:
 
 	int getNextID();
 	int retrieveCurrentDate();
+
+	list<Task> obtainList(ListType listToReturn);
 };

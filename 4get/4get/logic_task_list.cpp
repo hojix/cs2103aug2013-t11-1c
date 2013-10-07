@@ -30,12 +30,12 @@ bool TaskList::addToDoList(Task task){
 }
 
 bool TaskList::addCompletedList(Task task){
-	completedList.push(task);
+	completedList.push_back(task);
 	return 0; //stub
 }
 
 bool TaskList::addOverdueList(Task task){
-	overdueList.push(task);
+	overdueList.push_back(task);
 	return 0; //stub
 }
 
@@ -83,4 +83,13 @@ int TaskList::retrieveCurrentDate(){
 	return yearMonthDay;
 }
 
-
+list<Task> TaskList::obtainList(ListType listToReturn){
+	switch (listToReturn){
+	case listToDo:
+		return toDoList;
+	case listCompleted:
+		return completedList;
+	case listOverdue:
+		return overdueList;
+	}
+}
