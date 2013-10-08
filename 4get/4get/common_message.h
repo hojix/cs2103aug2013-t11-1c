@@ -7,7 +7,7 @@ namespace Commands{
 	//variants of add
 	const string COMMAND_ADD = "add";
 	const string COMMAND_A = "a";
-	const string COMMAND_NEW_TASK= "new task";
+	const string COMMAND_CREATE= "create";
 
 	//variants of delete
 	const string COMMAND_DELETE = "delete";
@@ -108,7 +108,7 @@ namespace Constants{
 	const size_t INITIALIZE_SIZE_T = 0;
 
 	//Input Bits slots
-	const int SLOT_SIZE = 10;
+	const int SLOT_SIZE = 15;
 	const int SLOT_COMMAND = 0;
 	const int SLOT_DESCRIPTION = 1;
 	const int SLOT_LOCATION = 2;
@@ -118,7 +118,18 @@ namespace Constants{
 	const int SLOT_TIME = 6;
 	const int SLOT_SLOT_NUMBER = 7;
 	const int SLOT_TASKLIST = 8;
-	const int SLOT_USER_RESPONSE = 9;
+	const int SLOT_STATUS = 9;
+	const int SLOT_USER_RESPONSE = 10;
+
+	//Time Container slots;
+	const int TIME_SLOT_SIZE = 10;
+	const int TIME_SLOT_YEAR = 0;
+	const int TIME_SLOT_MONTH = 1;
+	const int TIME_SLOT_DATE = 2;
+	const int TIME_SLOT_HOUR = 3;
+	const int TIME_SLOT_MIN = 4;
+	const int TIME_SLOT_DAY = 5;
+
 
 	//parser markers
 	const char MARKER_COMMA = ',';
@@ -154,6 +165,19 @@ namespace Constants{
 	const string MARKER_PRIORITY = ",!";
 	const std::size_t MARKER_PRIORITY_LENGTH = 2;
 
+	const string MARKER_DONE = "done";
+	const std::size_t MARKER_DONE_LENGTH = 4;
+
+	const string MARKER_COMPLETED = "completed";
+	const std::size_t MARKER_COMPLETED_LENGTH = 9;
+
+	const string MARKER_UNDONE = "undone";
+	const std::size_t MARKER_UNDONE_LENGTH = 6;
+
+	const string MARKER_INCOMPLETE = "incomplete";
+	const std::size_t MARKER_INCOMPLETE_LENGTH = 10;
+
+	
 	//tasklist constants
 	const string LIST_COMPLETED = " listcompleted";
 	const std::size_t LIST_COMPLETED_LENGTH = 14;

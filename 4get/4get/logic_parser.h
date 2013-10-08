@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <vector>
 #include <assert.h>
-//#include "logic_executor.h"
 #include "common_message.h"
 
 // handled by John Kuan (A0097592M)
@@ -30,17 +29,20 @@ private:
 	string textDateAndTime;
 	string textRepeat;
 	string textPriority;
+	string textStatus;
 	string textRemindDateAndTime;
 	string textSlotNumber;
 	string textTaskList;
 
-	//Executor job;
-
-
 public:
 	Parser();
 
+	// callable by executor
+	void parseReset();
 	void parseInput(string input, vector<string>& inputBits);
+	void parseTime(string timeString, vector<int>& timeBits);
+
+private:	
 	void processCommand(string commandString, vector<string>& inputBits);
 	void populateContainer(vector<string>& inputBits);
 
@@ -63,6 +65,7 @@ public:
 	bool determineRepeat();
 	bool determineSlot();
 	bool determineTaskList();
+	bool determineStatus();
 	std::size_t determindExtractLength(std::size_t found, std::size_t foundComma, string markerConstant, std::size_t& extractStart);
 
 	void shortenInput(std::size_t partitionStart, std::size_t partitionEnd);

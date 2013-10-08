@@ -11,16 +11,31 @@ Parser::Parser()
 	textDateAndTime = INITIALIZE_STRING_BLANK;
 	textRepeat = INITIALIZE_STRING_BLANK;
 	textPriority = INITIALIZE_STRING_BLANK;
+	textStatus = INITIALIZE_STRING_BLANK;
 	textRemindDateAndTime = INITIALIZE_STRING_BLANK;
 	textSlotNumber = INITIALIZE_STRING_BLANK;
 	textTaskList = INITIALIZE_STRING_BLANK;
 }
 
+void Parser::parseReset()
+{
+	textInput = INITIALIZE_STRING_BLANK;
+	_textInput = INITIALIZE_STRING_BLANK;
+	textCommand = INITIALIZE_STRING_BLANK;
+	textDescription = INITIALIZE_STRING_BLANK;
+	textVenue = INITIALIZE_STRING_BLANK;
+	textDateAndTime = INITIALIZE_STRING_BLANK;
+	textRepeat = INITIALIZE_STRING_BLANK;
+	textPriority = INITIALIZE_STRING_BLANK;
+	textRemindDateAndTime = INITIALIZE_STRING_BLANK;
+	textSlotNumber = INITIALIZE_STRING_BLANK;
+	textTaskList = INITIALIZE_STRING_BLANK;
+}
 
 void Parser::processCommand(string commandString, vector<string>& inputBits)
 {
 	try{
-		if(commandString.compare(COMMAND_A)==COMPARE_SUCCESS || commandString.compare(COMMAND_ADD)==COMPARE_SUCCESS || commandString.compare(COMMAND_NEW_TASK)==COMPARE_SUCCESS){
+		if(commandString.compare(COMMAND_A)==COMPARE_SUCCESS || commandString.compare(COMMAND_ADD)==COMPARE_SUCCESS || commandString.compare(COMMAND_CREATE)==COMPARE_SUCCESS){
 			inputBits[SLOT_COMMAND] = COMMAND_ADD;
 			if(!separateInput(commandAdd, inputBits)){
 				throw MESSAGE_ERROR_COMMAND_ADD;
@@ -164,6 +179,17 @@ bool Parser::separateFunctionDeleteAll(vector<string>& inputBits)
 }
 bool Parser::separateFunctionMark(vector<string>& inputBits)
 {
+	if(!determineTaskList())
+		return false;
+	if(!determineStatus())
+		return false;
+	if(!determineSlot())
+		return false;
+
+	cout << "slot number: <" << textSlotNumber << ">" << endl;
+	cout << "TaskList: <" << textTaskList <<  ">" << endl;
+	cout << "TaskList: <" << textStatus <<  ">" << endl;
+
 	return true;
 }
 bool Parser::separateFunctionMarkDone(vector<string>& inputBits)
@@ -173,6 +199,27 @@ bool Parser::separateFunctionMarkDone(vector<string>& inputBits)
 
 bool Parser::separateFunctionModify(vector<string>& inputBits)
 {
+	if(!determineTaskList())
+		return false;
+
+	if(!determineSlot())
+		return false;
+
+	if(!determineVenue())
+		return false;
+
+	if(!determineDateAndTime())
+		return false;
+
+	if(!determineRepeat())
+		return false;
+
+	if(!determinePriority())
+		return false;
+
+	if(!determineReminder())
+		return false;
+	
 	return true;
 }
 
@@ -402,7 +449,7 @@ bool Parser::determineSlot()
 	if(!isParseInt(temp, slotNumber))
 		return false;
 	textSlotNumber = std::to_string(slotNumber);
-	
+
 	return true;
 }
 
@@ -427,6 +474,60 @@ bool Parser::determineTaskList()
 		found = textInput.rfind(LIST_OVERDUED);
 		textTaskList = _textInput.substr(found, LIST_OVERDUED_LENGTH);
 		shortenInput(found, stringLength);
+		return true;
+	}
+
+	else
+		return false;
+}
+
+bool Parser::determineStatus()
+{
+	std::size_t found = 0;
+	std::size_t extractEndPos = 0;
+
+
+	if(textInput.find(MARKER_UNDONE)!=std::string::npos){
+		found = textInput.find(MARKER_UNDONE);
+		if(textInput.find(MARKER_ENCLOSE,found)!=std::string::npos)
+			extractEndPos = textInput.find(MARKER_ENCLOSE,found);
+		else
+			extractEndPos = textInput.size();
+		textStatus = _textInput.substr(found, MARKER_UNDONE_LENGTH);
+		shortenInput(found, --extractEndPos);
+		return true;
+	}
+
+	else if(textInput.find(MARKER_INCOMPLETE)!=std::string::npos){
+		found = textInput.find(MARKER_INCOMPLETE);
+		if(textInput.find(MARKER_ENCLOSE,found)!=std::string::npos)
+			extractEndPos = textInput.find(MARKER_ENCLOSE,found);
+		else
+			extractEndPos = textInput.size();
+		textStatus = _textInput.substr(found, MARKER_INCOMPLETE_LENGTH);
+		shortenInput(found, --extractEndPos);
+		return true;
+	}
+
+	else if(textInput.find(MARKER_DONE)!=std::string::npos){
+		found = textInput.find(MARKER_DONE);
+		if(textInput.find(MARKER_ENCLOSE,found)!=std::string::npos)
+			extractEndPos = textInput.find(MARKER_ENCLOSE,found);
+		else
+			extractEndPos = textInput.size();
+		textStatus = _textInput.substr(found, MARKER_DONE_LENGTH);
+		shortenInput(found, --extractEndPos);
+		return true;
+	}
+
+	else if(textInput.find(MARKER_COMPLETED)!=std::string::npos){
+		found = textInput.find(MARKER_COMPLETED);
+		if(textInput.find(MARKER_ENCLOSE,found)!=std::string::npos)
+			extractEndPos = textInput.find(MARKER_COMPLETED,found);
+		else
+			extractEndPos = textInput.size();
+		textStatus = _textInput.substr(found, MARKER_COMPLETED_LENGTH);
+		shortenInput(found, --extractEndPos);
 		return true;
 	}
 
@@ -505,6 +606,7 @@ void Parser::populateContainer(vector<string>& inputBits)
 	inputBits[SLOT_TIME] = textDateAndTime; 
 	inputBits[SLOT_SLOT_NUMBER] = textSlotNumber;
 	inputBits[SLOT_TASKLIST] = textTaskList;
+	inputBits[SLOT_STATUS] = textStatus;
 }
 
 void Parser::toLowerCase(string &str)

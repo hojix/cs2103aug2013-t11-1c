@@ -17,7 +17,7 @@ protected:
   // is empty.
 
 	Parser parser;
-	string input1, input2;
+	string input1, input2, input3, input4;
 
 	int id;
 	string description;
@@ -44,6 +44,9 @@ protected:
     // before each test).
 	input1 = "Add HomeWork from EE2020 ,at com1 ,repeat weekly ,From Monday 2PM to Saturday 4PM ,!";
 	input2 = "delete 2" + LIST_TO_DO;
+	input3 = "mark 3 Undone" + LIST_TO_DO;
+	input4 = "Update 2 ,from 2000 to 1900 ,at com2" + LIST_TO_DO;
+
 
 	time_t rawtime;
 	time ( &rawtime );
