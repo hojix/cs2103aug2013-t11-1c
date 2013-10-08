@@ -30,9 +30,9 @@ namespace UIDisplay {
 	private: UiConvert* converter;
 	private: Executor* execute;
 	private: list<Task>* list;
-	
+
 	private: bool loaded;
-	
+
 	private: System::Windows::Forms::TabControl^  tabContainer;
 	private: System::Windows::Forms::TabPage^  tabTodo;
 	private: System::Windows::Forms::TabPage^  tabCompleted;
@@ -96,8 +96,48 @@ namespace UIDisplay {
 
 	private: void loadList();
 	private: void printList(std::list<Task> *list);
-	private: void passUserInput();
-	          
+	private: void passUserInput();          
 	public: System::Void textboxInput_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e);
+	private: System::Void textboxInput_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e);
+	private: System::Void textboxInput_test(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+				 if(e->KeyCode == Keys::Enter )
+				 {
+					 MessageBox::Show("Alt pressed");
+					 array<ListViewItem^>^ temp;
+					 Array::Resize(temp, 1000);
+
+					 this->Cursor = Cursors::WaitCursor;
+
+					 this->todoListView->BeginUpdate();
+					 if(loaded)
+					 {
+						 this->todoListView->Items->Clear();
+					 }
+					 System::Windows::Forms::ListViewItem^ item;
+					 System::String^ sys_index = "1";
+					 System::String^ sys_desc = "description";
+					 System::String^ sys_venue = "location";
+					 System::String^ sys_time = "1200"; //time
+					 System::String^ sys_due = "05-10-2013"; //due
+					 System::String^ sys_priority = "high"; //priority
+					 item->BeginEdit();
+
+					 //item->SubItems[0]->Text = sys_index;
+
+					 //creating item for listview
+					 item->SubItems->Add(sys_index);
+					 item->SubItems->Add(sys_desc); //add description
+					 item->SubItems->Add(sys_venue); //add venue	 
+					 item->SubItems->Add(sys_time); //add time
+					 item->SubItems->Add(sys_due); //add due
+					 item->SubItems->Add(sys_priority); //add priority
+
+					 temp[0] = item;
+					 this->todoListView->Items->AddRange(temp);
+					 loaded = true;
+					 this->Cursor = Cursors::Default;
+					 this->todoListView->EndUpdate();
+				 }
+			 }
 	};
 }

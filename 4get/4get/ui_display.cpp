@@ -308,7 +308,8 @@ void ui_display::InitializeComponent(void){
 	this->textboxInput->Size = System::Drawing::Size(793, 22);
 	this->textboxInput->TabIndex = 1;
 	this->textboxInput->Text = L"Enter Command Here";
-	this->textboxInput->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &ui_display::textboxInput_KeyDown);
+	this->textboxInput->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &ui_display::textboxInput_test);
+	this->textboxInput->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &ui_display::textboxInput_KeyPress);
 	// 
 	// messageContainer
 	// 
@@ -391,11 +392,12 @@ void ui_display::passUserInput(){
 }
 
 Void ui_display::textboxInput_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e){
-	if(e->KeyCode == Keys::Enter)
+	//if(e->KeyCode == Keys::Enter)
 	{
 		this->passUserInput();
 		MessageBox::Show("Enter pressed");
 		list = execute->getUpdatedList();
+		MessageBox::Show(System::Convert::ToString(list->size()));
 		printList(list);
 	}
 }
@@ -405,6 +407,10 @@ void ui_display::printList(std::list<Task> *list){
 	int j=0;
 	array<ListViewItem^>^ temp;
 
+	if(size==0){
+		MessageBox::Show("List is empty");
+		return;
+	}
 	this->Cursor = Cursors::WaitCursor;
 
 	this->todoListView->BeginUpdate();
@@ -415,12 +421,55 @@ void ui_display::printList(std::list<Task> *list){
 
 	for (int i=0; i<size; i++)
 	{
+		MessageBox::Show("In print loop");
 		ListViewItem^item = gcnew ListViewItem;
 		converter->printItem(item, list);
 		temp[j] = item;
 		j++;
 	}
+	this->todoListView->Items->AddRange(temp);
 	loaded = true;
+	this->Cursor = Cursors::Default;
 	this->todoListView->EndUpdate();
 
+}
+
+Void ui_display::textboxInput_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e){
+	if(e->KeyChar.ToString() == Keys::F1.ToString() )
+	{
+		MessageBox::Show("Alt pressed");
+		array<ListViewItem^>^ temp;
+
+		this->Cursor = Cursors::WaitCursor;
+
+		this->todoListView->BeginUpdate();
+		if(loaded)
+		{
+			this->todoListView->Items->Clear();
+		}
+		System::Windows::Forms::ListViewItem^ item;
+		System::String^ sys_index = "1";
+		System::String^ sys_desc = "description";
+		System::String^ sys_venue = "location";
+		System::String^ sys_time = "1200"; //time
+		System::String^ sys_due = "05-10-2013"; //due
+		System::String^ sys_priority = "high"; //priority
+		item->BeginEdit();
+
+		//item->SubItems[0]->Text = sys_index;
+
+		//creating item for listview
+		item->SubItems->Add(sys_index);
+		item->SubItems->Add(sys_desc); //add description
+		item->SubItems->Add(sys_venue); //add venue	 
+		item->SubItems->Add(sys_time); //add time
+		item->SubItems->Add(sys_due); //add due
+		item->SubItems->Add(sys_priority); //add priority
+
+		temp[0] = item;
+		this->todoListView->Items->AddRange(temp);
+		loaded = true;
+		this->Cursor = Cursors::Default;
+		this->todoListView->EndUpdate();
+	}
 }
