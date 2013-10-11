@@ -9,6 +9,7 @@
 
 using namespace std;
 using namespace Enum;
+using namespace Constants;
 
 class Task 
 {	
@@ -57,6 +58,9 @@ public:
 	
 	//update function
 	void updateAllAttr();
+
+	void clearTimeAttr();
+	void clearAllAttr();
 
 };
 #endif

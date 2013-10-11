@@ -58,7 +58,7 @@ namespace Enum{
 	};
 
 	enum RepeatType{
-		none, 
+		repeatNone, 
 		daily, 
 		weekly, 
 		fortnightly, 
@@ -67,17 +67,19 @@ namespace Enum{
 	};
 
 	enum Priority{
+		normal,
 		high, 
-		normal
 	};
 
 	enum Status{
+		statusNone,
 		completed, 
 		incomplete, 
 		overdued
 	};
 
 	enum TaskType{
+		taskTypeNone,
 		floating, 
 		timed, 
 		deadline
@@ -106,6 +108,7 @@ namespace Constants{
 	//Initializer
 	const string INITIALIZE_STRING_BLANK = "";
 	const size_t INITIALIZE_SIZE_T = 0;
+	const int INITIALIZE_INT = 0;
 
 	//Input Bits slots
 	const int SLOT_SIZE = 15;

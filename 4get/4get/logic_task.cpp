@@ -1,5 +1,7 @@
 #include "logic_task.h"
-Task::Task(){}
+Task::Task(){
+	clearAllAttr();
+}
 
 
 void Task::setupTask(int id, TaskType type, string description, string location, tm *reminderTime, Priority priority, Status status)
@@ -140,3 +142,23 @@ void Task::updateAllAttr()
 
 }
 
+void Task::clearTimeAttr()
+{
+	tm *initializeTime = {0};
+	taskStart = initializeTime;
+	taskEnd = initializeTime;
+	taskNextOccurance = initializeTime;
+	taskReminderTime = initializeTime;
+
+}
+
+void Task::clearAllAttr()
+{
+	taskId = INITIALIZE_INT;
+	taskType = taskTypeNone;
+	taskDescription = INITIALIZE_STRING_BLANK;
+	taskPriority = normal;
+	taskLocation = INITIALIZE_STRING_BLANK;
+	taskStatus = statusNone;
+	clearTimeAttr();
+}

@@ -6,7 +6,7 @@ TaskDeadline::TaskDeadline(int id, string description, string location, tm *remi
  	TaskType type = deadline;
 	setupTask(id, type, description, location, reminderTime, priority, status);
 	taskEnd = endTime;
-	if(repeat != none)
+	if(repeat != repeatNone)
 		setTaskRepeat(repeat);
 
 }

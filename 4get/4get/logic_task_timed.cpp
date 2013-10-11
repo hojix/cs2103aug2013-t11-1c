@@ -6,7 +6,7 @@ TaskTimed::TaskTimed(int id, string description, string location, tm *reminderTi
 	setupTask(id, type, description, location, reminderTime, priority, status);
 	taskStart = startTime;
 	taskEnd = endTime;
-	if(repeat != none)
+	if(repeat != repeatNone)
 		setTaskRepeat(repeat);
 
 }

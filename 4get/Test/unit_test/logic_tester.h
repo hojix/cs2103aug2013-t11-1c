@@ -64,7 +64,7 @@ protected:
 
 	priority = high;
 	status = incomplete;
-	repeat = none;
+	repeat = repeatNone;
 
 	endTime->tm_hour = 23;
 	endTime->tm_min = 59;
