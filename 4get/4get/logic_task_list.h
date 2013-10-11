@@ -19,10 +19,14 @@ private:
 	list<Task> listToDisplay;
 	Storage storage;
 	ListType currentDisplayed;
-	int nextTaskID;
 	int toDoListSize;
 	int completedListSize;
 	int overdueListSize;
+
+	bool sort(ListType listType);
+	bool addToDoList(Task task);
+	bool addCompletedList(Task task);
+	bool addOverdueList(Task task);
 
 public:
 	TaskList();
@@ -33,17 +37,7 @@ public:
 
 	//list manipulation functions
 	bool addToList(Task task, ListType listToAdd);
-	bool addToDoList(Task task);
-	bool addCompletedList(Task task);
-	bool addOverdueList(Task task);
-	bool deleteFromList(int taskToDelete, ListType list);
-	bool deleteFromToDo(int taskToDelete);
-	bool deleteFromCompleted(int taskToDelete);
-	bool deleteFromOverdue(int taskToDelete);
-	bool sort(ListType listType);
-
-	int getNextID();
-	int retrieveCurrentDate();
+	bool deleteFromList(int taskToDelete);
 
 	list<Task> obtainList(ListType listToReturn);
 };
