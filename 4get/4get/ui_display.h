@@ -3,6 +3,7 @@
 #include "ui_convert.h"
 #include "logic_executor.h"
 #include "logic_task.h"
+#include "common_message.h"
 #include <list>
 #include <Windows.h>
 
@@ -39,15 +40,16 @@ namespace UIDisplay {
 	private: System::Windows::Forms::TabPage^  tabOverdue;
 	private: System::Windows::Forms::TextBox^  textboxInput;
 	private: System::Windows::Forms::FlowLayoutPanel^  inputContainer;
+	private: System::Windows::Forms::ListView^ activeListView;
 
 	private: System::Windows::Forms::FlowLayoutPanel^  messageContainer;
-	private: System::Windows::Forms::ListView^  completedListView;
-	private: System::Windows::Forms::ColumnHeader^  cTaskIndex;
-	private: System::Windows::Forms::ColumnHeader^  cTaskDescription;
-	private: System::Windows::Forms::ColumnHeader^  cTaskVenue;
-	private: System::Windows::Forms::ColumnHeader^  cTaskTime;
-	private: System::Windows::Forms::ColumnHeader^  cTaskDate;
-	private: System::Windows::Forms::ColumnHeader^  cTaskPriority;
+
+
+
+
+
+
+
 
 	private: System::Windows::Forms::ListView^  overdueListView;
 	private: System::Windows::Forms::ColumnHeader^  oTaskIndex;
@@ -57,28 +59,43 @@ namespace UIDisplay {
 	private: System::Windows::Forms::ColumnHeader^  oTaskDate;
 	private: System::Windows::Forms::ColumnHeader^  oTaskPriority;
 
-	private: System::Windows::Forms::TabPage^  tabFloat;
+
 	private: System::Windows::Forms::RichTextBox^  richTextBox1;
 	private: System::Windows::Forms::GroupBox^  todayContainer;
 	private: System::Windows::Forms::CheckedListBox^  checkedTaskList;
 	private: System::Windows::Forms::DateTimePicker^  chooseDate;
-	private: System::Windows::Forms::ListView^  floatingListView;
 
-	private: System::Windows::Forms::ColumnHeader^  fTaskIndex;
-	private: System::Windows::Forms::ColumnHeader^  fTaskDescription;
-	private: System::Windows::Forms::ColumnHeader^  fTaskVenue;
-	private: System::Windows::Forms::ColumnHeader^  fTaskTime;
-	private: System::Windows::Forms::ColumnHeader^  fTaskDate;
-	private: System::Windows::Forms::ColumnHeader^  fTaskPriority;
+
+
+
+
+
+
+
 	private: System::Windows::Forms::ListView^  todoListView;
+	private: System::Windows::Forms::ColumnHeader^  tIndexNo;
+	private: System::Windows::Forms::ColumnHeader^  tDescription;
+	private: System::Windows::Forms::ColumnHeader^  tVenue;
+	private: System::Windows::Forms::ColumnHeader^  tTime;
+	private: System::Windows::Forms::ColumnHeader^  tDueDate;
+	private: System::Windows::Forms::ColumnHeader^  tPriority;
 
 
-	private: System::Windows::Forms::ColumnHeader^  columnHeader1;
-	private: System::Windows::Forms::ColumnHeader^  columnHeader2;
-	private: System::Windows::Forms::ColumnHeader^  columnHeader3;
-	private: System::Windows::Forms::ColumnHeader^  columnHeader4;
-	private: System::Windows::Forms::ColumnHeader^  columnHeader5;
-	private: System::Windows::Forms::ColumnHeader^  columnHeader6;
+
+
+
+
+
+
+	private: System::Windows::Forms::ListView^  completedListView;
+	private: System::Windows::Forms::ColumnHeader^  cIndexNo;
+	private: System::Windows::Forms::ColumnHeader^  cDescription;
+	private: System::Windows::Forms::ColumnHeader^  cVenue;
+	private: System::Windows::Forms::ColumnHeader^  cPriority;
+
+
+
+
 
 	private:
 		/// <summary>
