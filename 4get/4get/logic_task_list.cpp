@@ -29,25 +29,27 @@ bool TaskList::addToList(Task task, ListType listToAdd){
 	return false; 
 }
 
-bool sort(ListType listType){
+bool sort(list<Task> listToSort){
+	
 	return false; //stub
 }
 
 bool TaskList::addToDoList(Task task){
+	
 	toDoList.push_back(task);
-	sort(listToDo);
+	sort(toDoList);
 	return 0; //stub
 }
 
 bool TaskList::addCompletedList(Task task){
 	completedList.push_back(task);
-	sort(listCompleted);
+	sort(completedList);
 	return 0; //stub
 }
 
 bool TaskList::addOverdueList(Task task){
 	overdueList.push_back(task);
-	sort(listOverdue);
+	sort(overdueList);
 	return 0; //stub
 }
 
@@ -86,3 +88,4 @@ list<Task> TaskList::obtainList(ListType listToReturn){
 	currentDisplayed = listToReturn;
 	return listToDisplay;
 }
+

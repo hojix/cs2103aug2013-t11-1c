@@ -23,7 +23,7 @@ private:
 	int completedListSize;
 	int overdueListSize;
 
-	bool sort(ListType listType);
+	bool sort(list<Task> listToSort);
 	bool addToDoList(Task task);
 	bool addCompletedList(Task task);
 	bool addOverdueList(Task task);
