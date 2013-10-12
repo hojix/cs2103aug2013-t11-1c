@@ -18,12 +18,12 @@ void Task::setupTask(int id, string description, string location, tm *reminderTi
 /*
 Task::Task(string description, Priority priority, string location, Status status, Repeat_Type repeat, tm *reminderTime)
 {
-	taskDescription = description;
-	taskPriority = priority;
-	taskLocation = location;
-	taskReminderTime = reminderTime;
-	taskStatus = status;
-	taskRepeat = repeat;
+taskDescription = description;
+taskPriority = priority;
+taskLocation = location;
+taskReminderTime = reminderTime;
+taskStatus = status;
+taskRepeat = repeat;
 
 }
 */
@@ -161,4 +161,36 @@ void Task::clearAllAttr()
 	taskLocation = INITIALIZE_STRING_BLANK;
 	taskStatus = statusNone;
 	clearTimeAttr();
+}
+
+int Task::getTimeInt(TimeType type)
+{
+	int yearMonthDayHourMin;
+	tm* time = NULL;
+
+	if(type==timeStart)
+		time = taskStart;
+	else if(type==timeEnd)
+		time = taskEnd;
+	else if(type==timeNext)
+		time = taskNextOccurance;
+	else if(type==timeReminder)
+		time = taskReminderTime;
+
+	if(time!=NULL){
+		int min = time->tm_min;
+		int hour = time->tm_hour;
+		int day = time ->tm_mday;
+		int month = time ->tm_mon;
+		int year = time ->tm_year + CONSTANT_START_YEAR;
+		hour = hour*CONVERT_MULTIPLIER_HOUR;
+		day = day*CONVERT_MULTIPLIER_DAY;
+		month = month*CONVERT_MULTIPLIER_MONTH;
+		year = year*CONVERT_MULTIPLIER_YEAR;
+		yearMonthDayHourMin = (year + month + day + hour + min);
+		return yearMonthDayHourMin;
+	}
+	else
+		return 0;
+
 }

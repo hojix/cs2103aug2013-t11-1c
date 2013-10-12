@@ -44,6 +44,7 @@ public:
 	virtual tm* getTaskStart();
 	virtual tm* getTaskEnd();
 	virtual RepeatType getTaskRepeat();
+	int getTimeInt(TimeType type);
 
 	//setter functions
 	void setTaskId(int id);
