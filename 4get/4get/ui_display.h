@@ -83,19 +83,32 @@ namespace UIDisplay {
 	private: System::Windows::Forms::ColumnHeader^  tTime;
 	private: System::Windows::Forms::ColumnHeader^  tDueDate;
 	private: System::Windows::Forms::ColumnHeader^  tPriority;
-
-
-
-
-
-
-
-
 	private: System::Windows::Forms::ListView^  completedListView;
-	private: System::Windows::Forms::ColumnHeader^  cIndexNo;
+	private: System::Windows::Forms::ColumnHeader^  cIndex;
 	private: System::Windows::Forms::ColumnHeader^  cDescription;
 	private: System::Windows::Forms::ColumnHeader^  cVenue;
+	private: System::Windows::Forms::ColumnHeader^  cTime;
+	private: System::Windows::Forms::ColumnHeader^  cDue;
 	private: System::Windows::Forms::ColumnHeader^  cPriority;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
