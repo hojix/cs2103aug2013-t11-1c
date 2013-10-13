@@ -163,7 +163,6 @@ bool Parser::separateFunctionMark(vector<string>& inputBits)
 		cout << "no slot" << endl;
 
 	cout << "slot number: <" << textSlotNumber << ">" << endl;
-	cout << "TaskList: <" << textTaskList <<  ">" << endl;
 	cout << "TaskList: <" << textStatus <<  ">" << endl;
 
 	return true;
@@ -271,7 +270,7 @@ bool Parser::determineDateAndTime()
 	std::size_t i;
 	string marker = INITIALIZE_STRING_BLANK;
 
-																								//If found By
+	//If found By
 	if(textInput.find(MARKER_BY)!=std::string::npos){
 		found = textInput.find(MARKER_BY);
 		if(textInput.find(MARKER_COMMA, found+MARKER_BY_LENGTH)!=std::string::npos ){			//try find comma
@@ -312,6 +311,8 @@ bool Parser::determineDateAndTime()
 					shortenInput(found, foundComma);
 					return true;
 				}
+				else
+					return false;
 			}
 			else{																				//from and to combination keyword is the last keyword  
 				extractLength = determindExtractLength(foundTo, stringLength, MARKER_TO, extractStartPos);
@@ -322,7 +323,7 @@ bool Parser::determineDateAndTime()
 		}
 		else																					//wrong keyword definition
 			return false;
-		
+
 	}
 	else																						//not specified date aka. Floating
 		return true; 

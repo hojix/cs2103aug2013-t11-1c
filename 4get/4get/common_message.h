@@ -75,14 +75,13 @@ namespace Enum{
 		overdued
 	};
 
-	/*
+	
 	enum TaskType{
-		taskTypeNone,
 		floating, 
 		timed, 
 		deadline
 	};
-	*/
+	
 
 	enum Command{
 		commandAdd, 
@@ -190,11 +189,7 @@ namespace Constants{
 	const int CONSTANT_MULTIPLIER_MONTH = 1000;
 	const int CONSTANT_MULTIPLIER_DAY = 10;
 
-	//multipliers for time conversion in Task
-	const int CONVERT_MULTIPLIER_YEAR = 100000000;
-	const int CONVERT_MULTIPLIER_MONTH = 1000000;
-	const int CONVERT_MULTIPLIER_DAY = 10000;
-	const int CONVERT_MULTIPLIER_HOUR = 100;
+
 };
 
 #endif

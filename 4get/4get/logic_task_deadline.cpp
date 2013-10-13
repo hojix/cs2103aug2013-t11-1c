@@ -6,15 +6,15 @@ TaskDeadline::TaskDeadline()
 
 TaskDeadline::TaskDeadline(int id, string description, string location, tm *reminderTime, Priority priority, Status status, RepeatType repeat, tm *endTime) : Task()
 {
-	//TaskType type = deadline;
-	setupTask(id, description, location, reminderTime, priority, status, repeat, endTime);
+	TaskType type = deadline;
+	setupTask(id, type, description, location, reminderTime, priority, status, repeat, endTime);
 }
 
 
-void TaskDeadline::setupTask(int id, string description, string location, tm *reminderTime, Priority priority, Status status, RepeatType repeat, tm *endTime)
+void TaskDeadline::setupTask(int id, TaskType type, string description, string location, tm *reminderTime, Priority priority, Status status, RepeatType repeat, tm *endTime)
 {
 	taskId = id;
-//	taskType = type;
+	taskType = type;
 	taskDescription = description;
 	taskPriority = priority;
 	taskLocation = location;

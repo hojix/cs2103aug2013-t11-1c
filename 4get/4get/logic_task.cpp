@@ -1,13 +1,19 @@
 #include "logic_task.h"
+
+const int Task::CONVERT_MULTIPLIER_YEAR = 100000000;
+const int Task::CONVERT_MULTIPLIER_MONTH = 1000000;
+const int Task::CONVERT_MULTIPLIER_DAY = 10000;
+const int Task::CONVERT_MULTIPLIER_HOUR = 100;
+
 Task::Task(){
 	clearAllAttr();
 }
 
 
-void Task::setupTask(int id, string description, string location, tm *reminderTime, Priority priority, Status status)
+void Task::setupTask(int id, TaskType type, string description, string location, tm *reminderTime, Priority priority, Status status)
 {
 	taskId = id;
-	//taskType = type;
+	taskType = type;
 	taskDescription = description;
 	taskPriority = priority;
 	taskLocation = location;
@@ -31,6 +37,10 @@ taskRepeat = repeat;
 int Task::getTaskId()
 {
 	return taskId;
+}
+TaskType Task::getTaskType()
+{
+	return taskType;
 }
 string Task::getTaskDescription() const
 {
@@ -72,6 +82,10 @@ void Task::setTaskId(int id)
 {
 	taskId = id;
 }
+void Task::setTaskType(TaskType type)
+{
+	taskType = type;
+}
 void Task::setTaskDescription(string description)
 {
 	taskDescription = description;
@@ -94,48 +108,16 @@ void Task::setTaskReminderTime(tm* remindTime)
 }
 void Task::setTaskStart(tm* startTime)
 {
-	cout << "error" << endl;
+	taskStart = startTime;
 }
 void Task::setTaskEnd(tm* endTime)
 {
-	cout << "error" << endl;
+	taskEnd = endTime;
 }
 void Task::setTaskRepeat(RepeatType repeat)
 {
-	switch(repeat)
-	{
-	case daily:
-		{
-			taskRepeat = repeat;
-			break;
-		}
-	case weekly:
-		{
-			taskRepeat = repeat;
-			break;
-		}
-	case fortnightly:
-		{
-			taskRepeat = repeat;
-			break;
-		}
-	case monthly:
-		{
-			taskRepeat = repeat;
-			break;
-		}
-	case annually:
-		{
-			taskRepeat = repeat;
-			break;
-		}
-	}
-
+	taskRepeat = repeat;
 }
-
-
-
-
 
 void Task::updateAllAttr()
 {
@@ -144,7 +126,7 @@ void Task::updateAllAttr()
 
 void Task::clearTimeAttr()
 {
-	tm *initializeTime = {0};
+	tm *initializeTime = NULL;
 	taskStart = initializeTime;
 	taskEnd = initializeTime;
 	taskNextOccurance = initializeTime;
@@ -155,7 +137,7 @@ void Task::clearTimeAttr()
 void Task::clearAllAttr()
 {
 	taskId = INITIALIZE_INT;
-	//taskType = taskTypeNone;
+	taskType = floating;
 	taskDescription = INITIALIZE_STRING_BLANK;
 	taskPriority = normal;
 	taskLocation = INITIALIZE_STRING_BLANK;
