@@ -40,6 +40,8 @@ bool TaskList::deleteFromList(int taskToDelete){
 list<Task> TaskList::obtainList(ListType listToReturn){
 	_listToDisplay = determineList(listToReturn);
 	_currentDisplayed = listToReturn;
+	cout << "display size: "<<_listToDisplay.size() << endl;
+	cout << "todo size: "<<_toDoList.size() << endl;
 	return _listToDisplay;
 }
 

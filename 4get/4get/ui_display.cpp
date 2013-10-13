@@ -332,8 +332,16 @@ Void ui_display::textboxInput_KeyDown(System::Object^  sender, System::Windows::
 		this->textboxInput->Clear();
 		this->textboxInput->Text = L"Enter Command Here:";
 		MessageBox::Show("getting list");
+		if(activeListType == listToDo)
+			MessageBox::Show("to do list is active");
+		else if(activeListType == listCompleted)
+			MessageBox::Show("completed list is active");
+		else if(activeListType == listOverdue)
+			MessageBox::Show("overdue list is active");
 		list<Task> taskList;
 		taskList = execute->getUpdatedList(activeListType);
+		if(taskList.size() == 0)
+			MessageBox::Show("list is empty before printing");
 		*listOfTasks = taskList;
 		MessageBox::Show("printing list");
 		printList();

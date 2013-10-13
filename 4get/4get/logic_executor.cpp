@@ -31,7 +31,6 @@ Enum::Command Executor::determineCommandType (string commandTypeString)
 }
 bool Executor::adderFunction()
 {
-	
 	_task.setTaskDescription(vectorOfInputs[SLOT_DESCRIPTION]);
 	_task.setTaskLocation(vectorOfInputs[SLOT_LOCATION]);
 	_task.setTaskReminderTime(convertStringToTm());
