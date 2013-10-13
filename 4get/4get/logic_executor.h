@@ -35,6 +35,8 @@ class Executor
 	long long taskID;
 	Converter convert;
 
+	bool addToTaskList();
+	
 	static const int CONSTANT_MULTIPLIER_YEAR;
 	static const int CONSTANT_MULTIPLIER_MONTH;
 	static const int CONSTANT_MULTIPLIER_DAY;
@@ -51,8 +53,9 @@ public:
 	long long determineTaskId();
 	bool determineTaskType();
 	bool adderFunction();
-	bool addToTaskList();
+	
 	bool deleteFunction();
+	bool markFunction();
 	list<Task> getUpdatedList(ListType listType);
 
 	//helper functions

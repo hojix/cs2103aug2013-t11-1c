@@ -32,6 +32,8 @@ Enum::Command Executor::determineCommandType (string commandTypeString)
 		return Command::commandAdd;
 	else if(isEqual(commandTypeString, COMMAND_DELETE))
 		return Command::commandDelete;
+	else if(isEqual(commandTypeString, COMMAND_MARK))
+		return Command::commandMark;
 	else
 		return Command::commandInvalid;
 }
@@ -115,7 +117,7 @@ long long Executor::retrieveCurrentDate(){
 	time(&temp);
 	currentTime = localtime(&temp);
 	long long day = currentTime ->tm_mday;
-	long long month = currentTime ->tm_mon;
+	long long month = CONSTANT_MONTH_ONE + currentTime ->tm_mon;
 	long long year = currentTime ->tm_year + CONSTANT_START_YEAR;
 	day = day*CONSTANT_MULTIPLIER_DAY;
 	month = month*CONSTANT_MULTIPLIER_MONTH;
