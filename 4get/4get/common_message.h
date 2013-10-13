@@ -38,7 +38,6 @@ namespace Message{
 	const string MESSAGE_ERROR_COMMAND_MARK = "System was unable to mark your task.";
 	const string MESSAGE_ERROR_COMMAND_MODIFY = "System was unable to modify your task.";
 	const string MESSAGE_ERROR_COMMAND_UNDO = "System was unable to undo to your previous task.";
-	const string MESSAGE_ERROR_COMMAND_UPDATE = "System was unable to perform an update of your current task.";
 };
 
 namespace Enum{
@@ -89,7 +88,6 @@ namespace Enum{
 		commandMark, 
 		commandModify, 
 		commandUndo, 
-		commandUpdate,
 		commandInvalid
 	};
 };

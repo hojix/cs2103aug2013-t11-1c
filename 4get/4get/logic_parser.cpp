@@ -56,7 +56,7 @@ void Parser::processCommand(string commandString, vector<string>& inputBits)
 				throw MESSAGE_ERROR_COMMAND_MARK;
 			}
 		}
-		else if(commandString.compare(COMMAND_MOD)==COMPARE_SUCCESS || commandString.compare(COMMAND_MODIFY)==COMPARE_SUCCESS) {
+		else if(commandString.compare(COMMAND_MOD)==COMPARE_SUCCESS || commandString.compare(COMMAND_MODIFY)==COMPARE_SUCCESS || commandString.compare(COMMAND_UPDATE)==COMPARE_SUCCESS) {
 			inputBits[SLOT_COMMAND] = COMMAND_MODIFY;
 			if(!separateInput(commandModify, inputBits)){
 				throw MESSAGE_ERROR_COMMAND_MODIFY;
@@ -68,12 +68,7 @@ void Parser::processCommand(string commandString, vector<string>& inputBits)
 				throw MESSAGE_ERROR_COMMAND_UNDO;
 			}
 		}
-		else if(commandString.compare(COMMAND_UPDATE)==COMPARE_SUCCESS) {
-			inputBits[SLOT_COMMAND] = COMMAND_UPDATE;
-			if(!separateInput(commandUpdate, inputBits)){
-				throw MESSAGE_ERROR_COMMAND_UPDATE;
-			}
-		}
+		
 	}
 	catch(string error)
 	{
@@ -107,8 +102,6 @@ bool Parser::separateInput(Command userCommand, vector<string>& inputBits)
 		return separateFunctionModify(inputBits);
 	case commandUndo:
 		return separateFunctionUndo(inputBits);
-	case commandUpdate:
-		return separateFunctionUpdate(inputBits);
 	default:
 		return false;
 	}
@@ -163,7 +156,7 @@ bool Parser::separateFunctionMark(vector<string>& inputBits)
 		cout << "no slot" << endl;
 
 	cout << "slot number: <" << textSlotNumber << ">" << endl;
-	cout << "TaskList: <" << textStatus <<  ">" << endl;
+	cout << "TaskStatus: <" << textStatus <<  ">" << endl;
 
 	return true;
 }
@@ -190,10 +183,6 @@ bool Parser::separateFunctionModify(vector<string>& inputBits)
 	return true;
 }
 bool Parser::separateFunctionUndo(vector<string>& inputBits)
-{
-	return true;
-}
-bool Parser::separateFunctionUpdate(vector<string>& inputBits)
 {
 	return true;
 }

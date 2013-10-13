@@ -57,7 +57,6 @@ private:
 	bool separateFunctionMarkDone(vector<string>& inputBits);
 	bool separateFunctionModify(vector<string>& inputBits);
 	bool separateFunctionUndo(vector<string>& inputBits);
-	bool separateFunctionUpdate(vector<string>& inputBits);
 
 
 	bool determineVenue();

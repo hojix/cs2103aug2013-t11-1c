@@ -17,7 +17,7 @@ void Task::setupTask(long long id, TaskType type, string description, string loc
 	taskDescription = description;
 	taskPriority = priority;
 	taskLocation = location;
-	taskStatus = status;
+//	taskStatus = status;
 	taskReminderTime = reminderTime;
 }
 
