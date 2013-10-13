@@ -290,13 +290,16 @@ void ui_display::InitializeComponent(void){
 	// 
 	this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 	this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+	this->BackColor = System::Drawing::SystemColors::Control;
 	this->ClientSize = System::Drawing::Size(824, 466);
 	this->Controls->Add(this->todayContainer);
 	this->Controls->Add(this->messageContainer);
 	this->Controls->Add(this->inputContainer);
 	this->Controls->Add(this->tabContainer);
+	this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
 	this->Name = L"ui_display";
-	this->Text = L"ui_display";
+	this->Text = L"4get";
+	this->Load += gcnew System::EventHandler(this, &ui_display::ui_display_Load);
 	this->tabContainer->ResumeLayout(false);
 	this->tabTodo->ResumeLayout(false);
 	this->tabCompleted->ResumeLayout(false);

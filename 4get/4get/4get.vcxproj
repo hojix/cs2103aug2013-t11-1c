@@ -99,6 +99,7 @@
     <ClInclude Include="logic_task_floating.h" />
     <ClInclude Include="logic_task_list.h" />
     <ClInclude Include="logic_task_timed.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="storage.h" />
     <ClInclude Include="ui_convert.h" />
     <ClInclude Include="ui_display.h">
