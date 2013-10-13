@@ -1,8 +1,9 @@
 #include "logic_executor.h"
 
-const int Executor::CONSTANT_MULTIPLIER_YEAR = 10000000;
-const int Executor::CONSTANT_MULTIPLIER_MONTH = 100000;
-const int Executor::CONSTANT_MULTIPLIER_DAY = 1000;
+const int Executor::CONSTANT_MULTIPLIER_YEAR = 1000000;
+const int Executor::CONSTANT_MULTIPLIER_MONTH = 10000;
+const int Executor::CONSTANT_MULTIPLIER_DAY = 100;
+const int Executor::CONSTANT_MONTH_ONE = 1;
 
 Executor::Executor(){
 	vectorOfInputs.reserve(SLOT_SIZE);
@@ -36,7 +37,7 @@ Enum::Command Executor::determineCommandType (string commandTypeString)
 }
 bool Executor::adderFunction()
 {
-	int id;
+	long long id;
 	string description, location;
 	tm *reminderTime, *startTime, *endTime;
 	RepeatType repeat;
@@ -47,11 +48,9 @@ bool Executor::adderFunction()
 	id = taskID;
 	description = vectorOfInputs[SLOT_DESCRIPTION];
 	location = vectorOfInputs[SLOT_LOCATION];
-	cout << "hello" << endl;
 	cout << vectorOfInputs[SLOT_END_TIME] <<endl;
 	priority = convert.convertStringToPriority(vectorOfInputs[SLOT_PRIORITY]);
 	status = convert.convertStringToStatus(vectorOfInputs[SLOT_STATUS]);
-	cout << "bye" << endl;
 	startTime = convert.convertStringToTm(vectorOfInputs[SLOT_START_TIME]);
 	endTime = convert.convertStringToTm(vectorOfInputs[SLOT_END_TIME]);
 	reminderTime = convert.convertStringToTm(vectorOfInputs[SLOT_REMIND_TIME]);
@@ -109,14 +108,15 @@ bool Executor::addToTaskList()
 list<Task> Executor::getUpdatedList(ListType listType){
 	return tasks.obtainList(listType);
 }
-int Executor::retrieveCurrentDate(){
-	time_t temp = time(NULL);
-	int yearMonthDay;
-	tm* currentTime; 
+long long Executor::retrieveCurrentDate(){
+	time_t temp;
+	long long yearMonthDay;
+	tm* currentTime;
+	time(&temp);
 	currentTime = localtime(&temp);
-	int day = currentTime ->tm_mday;
-	int month = currentTime ->tm_mon;
-	int year = currentTime ->tm_year + CONSTANT_START_YEAR;
+	long long day = currentTime ->tm_mday;
+	long long month = currentTime ->tm_mon;
+	long long year = currentTime ->tm_year + CONSTANT_START_YEAR;
 	day = day*CONSTANT_MULTIPLIER_DAY;
 	month = month*CONSTANT_MULTIPLIER_MONTH;
 	year = year*CONSTANT_MULTIPLIER_YEAR;
@@ -129,7 +129,7 @@ int Executor::retrieveCurrentDate(){
 //		return 
 //}
 
-int Executor::determineTaskId()
+long long Executor::determineTaskId()
 {
 	return retrieveCurrentDate();
 }
