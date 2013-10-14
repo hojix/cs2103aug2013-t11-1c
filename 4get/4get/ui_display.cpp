@@ -484,7 +484,7 @@ Void ui_display::textboxInput_KeyPress(System::Object^  sender, System::Windows:
 			"type \"add\" to add a task",
 			"type \"del\" to delete a task",
 			"type \"mod\" to modify a task",
-			"type \"mark\" to change the statud of a task"
+			"type \"mark\" to change the status of a task"
 		};
 		this->messageBox->Lines = helpLines;
 		switch(e->KeyChar){
@@ -544,23 +544,19 @@ Void ui_display::textboxInput_KeyPress(System::Object^  sender, System::Windows:
 			"	undone / incomplete"
 		};
 		array<String ^> ^  emptyLines ={};
+		this->messageBox->Lines=emptyLines;
 		if(*commandKeyword == "add"){
-			this->messageBox->Lines=emptyLines;
 			this->messageBox->Lines= addLines;
 		}
 		else if(*commandKeyword == "del"){
-			this->messageBox->Lines=emptyLines;
 			this->messageBox->Lines= delLines;
 		}
 		else if(*commandKeyword == "mod"){
-			this->messageBox->Lines=emptyLines;
 			this->messageBox->Lines= modLines;
 		}
 		else if(*commandKeyword == "mar"){
-			this->messageBox->Lines=emptyLines;
 			this->messageBox->Lines= markLines;
 		}
 		commandKeyword->clear();
 	}
-
 }
