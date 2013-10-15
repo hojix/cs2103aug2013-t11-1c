@@ -5,6 +5,7 @@
 #include <list>
 #include <string>
 #include <time.h>
+#include <sstream>
 #include "logic_task.h"
 #include "common_message.h"
 #include <vcclr.h>
@@ -24,6 +25,7 @@ public:
 public:
 
 	static string trim(const string& s, const string& delimiters = " \f\n\r\t\v" );
+	string timetToStdString(time_t* time);
 	bool stringSysToStdConversion(System::String^ source, string& result);
 	string enumPriorityToStdString(Priority priority);
 	void printItem(System::Windows::Forms::ListViewItem^ item, std::list<Task> *list, int taskIndex);
