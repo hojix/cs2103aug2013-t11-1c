@@ -3,8 +3,6 @@
 //   with parameters form input    //
 //  and calls the approriate list  //
 /////////////////////////////////////
-#undef assert
-#define assert(x) ((void)0)
 #ifndef _LOGIC_EXECUTOR_H_
 #define _LOGIC_EXECUTOR_H_
 
@@ -30,45 +28,44 @@ using namespace Constants;
 
 class Executor
 {
-	private:
-	Task *taskGlobal;
-	TaskList tasks;
+private:
 	string task;
+	Task *taskGlobal;
+	TaskList taskList;
 	Parser parser;
-	long long taskID;
 	Converter convert;
 	stack<Task> taskStack;
 	stack<Command> commandStack;
 	ListType listType;
-	
-	bool addToTaskList();
-	
+	long long taskID;
+
 	static const int CONSTANT_MULTIPLIER_YEAR;
 	static const int CONSTANT_MULTIPLIER_MONTH;
 	static const int CONSTANT_MULTIPLIER_DAY;
 	static const int CONSTANT_MONTH_ONE;
 
 public:
+	//constructor
 	Executor();
 
+	//UI call these functions
 	void stringCollector(string task);
 	bool receive(string command, vector<string> vectorOfInputs);
 	Command determineCommandType (string commandTypeString); 
-	void loadListOfTasks();
-	bool storeTask(Task taskTemp);
-	bool storeCommands(Command command);
-	bool setListType(ListType listType);
-	
-	bool determineTaskType();
+	list<Task> getUpdatedList(ListType listType);
+
+	//Functions to be executed
 	bool adderFunction(vector<string> vectorOfInputs);
 	bool modifyFunction(vector<string> vectorOfInputs);
 	bool deleteFunction(vector<string> vectorOfInputs);
 	bool markFunction(vector<string> vectorOfInputs);
 	bool undoFunction();
-	list<Task> getUpdatedList(ListType listType);
-
+	
 	//helper functions
 	bool isEqual(string str1, const string str2);
 	long long retrieveCurrentDate();
+	bool storeTask(Task taskTemp);
+	bool storeCommands(Command command);
+	bool setListType(ListType listType);
 };
 #endif
