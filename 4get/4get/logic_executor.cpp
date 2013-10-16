@@ -63,7 +63,7 @@ bool Executor::adderFunction(vector<string> vectorOfInputs){
 	description = vectorOfInputs[SLOT_DESCRIPTION];
 	location = vectorOfInputs[SLOT_LOCATION];
 	priority = convert.convertStringToPriority(vectorOfInputs[SLOT_PRIORITY]);
-	status = convert.convertStringToStatus(vectorOfInputs[SLOT_STATUS]);
+	/*status = convert.convertStringToStatus(vectorOfInputs[SLOT_STATUS]);*/
 	repeat = convert.convertStringToRepeatType(vectorOfInputs[SLOT_REPEAT]);
 	startTime = convert.convertStringToTm(vectorOfInputs[SLOT_START_TIME]);
 	endTime = convert.convertStringToTm(vectorOfInputs[SLOT_END_TIME]);
@@ -132,7 +132,8 @@ bool Executor::markFunction(vector<string> vectorOfInputs){
 }
 bool Executor::modifyFunction(vector<string> vectorOfInputs){
 	Task* taskTemp;
-	string description, location;
+	string description, 
+		location;
 	tm *reminderTime, 
 		*startTime, 
 		*endTime;
@@ -157,9 +158,20 @@ bool Executor::modifyFunction(vector<string> vectorOfInputs){
 	if(!vectorOfInputs[SLOT_START_TIME].empty()){
 		taskTemp->setTaskStart(startTime);
 	}
-	if(!vectorOfInputs[SLOT_END_TIME].empty()){
+	if(!vectorOfInputs[SLOT_END_TIME].empty()){    //unsure
 		taskTemp->setTaskEnd(endTime);
-		taskTemp->setTaskType(deadline);
+		int id = taskTemp->getTaskId();
+		Priority priority = taskTemp->getTaskPriority();
+		Status status = taskTemp->getTaskStatus();
+		RepeatType repeat = taskTemp->getTaskRepeat();
+		TaskDeadline taskTemp(id,
+			description, 
+			location, 
+			reminderTime, 
+			priority, 
+			status, 
+			repeat, 
+			endTime); 
 	} 
 	//if(!vectorOfInputs[SLOT_REMIND_TIME].empty())
 	//{
@@ -182,17 +194,17 @@ bool Executor::undoFunction(){
 	switch(commandType)
 	{
 	case commandAdd: 
-		taskList.deleteIDFromList(taskTemp.getTaskId());
+		taskList.deleteIDFromList(taskTemp.getTaskId(), listType);
 		break;
 	case commandDelete:
 		taskList.addToList(taskTemp, listType);
 		break;
 	case commandMark:
-		taskList.deleteIDFromList(taskTemp.getTaskId());
+		taskList.deleteIDFromList(taskTemp.getTaskId(), listCompleted);
 		taskList.addToList(taskTemp, listToDo);
 		break;
 	case commandModify:
-		taskList.deleteIDFromList(taskTemp.getTaskId());
+		taskList.deleteIDFromList(taskTemp.getTaskId(), listType);
 		taskList.addToList(taskTemp, listType);
 		break;
 	default:
