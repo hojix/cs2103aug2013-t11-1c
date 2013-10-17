@@ -29,6 +29,8 @@ bool Executor::receive(string usercommand, vector<string> vectorOfInputs){
 		return modifyFunction(vectorOfInputs);
 	case commandUndo:
 		return undoFunction();
+	case commandRedo:
+		return redoFunction();
 	default: return false;
 	}
 }
@@ -43,6 +45,8 @@ Enum::Command Executor::determineCommandType (string commandTypeString){
 		return Command::commandModify;
 	else if(isEqual(commandTypeString, COMMAND_UNDO))
 		return Command::commandUndo;
+	else if(isEqual(commandTypeString, COMMAND_REDO))
+		return Command::commandRedo;
 	else
 		return Command::commandInvalid;
 }
@@ -82,7 +86,7 @@ bool Executor::adderFunction(vector<string> vectorOfInputs){
 
 	taskID++;
 
-	if(vectorOfInputs[SLOT_END_TIME].empty()){
+	if(taskTypeToCreate == floating){
 		TaskFloating newTask(id,
 			description,
 			location,
@@ -94,7 +98,7 @@ bool Executor::adderFunction(vector<string> vectorOfInputs){
 		*taskGlobal = newTask;
 	}
 
-	else if(vectorOfInputs[SLOT_START_TIME].empty()){
+	else if(taskTypeToCreate == deadline){
 		TaskDeadline newTask(id,
 			description, 
 			location, 
@@ -108,7 +112,7 @@ bool Executor::adderFunction(vector<string> vectorOfInputs){
 		*taskGlobal = newTask;
 	}
 
-	else{
+	else if(taskTypeToCreate == timed){
 		TaskTimed newTask(id, 
 			description, 
 			location, 
@@ -121,6 +125,9 @@ bool Executor::adderFunction(vector<string> vectorOfInputs){
 
 		taskGlobal = new TaskTimed;
 		*taskGlobal = newTask;
+	}
+	else{
+		throw string(Message::MESSAGE_ERROR_COMMAND_ADD);
 	}
 
 	storeTask(*taskGlobal);
@@ -141,8 +148,12 @@ bool Executor::deleteFunction(vector<string> vectorOfInputs){
 bool Executor::markFunction(vector<string> vectorOfInputs){
 	int markNumber;
 	markNumber = convert.convertStringToInt(vectorOfInputs[SLOT_SLOT_NUMBER]);
-	storeTask(*taskList.obtainTask(markNumber));
-	taskList.markDone(markNumber);
+	try{
+		storeTask(*taskList.obtainTask(markNumber));
+		taskList.markDone(markNumber);
+	}catch (string errorStr){
+		throw;
+	}
 	return true;
 }
 bool Executor::modifyFunction(vector<string> vectorOfInputs){
@@ -251,25 +262,32 @@ bool Executor::redoFunction(){
 	commandType = redoCommandStack.top();
 	switch(commandType)
 	{
-	case commandAdd:
+	case commandAdd:{
 		taskTemp = redoTaskStack.top();
 		taskList.addToList(taskTemp, listType);
 		break;
-	case commandDelete:
+					}
+	case commandDelete:{
 		taskTemp = redoTaskStack.top();
 		taskList.deleteIDFromList(taskTemp.getTaskId(), listType);
 		break;
-	case commandMark:
+					   }
+	case commandMark:{
 		taskTemp = redoTaskStack.top();
-		taskList.markDone(taskTemp.getTaskId());
+		/*taskList.markDone(taskTemp.getTaskId());*/
+		taskList.addToList(taskTemp, listCompleted);
+		taskList.deleteIDFromList(taskTemp.getTaskId(), listToDo);
 		break;
-	case commandModify:
+					 }
+	case commandModify:{
 		taskTemp = redoModifiedTaskStack.top();
 		taskList.addToList(taskTemp, listType);
+		taskList.deleteIDFromList(taskTemp.getTaskId(), listType);
 		redoModifiedTaskStack.pop();
 		break;
+					   }
 	default:
-		return false;
+		throw string("error");
 	}
 	redoCommandStack.pop();
 	redoTaskStack.pop();
