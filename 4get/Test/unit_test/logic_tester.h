@@ -46,12 +46,12 @@ protected:
 	int id;
 	string description;
 	string location;
-	tm *reminderTime;
+	time_t reminderTime;
 	Priority priority;
 	Status status;
 	RepeatType repeat;
-	tm *startTime;
-	tm *endTime;
+	time_t startTime;
+	time_t endTime;
 
 	ParserTest() {
 		// You can do set-up work for each test here.
@@ -73,30 +73,24 @@ protected:
 		input4 = "modify 2 ,from 2000 to 1900 ,at com2 ,Repeat Weekly ,remind on Tuesday 2000 ,! incomplete";
 
 
-		time_t rawtime;
-		time ( &rawtime );
-		reminderTime = localtime ( &rawtime );
-		endTime = localtime( &rawtime);
-		startTime = localtime( &rawtime);
+		
+		
+		
+		
 		id = 1;
 		description = "HomeWork from EE2020";
 		location = "com1";
 
-		reminderTime->tm_hour = 20;
-		reminderTime->tm_min = 00;
-		reminderTime->tm_wday = 5;
-
-		mktime ( reminderTime );
+		
+		
 
 		priority = high;
 		status = incomplete;
 		repeat = repeatNone;
 
-		endTime->tm_hour = 23;
-		endTime->tm_min = 59;
-		endTime->tm_wday = 0;
+		
 
-		mktime ( endTime );
+		
 
 	}
 
