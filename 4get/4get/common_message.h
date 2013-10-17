@@ -45,6 +45,7 @@ namespace Message{
 
 	const string MESSAGE_ERROR_INVALID_ID = "Error: Task ID does not exist";
 	const string MESSAGE_ERROR_LIST_EMPTY = "Error: List is empty.";
+	const string MESSAGE_ERROR_INVALID_LIST = "Error: Invalid List.";
 };
 
 namespace Enum{

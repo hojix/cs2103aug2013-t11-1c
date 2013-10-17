@@ -19,7 +19,7 @@ bool UiConvert::stringSysToStdConversion(String^ source, string& result){
 }
 
 string UiConvert::enumPriorityToStdString(Priority taskPriority){
-	string result ="";
+	string result = "";
 	switch(taskPriority){
 	case high:
 		result = "high";

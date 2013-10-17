@@ -143,6 +143,7 @@ namespace UIDisplay {
 	private: void printCompletedList();
 	private: void printOverdueList();
 	private: void passUserInput();
+	private: void printError(string error);
 	public: System::Void textboxInput_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e);
 	private: System::Void textboxInput_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e);
 	private: System::Void textboxInput_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e);

@@ -342,6 +342,14 @@ void ui_display::loadList(){
 	this->printList();
 }
 
+void ui_display::printError(string error){
+	String ^ error_sys_string=gcnew String(error.c_str());
+	array<String ^> ^ emptyLines = {};
+	array<String ^> ^ errorLines = {error_sys_string};
+	this->messageBox->Lines = emptyLines;
+	this->messageBox->Lines = errorLines;
+}
+
 void ui_display::passUserInput(){
 	string stdCommand;
 	converter->stringSysToStdConversion(this->textboxInput->Text, stdCommand);
@@ -371,114 +379,133 @@ Void ui_display::textboxInput_KeyDown(System::Object^  sender, System::Windows::
 }
 
 void ui_display::printList(){
-	switch(activeListType){
-	case listCompleted:
-		printCompletedList();
-		break;
-	case listOverdue:
-		printOverdueList();
-		break;
-	default:
-		printToDoList();
-		break;
+	try{
+		switch(activeListType){
+		case listCompleted:
+			printCompletedList();
+			break;
+		case listOverdue:
+			printOverdueList();
+			break;
+		case listToDo:
+			printToDoList();
+			break;
+		default:
+			throw MESSAGE_ERROR_INVALID_LIST;
+		}
+	}
+	catch(string error){
+		this->printError(error);
 	}
 }
 void ui_display::printToDoList(){
-	int size = listOfTasks->size();
+	try{
+		int size = listOfTasks->size();
 
-	int j=0;
-	array<ListViewItem^>^ temp;
-	Array::Resize(temp, size);
-	if(loaded)
-	{
-		this->todoListView->Items->Clear();
-	}
-	if(size==0){
-		MessageBox::Show("List is empty");
-		return;
-	}
-	this->Cursor = Cursors::WaitCursor;
+		int j=0;
+		array<ListViewItem^>^ temp;
+		Array::Resize(temp, size);
+		if(loaded)
+		{
+			this->todoListView->Items->Clear();
+		}
+		if(size==0){
+			throw MESSAGE_ERROR_LIST_EMPTY;
+		}
+		this->Cursor = Cursors::WaitCursor;
 
-	this->todoListView->BeginUpdate();
+		this->todoListView->BeginUpdate();
 
-	for (int i=0; i<size; i++)
-	{
-		ListViewItem^ item = gcnew ListViewItem;
-		converter->printItem(item, listOfTasks, i+1);
-		temp[j] = item;
-		j++;
+		for (int i=0; i<size; i++)
+		{
+			ListViewItem^ item = gcnew ListViewItem;
+			converter->printItem(item, listOfTasks, i+1);
+			temp[j] = item;
+			j++;
+		}
+		this->todoListView->Items->AddRange(temp);
+		loaded = true;
+		this->Cursor = Cursors::Default;
+		this->todoListView->EndUpdate();
 	}
-	this->todoListView->Items->AddRange(temp);
-	loaded = true;
-	this->Cursor = Cursors::Default;
-	this->todoListView->EndUpdate();
+	catch(string error){
+		this->printError(error);
+	}
 
 }
 void ui_display::printCompletedList(){
-	int size = listOfTasks->size();
+	try{
+		int size = listOfTasks->size();
 
-	int j=0;
-	array<ListViewItem^>^ temp;
-	Array::Resize(temp, size);
+		int j=0;
+		array<ListViewItem^>^ temp;
+		Array::Resize(temp, size);
 
-	if(loaded)
-	{
-		this->completedListView->Items->Clear();
+		if(loaded)
+		{
+			this->completedListView->Items->Clear();
+		}
+		if(size==0){
+			throw MESSAGE_ERROR_LIST_EMPTY;
+		}
+		this->Cursor = Cursors::WaitCursor;
+
+		this->completedListView->BeginUpdate();
+
+
+		for (int i=0; i<size; i++)
+		{
+			MessageBox::Show("In print loop");
+			ListViewItem^ item = gcnew ListViewItem;
+			converter->printItem(item, listOfTasks, i+1);
+			temp[j] = item;
+			j++;
+		}
+		this->completedListView->Items->AddRange(temp);
+		loaded = true;
+		this->Cursor = Cursors::Default;
+		this->completedListView->EndUpdate();
 	}
-	if(size==0){
-		MessageBox::Show("List is empty");
-		return;
+	catch(string error){
+		this->printError(error);
 	}
-	this->Cursor = Cursors::WaitCursor;
-
-	this->completedListView->BeginUpdate();
-
-
-	for (int i=0; i<size; i++)
-	{
-		MessageBox::Show("In print loop");
-		ListViewItem^ item = gcnew ListViewItem;
-		converter->printItem(item, listOfTasks, i+1);
-		temp[j] = item;
-		j++;
-	}
-	this->completedListView->Items->AddRange(temp);
-	loaded = true;
-	this->Cursor = Cursors::Default;
-	this->completedListView->EndUpdate();
 
 }
 void ui_display::printOverdueList(){
-	int size = listOfTasks->size();
+	try{
+		int size = listOfTasks->size();
 
-	int j=0;
-	array<ListViewItem^>^ temp;
-	Array::Resize(temp, size);
+		int j=0;
+		array<ListViewItem^>^ temp;
+		Array::Resize(temp, size);
 
-	if(loaded)
-	{
-		this->overdueListView->Items->Clear();
+		if(loaded)
+		{
+			this->overdueListView->Items->Clear();
+		}
+		if(size==0){
+			throw MESSAGE_ERROR_LIST_EMPTY;
+		}
+		this->Cursor = Cursors::WaitCursor;
+
+		this->overdueListView->BeginUpdate();
+
+
+		for (int i=0; i<size; i++)
+		{
+			ListViewItem^ item = gcnew ListViewItem;
+			converter->printItem(item, listOfTasks, i+1);
+			temp[j] = item;
+			j++;
+		}
+		this->overdueListView->Items->AddRange(temp);
+		loaded = true;
+		this->Cursor = Cursors::Default;
+		this->overdueListView->EndUpdate();
 	}
-	if(size==0){
-		MessageBox::Show("List is empty");
-		return;
+	catch(string error){
+		this->printError(error);
 	}
-	this->Cursor = Cursors::WaitCursor;
-
-	this->overdueListView->BeginUpdate();
-
-
-	for (int i=0; i<size; i++)
-	{
-		ListViewItem^ item = gcnew ListViewItem;
-		converter->printItem(item, listOfTasks, i+1);
-		temp[j] = item;
-		j++;
-	}
-	this->overdueListView->Items->AddRange(temp);
-	loaded = true;
-	this->Cursor = Cursors::Default;
-	this->overdueListView->EndUpdate();
 
 }
 
@@ -486,15 +513,22 @@ Void ui_display::textboxInput_MouseClick(System::Object^  sender, System::Window
 	this->textboxInput->Clear();
 }
 Void ui_display::tabContainer_Selected(System::Object^  sender, System::Windows::Forms::TabControlEventArgs^  e){
-	if(this->tabContainer->SelectedIndex==1)
-		activeListType=listCompleted;
-	else if(this->tabContainer->SelectedIndex==2)
-		activeListType=listOverdue;
-	else
-		activeListType=listToDo;
-	execute->setListType(activeListType);
-	*listOfTasks = execute->getUpdatedList(activeListType);
-	this->printList();
+	try{
+		if(this->tabContainer->SelectedIndex==1)
+			activeListType=listCompleted;
+		else if(this->tabContainer->SelectedIndex==2)
+			activeListType=listOverdue;
+		else if(this->tabContainer->SelectedIndex==0)
+			activeListType=listToDo;
+		else
+			throw MESSAGE_ERROR_INVALID_LIST;
+		execute->setListType(activeListType);
+		*listOfTasks = execute->getUpdatedList(activeListType);
+		this->printList();
+	}
+	catch(string error){
+		this->printError(error);
+	}
 }
 Void ui_display::textboxInput_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e){
 
