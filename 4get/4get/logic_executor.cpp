@@ -60,26 +60,17 @@ bool Executor::adderFunction(vector<string> vectorOfInputs){
 	Priority priority;
 	Status status = statusNone;
 	TaskType taskTypeToCreate;
-	string startDatet, startTimet, endDatet, endTimet; 
-
-	startDatet = vectorOfInputs[SLOT_START_DATE];
-	startTimet = vectorOfInputs[SLOT_START_TIME];
-	endDatet = vectorOfInputs[SLOT_END_DATE];
-	endTimet = vectorOfInputs[SLOT_END_TIME];
 
 	id = taskID;
-	description = vectorOfInputs[SLOT_DESCRIPTION];
-	location = vectorOfInputs[SLOT_LOCATION];
-	priority = convert.convertStringToPriority(vectorOfInputs[SLOT_PRIORITY]);
-	repeat = convert.convertStringToRepeatType(vectorOfInputs[SLOT_REPEAT]);
-	reminderTime = convert.convertStringToTime(vectorOfInputs[SLOT_REMIND_DATE], vectorOfInputs[SLOT_REMIND_TIME]);
-	taskTypeToCreate = convert.convertStringToTime(startDatet, 
-		startTimet, 
-		endDatet, 
-		endTimet, 
-		startTime, 
-		endTime);
-
+	setParameters(description,
+				  location,
+				  priority,
+				  repeat,
+				  startTime,
+				  endTime,
+				  reminderTime,
+				  taskTypeToCreate,
+				  vectorOfInputs);
 	taskID++;
 
 	if(taskTypeToCreate == floating){
@@ -155,27 +146,30 @@ bool Executor::markFunction(vector<string> vectorOfInputs){
 bool Executor::modifyFunction(vector<string> vectorOfInputs){
 	Task* taskTemp;
 	Task taskModified;
+	int modifyNumber;
 	string description, 
 		location;
 	time_t reminderTime, 
 		startTime, 
 		endTime;
-	int modifyNumber;
 	Priority priority;
+	RepeatType repeat;
 	TaskType typeOfTask, typeOfOldTask;
 
 	modifyNumber = convert.convertStringToInt(vectorOfInputs[SLOT_SLOT_NUMBER]);
 	taskTemp = taskList.obtainTask(modifyNumber);
 	typeOfOldTask = taskTemp->getTaskType();
-
 	storeTask(*taskTemp);
+	setParameters(description,
+				  location,
+				  priority,
+				  repeat,
+				  startTime,
+				  endTime,
+				  reminderTime,
+				  typeOfTask,
+				  vectorOfInputs);
 
-	description = vectorOfInputs[SLOT_DESCRIPTION];
-	location = vectorOfInputs[SLOT_LOCATION];
-	startTime = convert.convertStringToTime(vectorOfInputs[SLOT_START_DATE], vectorOfInputs[SLOT_START_TIME]);
-	endTime = convert.convertStringToTime(vectorOfInputs[SLOT_END_DATE], vectorOfInputs[SLOT_END_TIME]);
-	reminderTime = convert.convertStringToTime(vectorOfInputs[SLOT_REMIND_DATE], vectorOfInputs[SLOT_REMIND_TIME]);
-	typeOfTask = convert.convertStringToTime(vectorOfInputs[SLOT_START_DATE], vectorOfInputs[SLOT_START_TIME], vectorOfInputs[SLOT_END_DATE], vectorOfInputs[SLOT_END_TIME], startTime, endTime);
 	bool isNoEndTime = (endTime == 0);
 	bool isNoStartTime = (startTime == 0);
 	if(!description.empty()){
@@ -288,7 +282,6 @@ bool Executor::redoFunction(){
 					   }
 	case commandMark:{
 		taskTemp = redoTaskStack.top();
-		/*taskList.markDone(taskTemp.getTaskId());*/
 		taskList.addToList(taskTemp, listCompleted);
 		taskList.deleteIDFromList(taskTemp.getTaskId(), listToDo);
 		break;
@@ -343,6 +336,49 @@ bool Executor::storeCommands(Command command){
 bool Executor::setListType(ListType uiListType)
 {
 	listType = uiListType;
+	return true;
+}
+bool Executor::setParameters(string &description,
+							 string &location,
+							 Priority &priority,
+							 RepeatType &repeat,
+							 time_t &startTime,
+							 time_t &endTime,
+							 time_t &reminderTime,
+							 TaskType &typeOfTask,
+							 vector<string> &vectorOfInputs){
+	string descriptionSlot,
+		   locationSlot,
+		   prioritySlot,
+		   repeatSlot,
+		   startDateSlot,
+		   startTimeSlot, 
+		   endDateSlot, 
+		   endTimeSlot, 
+		   reminderDateSlot, 
+		   reminderTimeSlot;
+
+	descriptionSlot = vectorOfInputs[SLOT_DESCRIPTION];
+	locationSlot = vectorOfInputs[SLOT_LOCATION];
+	prioritySlot = vectorOfInputs[SLOT_PRIORITY];
+	repeatSlot = vectorOfInputs[SLOT_REPEAT];
+	startDateSlot = vectorOfInputs[SLOT_START_DATE];
+	startTimeSlot = vectorOfInputs[SLOT_START_TIME];
+	endDateSlot = vectorOfInputs[SLOT_END_DATE];
+	endTimeSlot = vectorOfInputs[SLOT_END_TIME];
+	reminderDateSlot = vectorOfInputs[SLOT_REMIND_DATE];
+	reminderTimeSlot = vectorOfInputs[SLOT_REMIND_TIME];
+	description = descriptionSlot;
+	location = locationSlot;
+	priority = convert.convertStringToPriority(prioritySlot);
+	repeat = convert.convertStringToRepeatType(repeatSlot);
+	reminderTime = convert.convertStringToTime(reminderDateSlot, reminderTimeSlot);
+	typeOfTask = convert.convertStringToTime(startDateSlot, 
+											startTimeSlot, 
+											endDateSlot, 
+											endTimeSlot, 
+											startTime, 
+											endTime);
 	return true;
 }
 void Executor::empty_task(){

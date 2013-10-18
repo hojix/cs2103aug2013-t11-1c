@@ -71,6 +71,15 @@ public:
 	bool storeTask(Task taskTemp);
 	bool storeCommands(Command command);
 	bool setListType(ListType listType);
+	bool setParameters(string &description, 
+						string &location, 
+						Priority &priority,
+						RepeatType &repeat,
+						time_t &startTime, 
+						time_t &endTime, 
+						time_t &reminderTime, 
+						TaskType &typeOfTask,
+						vector<string> &vectorOfInputs);
 
 	//assertions
 	void empty_task();
