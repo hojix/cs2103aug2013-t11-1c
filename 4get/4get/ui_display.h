@@ -32,7 +32,7 @@ namespace UIDisplay {
 #pragma region initialise
 	private: UiConvert* converter;
 	private: Executor* execute;
-	private: list<Task>* listOfTasks;
+	private: list<Task*>* listOfTasks;
 
 	private: bool loaded;
 	private: string *commandKeyword;

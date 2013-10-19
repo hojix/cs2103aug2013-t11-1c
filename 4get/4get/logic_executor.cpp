@@ -49,7 +49,7 @@ Enum::Command Executor::determineCommandType (string commandTypeString){
 	else
 		return Command::commandInvalid;
 }
-list<Task> Executor::getUpdatedList(ListType listType){
+list<Task*> Executor::getUpdatedList(ListType listType){
 	return taskList.obtainList(listType);
 }
 bool Executor::adderFunction(vector<string> vectorOfInputs){
@@ -94,7 +94,7 @@ bool Executor::adderFunction(vector<string> vectorOfInputs){
 			status, 
 			repeat, 
 			endTime); 
-
+		cout << "deadline task" <<endl;
 		taskGlobal = new TaskDeadline;
 		*taskGlobal = newTask;
 	}
@@ -118,7 +118,7 @@ bool Executor::adderFunction(vector<string> vectorOfInputs){
 	}
 
 	storeTask(*taskGlobal);
-	taskList.addToList(*taskGlobal, listType);
+	taskList.addToList(taskGlobal, listType);
 	return true;
 }
 bool Executor::deleteFunction(vector<string> vectorOfInputs){
@@ -209,7 +209,7 @@ bool Executor::modifyFunction(vector<string> vectorOfInputs){
 			endTime);
 		try{
 			taskList.deleteIDFromList(id, listToDo);
-			taskList.addToList(taskTemp, listToDo);
+			taskList.addToList(&taskTemp, listToDo);
 		} catch(string error){
 			throw;
 		}
@@ -241,15 +241,15 @@ bool Executor::undoFunction(){
 		taskList.deleteIDFromList(taskTemp.getTaskId(), listType);
 		break;
 	case commandDelete:
-		taskList.addToList(taskTemp, listType);
+		taskList.addToList(&taskTemp, listType);
 		break;
 	case commandMark:
 		taskList.deleteIDFromList(taskTemp.getTaskId(), listCompleted);
-		taskList.addToList(taskTemp, listToDo);
+		taskList.addToList(&taskTemp, listToDo);
 		break;
 	case commandModify:
 		taskList.deleteIDFromList(taskTemp.getTaskId(), listType);
-		taskList.addToList(taskTemp, listType);
+		taskList.addToList(&taskTemp, listType);
 		break;
 	default:
 		return false;
@@ -272,7 +272,7 @@ bool Executor::redoFunction(){
 	{
 	case commandAdd:{
 		taskTemp = redoTaskStack.top();
-		taskList.addToList(taskTemp, listType);
+		taskList.addToList(&taskTemp, listType);
 		break;
 					}
 	case commandDelete:{
@@ -282,13 +282,13 @@ bool Executor::redoFunction(){
 					   }
 	case commandMark:{
 		taskTemp = redoTaskStack.top();
-		taskList.addToList(taskTemp, listCompleted);
+		taskList.addToList(&taskTemp, listCompleted);
 		taskList.deleteIDFromList(taskTemp.getTaskId(), listToDo);
 		break;
 					 }
 	case commandModify:{
 		taskTemp = redoModifiedTaskStack.top();
-		taskList.addToList(taskTemp, listType);
+		taskList.addToList(&taskTemp, listType);
 		taskList.deleteIDFromList(taskTemp.getTaskId(), listType);
 		redoModifiedTaskStack.pop();
 		break;

@@ -55,7 +55,7 @@ public:
 	void stringCollector(string task);
 	bool receive(string command, vector<string> vectorOfInputs);
 	Command determineCommandType (string commandTypeString); 
-	list<Task> getUpdatedList(ListType listType);
+	list<Task*> getUpdatedList(ListType listType);
 
 	//Functions to be executed
 	bool adderFunction(vector<string> vectorOfInputs);

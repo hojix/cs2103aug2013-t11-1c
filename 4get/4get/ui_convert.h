@@ -28,6 +28,6 @@ public:
 	string timetToStdString(time_t time);
 	bool stringSysToStdConversion(System::String^ source, string& result);
 	string enumPriorityToStdString(Priority priority);
-	void printItem(System::Windows::Forms::ListViewItem^ item, std::list<Task> *list, int taskIndex);
+	void printItem(System::Windows::Forms::ListViewItem^ item, std::list<Task*> *list, int taskIndex);
 };
 #endif

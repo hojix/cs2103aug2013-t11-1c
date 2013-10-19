@@ -17,10 +17,10 @@ class Task
 protected:
 
 	//multipliers for time conversion in Task
-	static const int CONVERT_MULTIPLIER_YEAR;
-	static const int CONVERT_MULTIPLIER_MONTH;
-	static const int CONVERT_MULTIPLIER_DAY;
-	static const int CONVERT_MULTIPLIER_HOUR;
+	static const long long CONVERT_MULTIPLIER_YEAR;
+	static const long long CONVERT_MULTIPLIER_MONTH;
+	static const long long CONVERT_MULTIPLIER_DAY;
+	static const long long CONVERT_MULTIPLIER_HOUR;
 
 	//attributes
 	long long taskId;

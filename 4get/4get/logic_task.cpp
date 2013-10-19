@@ -1,9 +1,9 @@
 #include "logic_task.h"
 
-const int Task::CONVERT_MULTIPLIER_YEAR = 100000000;
-const int Task::CONVERT_MULTIPLIER_MONTH = 1000000;
-const int Task::CONVERT_MULTIPLIER_DAY = 10000;
-const int Task::CONVERT_MULTIPLIER_HOUR = 100;
+const long long Task::CONVERT_MULTIPLIER_YEAR = 100000000;
+const long long Task::CONVERT_MULTIPLIER_MONTH = 1000000;
+const long long Task::CONVERT_MULTIPLIER_DAY = 10000;
+const long long Task::CONVERT_MULTIPLIER_HOUR = 100;
 
 Task::Task(){
 	clearAllAttr();
@@ -142,5 +142,6 @@ void Task::clearAllAttr()
 }
 long long Task::getTimeLong(TimeType type)
 {
+	cout << "in parent class long long" <<endl;
 	return 0;
 }

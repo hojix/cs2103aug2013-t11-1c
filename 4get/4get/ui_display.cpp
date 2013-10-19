@@ -5,7 +5,7 @@ using namespace UIDisplay;
 ui_display::ui_display(){
 	execute = new Executor;
 	converter = new UiConvert;
-	listOfTasks = new std::list<Task>;
+	listOfTasks = new std::list<Task*>;
 	commandKeyword = new string;
 	loaded = false;
 	activeListType = listToDo;
@@ -383,7 +383,7 @@ Void ui_display::textboxInput_KeyDown(System::Object^  sender, System::Windows::
 		this->messageBox->Lines = helpLines;
 		this->passUserInput();
 		this->textboxInput->Clear();
-		list<Task> taskList;
+		list<Task*> taskList;
 		taskList = execute->getUpdatedList(activeListType);
 		*listOfTasks = taskList;
 		printList();

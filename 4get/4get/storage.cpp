@@ -35,7 +35,7 @@ const string Storage::PRIORITY_NORMAL = "normal";
 
 Storage::Storage(){}
 
-bool Storage::save(const list<Task>& list, ListType listType, int listSize){
+bool Storage::save(const list<Task*>& list, ListType listType, int listSize){
 	string fileName;
 	fileName = determineFile(listType);
 	writeFileSetup(fileName, ios_base::trunc);
@@ -49,13 +49,13 @@ void Storage::closeFileWrite(){
 	_fileWrite.close();
 }
 
-bool Storage::saveList(const list<Task>& listToSave){
-	list<Task>::const_iterator iterator;
-	list<Task>::const_iterator endOfList;
+bool Storage::saveList(const list<Task*>& listToSave){
+	list<Task*>::const_iterator iterator;
+	list<Task*>::const_iterator endOfList;
 	iterator = listToSave.begin();
 	endOfList = listToSave.end();
 	while(iterator != endOfList){
-		saveTaskToFile(*iterator);	
+		saveTaskToFile(**iterator);	
 		++iterator;
 	}
 	return true;
@@ -212,7 +212,7 @@ string Storage::convertToStr(tm* time){
 }
 
 
-bool Storage::load(list<Task>& list,ListType listType ){
+bool Storage::load(list<Task*>& list,ListType listType ){
 	string fileName = determineFile(listType);
 	readFileSetup(fileName);
 	loadIntoList(list);
@@ -228,10 +228,11 @@ void Storage::closeFileRead(){
 	_fileRead.close();
 }
 
-void Storage::loadIntoList(list<Task>& listToLoad){
+void Storage::loadIntoList(list<Task*>& listToLoad){
 	while(isLoadIncomplete()){
-		Task newTask = getNewTask();
-		insertTaskIntoList(listToLoad, newTask);
+		Task* newTask = getNewTask();
+		listToLoad.push_back(newTask);
+		//insertTaskIntoList(listToLoad, newTask);
 	}
 }
 
@@ -259,10 +260,10 @@ string Storage::getNextLine(){
 	return nextLine;
 }
 
-Task Storage::getNewTask(){
+Task* Storage::getNewTask(){
 	string marker;
 	string newAttribute;
-	Task newTask;
+	Task* newTask;
 	TaskType newTaskType = taskInvalid;
 	while(_fileRead.good()){
 		marker = getNextLine();
@@ -274,76 +275,56 @@ Task Storage::getNewTask(){
 		else if(marker == MARKER_ID)
 			newTask = constructTask(newTaskType, newAttribute);
 		else if(marker == MARKER_DESCRIPTION)
-			newTask.setTaskDescription(newAttribute);
+			newTask->setTaskDescription(newAttribute);
 		else if(marker == MARKER_LOCATION)
-			newTask.setTaskLocation(newAttribute);
+			newTask->setTaskLocation(newAttribute);
 		else if(marker == MARKER_START_TIME){
 			time_t startTime = convertToTime(newAttribute);
-			newTask.setTaskStart(startTime);
+			newTask->setTaskStart(startTime);
 		}
 		else if(marker == MARKER_END_TIME){
 			time_t endTime = convertToTime(newAttribute);
-			newTask.setTaskStart(endTime);
+			newTask->setTaskStart(endTime);
 		}
 		else if(marker == MARKER_REPEAT){
 			RepeatType repeatType = convertToRepeatType(newAttribute);
-			newTask.setTaskRepeat(repeatType);
+			newTask->setTaskRepeat(repeatType);
 		}
 		else if(marker == MARKER_NEXT_OCCURANCE){
 			time_t nextOccurance = convertToTime(newAttribute);
-			newTask.setTaskNextOccurance(nextOccurance);
+			newTask->setTaskNextOccurance(nextOccurance);
 		}
 		else if(marker == MARKER_PRIORITY){
 			Priority priority = convertToPriority(newAttribute);
-			newTask.setTaskPriority(priority);
+			newTask->setTaskPriority(priority);
 		}
 		else if(marker == MARKER_REMINDER_TIME){
 			time_t remindTime = convertToTime(newAttribute);
-			newTask.setTaskReminder(remindTime);
+			newTask->setTaskReminder(remindTime);
 		}
 	}
 	return newTask;
 }
 
-Task Storage::constructTask(TaskType taskType, string IDString){
+Task* Storage::constructTask(TaskType taskType, string IDString){
 	int IDNumber = convertToInt(IDString);
+	Task* newTask;
 	if(taskType == floating){
-		TaskFloating newTask(IDNumber);
+		newTask = new TaskFloating(IDNumber);
 		return newTask;
 	}
 	else if(taskType == deadline){
-		TaskDeadline newTask(IDNumber);
+		newTask = new TaskDeadline(IDNumber);
 		return newTask;
 	}
 	else if(taskType == timed){
-		TaskTimed newTask(IDNumber);
+		newTask = new TaskTimed(IDNumber);
 		return newTask;
 	}
 }
 
-void Storage::insertTaskIntoList(list<Task>& listToInsert, Task task){
-	list<Task>::iterator iterator;
-	iterator = getIterator(listToInsert, task);
-	listToInsert.insert(iterator,task);
-
-}
-
-list<Task>::iterator Storage::getIterator(list<Task>& insertionList, Task taskToAdd){
-	long long tempTime;
-	bool isEmpty = insertionList.empty();
-	long long taskEndTime = taskToAdd.getTimeLong(timeEnd);
-	list<Task>::iterator iterator = insertionList.begin();
-	if(isEmpty){
-		return iterator;
-	}
-	int listSize = insertionList.size();
-	for(int i=0; i<listSize; i++){
-		tempTime = iterator->getTimeLong(timeEnd);
-		if(tempTime > taskEndTime)
-			return iterator;
-		++iterator;
-	}
-	return iterator;
+void Storage::insertTaskIntoList(list<Task*>& listToInsert, Task* task){
+	listToInsert.push_back(task);
 }
 
 TaskType Storage::convertToTaskType(string str){

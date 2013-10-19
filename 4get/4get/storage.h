@@ -56,7 +56,7 @@ private:
 	void writeFileSetup(string fileName, ios_base::openmode mode);
 	string determineFile(ListType listType);
 
-	bool saveList(const list<Task>& listToSave);
+	bool saveList(const list<Task*>& listToSave);
 	void saveTaskToFile(const Task& taskToSave);
 	void closeFileWrite();
 	void writeTaskAttributes(const Task& task);
@@ -86,14 +86,14 @@ private:
 	//load functions
 	void readFileSetup(string fileName);
 	void closeFileRead();
-	void loadIntoList(list<Task>& listToLoad);
+	void loadIntoList(list<Task*>& listToLoad);
 	bool isLoadIncomplete();
 	bool foundNextTask();
 	string getNextLine();
-	Task getNewTask();
-	Task constructTask(TaskType taskType, string IDString);
-	void insertTaskIntoList (list<Task>& listToInsert, Task task);
-	list<Task>::iterator getIterator(list<Task>& insertionList, Task task);
+	Task* getNewTask();
+	Task* constructTask(TaskType taskType, string IDString);
+	void insertTaskIntoList (list<Task*>& listToInsert, Task* task);
+	list<Task*>::iterator getIterator(list<Task*>& insertionList, Task* task);
 
 	TaskType convertToTaskType(string str);
 	int convertToInt(string str);
@@ -105,7 +105,7 @@ public:
 	//constructor
 	Storage();
 
-	bool save(const list<Task>& list,ListType listType, int listSize);
-	bool load(list<Task>& listToLoadTo, ListType listType);
+	bool save(const list<Task*>& list,ListType listType, int listSize);
+	bool load(list<Task*>& listToLoadTo, ListType listType);
 };
 #endif
