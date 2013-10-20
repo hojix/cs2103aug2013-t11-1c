@@ -8,6 +8,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "4get_as_lib", "source\4get_as_lib\4get_as_lib.vcxproj", "{A9BF7F4F-98B0-4B9D-A8D2-E83F0ED830D4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "unit_test", "Test\unit_test\unit_test.vcxproj", "{BEB41DA1-82B8-416C-800A-38800719C395}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A40EB63-891F-469A-BDD8-1F3C0DA3803D} = {0A40EB63-891F-469A-BDD8-1F3C0DA3803D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

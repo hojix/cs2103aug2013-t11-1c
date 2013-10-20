@@ -194,9 +194,12 @@ namespace Constants{
 
 	//parser timer constants
 	const string TIMER_SLASH = "/";
+	const string TIMER_SPACE = " ";
 	const string TIMER_DASH = "-";
 	const string TIMER_COLON = ":";
 	const string TIMER_DOT = ".";
+	const string TIMER_SQUARE_BRACKETS_OPEN = " [";
+	const string TIMER_SQUARE_BRACKETS_CLOSE = "] ";
 	const string TIMER_AM = "am";
 	const string TIMER_PM = "pm";
 	const string TIMER_TOMORROW = "tommorrow";
@@ -221,8 +224,7 @@ namespace Constants{
 	const std::size_t TIMER_TIME_LOWER_LENGTH = 2;
 	const std::size_t TIMER_TIME_UPPER_LENGTH = 8;
 	const std::size_t TIMER_TIME_EXCLUDED_LENGTH = 5;
-
-
+	
 	//tasklist constants
 	const string LIST_COMPLETED = " listcompleted";
 	const std::size_t LIST_COMPLETED_LENGTH = 14;

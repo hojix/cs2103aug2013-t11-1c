@@ -80,6 +80,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\4get\4get.vcxproj">
+      <Project>{0a40eb63-891f-469a-bdd8-1f3c0da3803d}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\source\4get_as_lib\4get_as_lib.vcxproj">
       <Project>{a9bf7f4f-98b0-4b9d-a8d2-e83f0ed830d4}</Project>
     </ProjectReference>
