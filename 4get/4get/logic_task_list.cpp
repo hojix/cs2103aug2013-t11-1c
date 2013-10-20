@@ -58,6 +58,7 @@ void TaskList::deleteFromList(int taskToDelete, bool isDelete){
 		if(isDelete)
 			delete *iterator;
 		listToDeleteFrom->erase(iterator);
+		_storage.save(*listToDeleteFrom, _currentDisplayed);
 	} catch(string e){
 		cout << e << endl;
 		throw;
@@ -72,6 +73,7 @@ void TaskList::deleteIDFromList(long long IDNumber, ListType listToDelete, bool 
 		if(isDelete)
 			delete *iterator;
 		listPtr->erase(iterator);
+		_storage.save(*listPtr, listToDelete);
 	} catch(string e){
 		cout << e << endl;
 		throw;
