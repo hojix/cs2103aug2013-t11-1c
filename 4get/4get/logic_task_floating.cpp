@@ -10,8 +10,8 @@ TaskFloating::TaskFloating(long long id): Task()
 	taskId = id;
 	taskType = floating;
 }
-TaskFloating::TaskFloating(long long id, string description, string location, time_t reminderTime, Priority priority, Status status) : Task()
+TaskFloating::TaskFloating(long long id, string description, string location, time_t reminderTime, Priority priority) : Task()
 {
 	TaskType type = floating;
-	setupTask(id, type, description, location, reminderTime, priority, status);
+	setupTask(id, type, description, location, reminderTime, priority);
 }
