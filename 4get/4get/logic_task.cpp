@@ -8,7 +8,7 @@ const long long Task::CONVERT_MULTIPLIER_HOUR = 100;
 Task::Task(){
 	clearAllAttr();
 }
-void Task::setupTask(long long id, TaskType type, string description, string location, time_t reminder, Priority priority, Status status)
+void Task::setupTask(long long id, TaskType type, string description, string location, time_t reminder, Priority priority)
 {
 	taskId = id;
 	taskType = type;
@@ -49,10 +49,12 @@ string Task::getTaskLocation() const
 {
 	return taskLocation;
 }
+/*
 Status Task::getTaskStatus() const
 {
 	return taskStatus;
 }
+*/
 time_t Task::getTaskReminder() const
 {
 	return taskReminder;
@@ -94,10 +96,11 @@ void Task::setTaskLocation(string location)
 {
 	taskLocation = location;
 }
+/*
 void Task::setTaskStatus(Status status)
 {
 	taskStatus = status;
-}
+}*/
 void Task::setTaskReminder(time_t reminder)
 {
 	taskReminder = reminder;
@@ -137,7 +140,7 @@ void Task::clearAllAttr()
 	taskDescription = INITIALIZE_STRING_BLANK;
 	taskPriority = normal;
 	taskLocation = INITIALIZE_STRING_BLANK;
-	taskStatus = statusNone;
+	//taskStatus = statusNone;
 	clearTimeAttr();
 }
 long long Task::getTimeLong(TimeType type)
