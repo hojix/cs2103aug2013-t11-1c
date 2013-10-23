@@ -80,17 +80,17 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="4getUIMap.Designer.vb">
-      <DependentUpon>4getUIMap.uitest</DependentUpon>
-    </Compile>
-    <Compile Include="4getUIMap.vb">
-      <DependentUpon>4getUIMap.uitest</DependentUpon>
-    </Compile>
+    <Compile Include="CodedUITest1.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
-    <Compile Include="UnitTest1.vb" />
+    <Compile Include="UIMap.Designer.vb">
+      <DependentUpon>UIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="UIMap.vb">
+      <DependentUpon>UIMap.uitest</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="4getUIMap.uitest" />
+    <None Include="UIMap.uitest" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
