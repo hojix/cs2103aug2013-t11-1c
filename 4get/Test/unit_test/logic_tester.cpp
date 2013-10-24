@@ -87,22 +87,22 @@ TEST_F(TaskListTest, TestListDelete){
 	EXPECT_EQ(listSize, 0);
 }
 
-//TEST_F(TaskListTest, TestMarkDone){
-//	list<Task*> tempToDoList;
-//	list<Task*> tempCompletedList;
-//	int toDoSize, completedSize;
-//	TaskListTester.setCurrentDisplayed(listToDo);
-//	tempToDoList = TaskListTester.obtainList(listToDo);
-//	tempCompletedList = TaskListTester.obtainList(listCompleted);
-//	toDoSize = tempToDoList.size();
-//	completedSize = tempCompletedList.size();
-//	EXPECT_EQ(toDoSize, 3);
-//	EXPECT_EQ(completedSize, 0);
-//	TaskListTester.markDone(1);
-//	tempToDoList = TaskListTester.obtainList(listToDo);
-//	tempCompletedList = TaskListTester.obtainList(listCompleted);
-//	toDoSize = tempToDoList.size();
-//	completedSize = tempCompletedList.size();
-//	EXPECT_EQ(toDoSize, 2);
-//	EXPECT_EQ(completedSize, 1);
-//}
+TEST_F(TaskListTest, TestMarkDone){
+	list<Task*> tempToDoList;
+	list<Task*> tempCompletedList;
+	int toDoSize, completedSize;
+	TaskListTester.setCurrentDisplayed(listToDo);
+	tempToDoList = TaskListTester.obtainList(listToDo);
+	tempCompletedList = TaskListTester.obtainList(listCompleted);
+	toDoSize = tempToDoList.size();
+	completedSize = tempCompletedList.size();
+	EXPECT_EQ(toDoSize, 3);
+	EXPECT_EQ(completedSize, 0);
+	TaskListTester.markDone(1);
+	tempToDoList = TaskListTester.obtainList(listToDo);
+	tempCompletedList = TaskListTester.obtainList(listCompleted);
+	toDoSize = tempToDoList.size();
+	completedSize = tempCompletedList.size();
+	EXPECT_EQ(toDoSize, 2);
+	EXPECT_EQ(completedSize, 1);
+}

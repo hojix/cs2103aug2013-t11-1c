@@ -97,14 +97,14 @@ void TaskList::deleteIDFromList(long long IDNumber, ListType listToDelete, bool 
 
 bool TaskList::markDone(int indexUI){
 	assert(indexUI > 0); 
-	Task* temp;
+	Task* taskPtr;
 	list<Task*>* listToMark;
 	list<Task*>::iterator iterator;
 	listToMark = determineList(_currentDisplayed);
 	iterator = iterateToTask(*listToMark, indexUI);
-	temp = (*iterator);
+	taskPtr = (*iterator);
 	deleteFromList(indexUI, false);
-	addToList(temp, listCompleted);
+	addToList(taskPtr, listCompleted);
 	logging(LOG_TASK_MARKED, Info, Pass);
 	return true;
 }
@@ -142,6 +142,7 @@ list<Task*>::iterator TaskList::getIterator(list<Task*>& insertionList, Task* ta
 }
 
 list<Task*>::iterator TaskList::iterateToTask(list<Task*>& listToEdit, int indexUI){
+	assert(!listToEdit.empty());
 	list<Task*>::iterator iterator;
 	int indexList = indexUI + INDEX_CORRECTION;
 	iterator = listToEdit.begin();

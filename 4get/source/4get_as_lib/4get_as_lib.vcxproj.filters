@@ -51,9 +51,6 @@
     <ClInclude Include="..\..\4get\logic_executor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\4get\logic_task_repeat.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\4get\logic_parser.cpp">
@@ -84,9 +81,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\4get\logic_executor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\4get\logic_task_repeat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

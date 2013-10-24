@@ -92,14 +92,6 @@ namespace Enum{
 		normal,
 		high, 
 	};
-	/*
-	enum Status{
-		statusNone,
-		completed, 
-		incomplete, 
-		overdued
-	};
-	*/
 
 	enum TaskType{
 		floating, 

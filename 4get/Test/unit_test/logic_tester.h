@@ -179,7 +179,7 @@ protected:
 		   taskModify,
 		   taskUndo,
 		   taskRedo;
-
+	Storage storage;
 
 
 	ExecutorTest() {
@@ -208,6 +208,9 @@ protected:
 	virtual void TearDown() {
 		// Code here will be called immediately after each test (right
 		// before the destructor).
+		storage.clearFile(listToDo);
+		storage.clearFile(listCompleted);
+		storage.clearFile(listOverdue);
 	}
 
 	// Objects declared here can be used by all tests in the test case for Foo.
