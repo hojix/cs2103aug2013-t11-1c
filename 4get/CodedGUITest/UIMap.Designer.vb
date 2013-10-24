@@ -82,6 +82,46 @@ Namespace CodedGUITest
             Keyboard.SendKeys(uITextboxInputEdit, Me.TestModifyTaskParams.UITextboxInputEditSendKeys, ModifierKeys.None)
         End Sub
         
+        '''<summary>
+        '''cycle through the tabs
+        '''</summary>
+        Public Sub TestNavigateTabs()
+            Dim uIItem4getClient As WinClient = Me.UIItem4getWindow.UIItem4getClient
+            Dim uIItem1ListItem As WinListItem = Me.UIItem4getWindow.UITodoListViewWindow.UIItem1ListItem
+            Dim uIItem1ListItem1 As WinListItem = Me.UIItem4getWindow.UICompletedListViewWindow.UIItem1ListItem
+            Dim uIOverdueListViewList As WinList = Me.UIItem4getWindow.UIOverdueListViewWindow.UIOverdueListViewList
+
+            'Click '4get' client
+            Mouse.Click(uIItem4getClient, New Point(362, 193))
+
+            'Type 'Control + {Tab}' in '1' list item
+            Keyboard.SendKeys(uIItem1ListItem, Me.TestNavigateTabsParams.UIItem1ListItemSendKeys, ModifierKeys.Control)
+
+            'Type 'Control + {Tab}' in '1' list item
+            Keyboard.SendKeys(uIItem1ListItem1, Me.TestNavigateTabsParams.UIItem1ListItemSendKeys1, ModifierKeys.Control)
+
+            'Type 'Control + {Tab}' in 'overdueListView' list box
+            Keyboard.SendKeys(uIOverdueListViewList, Me.TestNavigateTabsParams.UIOverdueListViewListSendKeys, ModifierKeys.Control)
+        End Sub
+        
+        '''<summary>
+        '''shortcut to input
+        '''</summary>
+        Public Sub TestShortcutInput()
+            Dim uIItem4getClient As WinClient = Me.UIItem4getWindow.UIItem4getClient
+            Dim uIToDoTabPage As WinTabPage = Me.UIItem4getWindow.UITabContainerWindow.UIToDoTabPage
+            Dim uITextboxInputEdit As WinEdit = Me.UIItem4getWindow.UIEnterCommandHereWindow.UITextboxInputEdit
+
+            'Click '4get' client
+            Mouse.Click(uIItem4getClient, New Point(326, 211))
+
+            'Type 'a' in 'To Do' tab
+            Keyboard.SendKeys(uIToDoTabPage, Me.TestShortcutInputParams.UIToDoTabPageSendKeys, ModifierKeys.None)
+
+            'Type 'add' in 'textboxInput' text box
+            uITextboxInputEdit.Text = Me.TestShortcutInputParams.UITextboxInputEditText
+        End Sub
+        
         #Region "Properties"
         Public Overridable ReadOnly Property TestAddTimedTaskParams() As TestAddTimedTaskParams
             Get
@@ -119,6 +159,24 @@ Namespace CodedGUITest
             End Get
         End Property
         
+        Public Overridable ReadOnly Property TestNavigateTabsParams() As TestNavigateTabsParams
+            Get
+                If (Me.mTestNavigateTabsParams Is Nothing) Then
+                    Me.mTestNavigateTabsParams = New TestNavigateTabsParams()
+                End If
+                Return Me.mTestNavigateTabsParams
+            End Get
+        End Property
+        
+        Public Overridable ReadOnly Property TestShortcutInputParams() As TestShortcutInputParams
+            Get
+                If (Me.mTestShortcutInputParams Is Nothing) Then
+                    Me.mTestShortcutInputParams = New TestShortcutInputParams()
+                End If
+                Return Me.mTestShortcutInputParams
+            End Get
+        End Property
+        
         Public ReadOnly Property UIItem4getWindow() As UIItem4getWindow
             Get
                 If (Me.mUIItem4getWindow Is Nothing) Then
@@ -137,6 +195,10 @@ Namespace CodedGUITest
         Private mTestMarkTaskDoneParams As TestMarkTaskDoneParams
         
         Private mTestModifyTaskParams As TestModifyTaskParams
+        
+        Private mTestNavigateTabsParams As TestNavigateTabsParams
+        
+        Private mTestShortcutInputParams As TestShortcutInputParams
         
         Private mUIItem4getWindow As UIItem4getWindow
         #End Region
@@ -223,6 +285,49 @@ Namespace CodedGUITest
         #End Region
     End Class
     
+    '''<summary>
+    '''Parameters to be passed into 'TestNavigateTabs'
+    '''</summary>
+    <GeneratedCode("Coded UITest Builder", "11.0.60315.1")>  _
+    Public Class TestNavigateTabsParams
+        
+        #Region "Fields"
+        '''<summary>
+        '''Type 'Control + {Tab}' in '1' list item
+        '''</summary>
+        Public UIItem1ListItemSendKeys As String = "{Tab}"
+        
+        '''<summary>
+        '''Type 'Control + {Tab}' in '1' list item
+        '''</summary>
+        Public UIItem1ListItemSendKeys1 As String = "{Tab}"
+        
+        '''<summary>
+        '''Type 'Control + {Tab}' in 'overdueListView' list box
+        '''</summary>
+        Public UIOverdueListViewListSendKeys As String = "{Tab}"
+        #End Region
+    End Class
+    
+    '''<summary>
+    '''Parameters to be passed into 'TestShortcutInput'
+    '''</summary>
+    <GeneratedCode("Coded UITest Builder", "11.0.60315.1")>  _
+    Public Class TestShortcutInputParams
+        
+        #Region "Fields"
+        '''<summary>
+        '''Type 'a' in 'To Do' tab
+        '''</summary>
+        Public UIToDoTabPageSendKeys As String = "a"
+        
+        '''<summary>
+        '''Type 'add' in 'textboxInput' text box
+        '''</summary>
+        Public UITextboxInputEditText As String = "add"
+        #End Region
+    End Class
+    
     <GeneratedCode("Coded UITest Builder", "11.0.60315.1")>  _
     Public Class UIItem4getWindow
         Inherits WinWindow
@@ -243,10 +348,67 @@ Namespace CodedGUITest
                 Return Me.mUIEnterCommandHereWindow
             End Get
         End Property
+        
+        Public ReadOnly Property UIItem4getClient() As WinClient
+            Get
+                If (Me.mUIItem4getClient Is Nothing) Then
+                    Me.mUIItem4getClient = New WinClient(Me)
+                    Me.mUIItem4getClient.SearchProperties(WinControl.PropertyNames.Name) = "4get"
+                    Me.mUIItem4getClient.WindowTitles.Add("4get")
+                End If
+                Return Me.mUIItem4getClient
+            End Get
+        End Property
+        
+        Public ReadOnly Property UITodoListViewWindow() As UITodoListViewWindow
+            Get
+                If (Me.mUITodoListViewWindow Is Nothing) Then
+                    Me.mUITodoListViewWindow = New UITodoListViewWindow(Me)
+                End If
+                Return Me.mUITodoListViewWindow
+            End Get
+        End Property
+        
+        Public ReadOnly Property UICompletedListViewWindow() As UICompletedListViewWindow
+            Get
+                If (Me.mUICompletedListViewWindow Is Nothing) Then
+                    Me.mUICompletedListViewWindow = New UICompletedListViewWindow(Me)
+                End If
+                Return Me.mUICompletedListViewWindow
+            End Get
+        End Property
+        
+        Public ReadOnly Property UIOverdueListViewWindow() As UIOverdueListViewWindow
+            Get
+                If (Me.mUIOverdueListViewWindow Is Nothing) Then
+                    Me.mUIOverdueListViewWindow = New UIOverdueListViewWindow(Me)
+                End If
+                Return Me.mUIOverdueListViewWindow
+            End Get
+        End Property
+        
+        Public ReadOnly Property UITabContainerWindow() As UITabContainerWindow
+            Get
+                If (Me.mUITabContainerWindow Is Nothing) Then
+                    Me.mUITabContainerWindow = New UITabContainerWindow(Me)
+                End If
+                Return Me.mUITabContainerWindow
+            End Get
+        End Property
         #End Region
         
         #Region "Fields"
         Private mUIEnterCommandHereWindow As UIEnterCommandHereWindow
+        
+        Private mUIItem4getClient As WinClient
+        
+        Private mUITodoListViewWindow As UITodoListViewWindow
+        
+        Private mUICompletedListViewWindow As UICompletedListViewWindow
+        
+        Private mUIOverdueListViewWindow As UIOverdueListViewWindow
+        
+        Private mUITabContainerWindow As UITabContainerWindow
         #End Region
     End Class
     
@@ -274,6 +436,117 @@ Namespace CodedGUITest
         
         #Region "Fields"
         Private mUITextboxInputEdit As WinEdit
+        #End Region
+    End Class
+    
+    <GeneratedCode("Coded UITest Builder", "11.0.60315.1")>  _
+    Public Class UITodoListViewWindow
+        Inherits WinWindow
+        
+        Public Sub New(ByVal searchLimitContainer As UITestControl)
+            MyBase.New(searchLimitContainer)
+            Me.SearchProperties(WinWindow.PropertyNames.ControlName) = "todoListView"
+            Me.WindowTitles.Add("4get")
+        End Sub
+        
+        #Region "Properties"
+        Public ReadOnly Property UIItem1ListItem() As WinListItem
+            Get
+                If (Me.mUIItem1ListItem Is Nothing) Then
+                    Me.mUIItem1ListItem = New WinListItem(Me)
+                    Me.mUIItem1ListItem.SearchProperties(WinListItem.PropertyNames.Name) = "1"
+                    Me.mUIItem1ListItem.WindowTitles.Add("4get")
+                End If
+                Return Me.mUIItem1ListItem
+            End Get
+        End Property
+        #End Region
+        
+        #Region "Fields"
+        Private mUIItem1ListItem As WinListItem
+        #End Region
+    End Class
+    
+    <GeneratedCode("Coded UITest Builder", "11.0.60315.1")>  _
+    Public Class UICompletedListViewWindow
+        Inherits WinWindow
+        
+        Public Sub New(ByVal searchLimitContainer As UITestControl)
+            MyBase.New(searchLimitContainer)
+            Me.SearchProperties(WinWindow.PropertyNames.ControlName) = "completedListView"
+            Me.WindowTitles.Add("4get")
+        End Sub
+        
+        #Region "Properties"
+        Public ReadOnly Property UIItem1ListItem() As WinListItem
+            Get
+                If (Me.mUIItem1ListItem Is Nothing) Then
+                    Me.mUIItem1ListItem = New WinListItem(Me)
+                    Me.mUIItem1ListItem.SearchProperties(WinListItem.PropertyNames.Name) = "1"
+                    Me.mUIItem1ListItem.WindowTitles.Add("4get")
+                End If
+                Return Me.mUIItem1ListItem
+            End Get
+        End Property
+        #End Region
+        
+        #Region "Fields"
+        Private mUIItem1ListItem As WinListItem
+        #End Region
+    End Class
+    
+    <GeneratedCode("Coded UITest Builder", "11.0.60315.1")>  _
+    Public Class UIOverdueListViewWindow
+        Inherits WinWindow
+        
+        Public Sub New(ByVal searchLimitContainer As UITestControl)
+            MyBase.New(searchLimitContainer)
+            Me.SearchProperties(WinWindow.PropertyNames.ControlName) = "overdueListView"
+            Me.WindowTitles.Add("4get")
+        End Sub
+        
+        #Region "Properties"
+        Public ReadOnly Property UIOverdueListViewList() As WinList
+            Get
+                If (Me.mUIOverdueListViewList Is Nothing) Then
+                    Me.mUIOverdueListViewList = New WinList(Me)
+                    Me.mUIOverdueListViewList.WindowTitles.Add("4get")
+                End If
+                Return Me.mUIOverdueListViewList
+            End Get
+        End Property
+        #End Region
+        
+        #Region "Fields"
+        Private mUIOverdueListViewList As WinList
+        #End Region
+    End Class
+    
+    <GeneratedCode("Coded UITest Builder", "11.0.60315.1")>  _
+    Public Class UITabContainerWindow
+        Inherits WinWindow
+        
+        Public Sub New(ByVal searchLimitContainer As UITestControl)
+            MyBase.New(searchLimitContainer)
+            Me.SearchProperties(WinWindow.PropertyNames.ControlName) = "tabContainer"
+            Me.WindowTitles.Add("4get")
+        End Sub
+        
+        #Region "Properties"
+        Public ReadOnly Property UIToDoTabPage() As WinTabPage
+            Get
+                If (Me.mUIToDoTabPage Is Nothing) Then
+                    Me.mUIToDoTabPage = New WinTabPage(Me)
+                    Me.mUIToDoTabPage.SearchProperties(WinTabPage.PropertyNames.Name) = "To Do"
+                    Me.mUIToDoTabPage.WindowTitles.Add("4get")
+                End If
+                Return Me.mUIToDoTabPage
+            End Get
+        End Property
+        #End Region
+        
+        #Region "Fields"
+        Private mUIToDoTabPage As WinTabPage
         #End Region
     End Class
 End Namespace
