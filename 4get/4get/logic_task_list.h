@@ -49,6 +49,7 @@ public:
 	//Getter functions
 	list<Task*> obtainList(ListType listToReturn);
 	Task* obtainTask(int indexUI);
+	Task* obtainTask(long long taskID, ListType listType);
 
 	void setCurrentDisplayed(ListType listType);
 };

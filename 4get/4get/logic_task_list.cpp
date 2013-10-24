@@ -177,3 +177,11 @@ list<Task*>* TaskList::determineList(ListType listType){
 void TaskList::setCurrentDisplayed(ListType listType){
 	_currentDisplayed = listType;
 }
+
+Task* TaskList::obtainTask(long long taskID, ListType listType){
+	list<Task*>* listToFind;
+	list<Task*>::iterator iterator;
+	listToFind = determineList(listType);
+	findID(listToFind, taskID, iterator);
+	return (*iterator);
+}
