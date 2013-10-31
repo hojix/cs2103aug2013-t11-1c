@@ -40,6 +40,8 @@ bool Executor::receive(string usercommand, vector<string> vectorOfInputs){
 		return undoFunction();
 	case commandRedo:
 		return redoFunction();
+	case commandShow:
+		return searchFunction(vectorOfInputs);
 	default: throw string(MESSAGE_ERROR_WRONG_KEYWORD);
 	}
 }
@@ -56,6 +58,8 @@ Enum::Command Executor::determineCommandType (string commandTypeString){
 		return Command::commandUndo;
 	else if(isEqual(commandTypeString, COMMAND_REDO))
 		return Command::commandRedo;
+	else if(isEqual(commandTypeString, COMMAND_SHOW))
+		return Command::commandShow;
 	else
 		throw string(MESSAGE_ERROR_WRONG_KEYWORD);
 }
@@ -70,7 +74,7 @@ bool Executor::adderFunction(vector<string> vectorOfInputs){
 	Priority priority;
 	TaskType taskTypeToCreate;
 
-	id = retrieveID();
+	id = retrieveTaskID();
 	setParameters(description,
 		location,
 		priority,
@@ -82,7 +86,8 @@ bool Executor::adderFunction(vector<string> vectorOfInputs){
 		vectorOfInputs);
 
 	if(taskTypeToCreate == floating){
-		TaskFloating newTask(id,
+		try{
+			TaskFloating newTask(id,
 			description,
 			location,
 			reminderTime,
@@ -90,10 +95,15 @@ bool Executor::adderFunction(vector<string> vectorOfInputs){
 
 		taskGlobal = new TaskFloating;
 		*taskGlobal = newTask;
+		assert(taskGlobal != NULL);
+		}catch(string error){
+			throw;
+		}
 	}
 
 	else if(taskTypeToCreate == deadline){
-		TaskDeadline newTask(id,
+		try{
+			TaskDeadline newTask(id,
 			description, 
 			location, 
 			reminderTime, 
@@ -102,9 +112,14 @@ bool Executor::adderFunction(vector<string> vectorOfInputs){
 			endTime); 
 		taskGlobal = new TaskDeadline;
 		*taskGlobal = newTask;
+		assert(taskGlobal != NULL);
+		}catch(string error){
+			throw;
+		}
 	}
 
 	else if(taskTypeToCreate == timed){
+		try{
 		TaskTimed newTask(id, 
 			description, 
 			location, 
@@ -116,6 +131,10 @@ bool Executor::adderFunction(vector<string> vectorOfInputs){
 
 		taskGlobal = new TaskTimed;
 		*taskGlobal = newTask;
+		assert(taskGlobal != NULL);
+		}catch(string error){
+			throw;
+		}
 	}
 	else{
 		throw string(Message::MESSAGE_ERROR_COMMAND_ADD);
@@ -127,7 +146,11 @@ bool Executor::adderFunction(vector<string> vectorOfInputs){
 }
 bool Executor::deleteFunction(vector<string> vectorOfInputs){
 	int deleteNumber;
-	deleteNumber = convert.convertStringToInt(vectorOfInputs[SLOT_SLOT_NUMBER]);
+	try{
+		deleteNumber = convert.convertStringToInt(vectorOfInputs[SLOT_SLOT_NUMBER]);
+	}catch(string Error){
+		throw;
+	}
 	if(deleteNumber < 1){
 		throw string(MESSAGE_ERROR_COMMAND_DELETE);
 	}
@@ -142,7 +165,11 @@ bool Executor::deleteFunction(vector<string> vectorOfInputs){
 }
 bool Executor::markFunction(vector<string> vectorOfInputs){
 	int markNumber;
-	markNumber = convert.convertStringToInt(vectorOfInputs[SLOT_SLOT_NUMBER]);
+	try{
+		markNumber = convert.convertStringToInt(vectorOfInputs[SLOT_SLOT_NUMBER]);
+	}catch(string Error){
+		throw;
+	}
 	if(markNumber < 1){
 		throw string(MESSAGE_ERROR_COMMAND_MARK);
 	}
@@ -402,13 +429,23 @@ bool Executor::redoFunction(){
 
 	return true;
 }
+bool Executor::searchFunction(vector<string> vectorOfInputs){
+	time_t time;
+
+	string searchCommand;
+	searchCommand =  vectorOfInputs[SLOT_DESCRIPTION];
+	//decipher whether isit time or string
+
+
+	return true;
+}
 bool Executor::isEqual(string str1, const string str2){
 	if(str1 == str2){
 		return true;
 	}
 	return false;
 }
-long long Executor::retrieveID(){
+long long Executor::retrieveTaskID(){
 	time_t msec = time(NULL) * 1000;
 	long long ID;
 
@@ -444,45 +481,49 @@ bool Executor::setParameters(string &description,
 							 time_t &reminderTime,
 							 TaskType &typeOfTask,
 							 vector<string> &vectorOfInputs){
-	string descriptionSlot,
-		   locationSlot,
-		   prioritySlot,
-	       repeatSlot,
-		   startDateSlot,
-		   startTimeSlot, 
-		   endDateSlot, 
-		   endTimeSlot, 
-		   reminderDateSlot, 
-		   reminderTimeSlot;
+								 string descriptionSlot,
+									 locationSlot,
+									 prioritySlot,
+									 repeatSlot,
+									 startDateSlot,
+									 startTimeSlot, 
+									 endDateSlot, 
+									 endTimeSlot, 
+									 reminderDateSlot, 
+									 reminderTimeSlot;
 
-		   descriptionSlot = vectorOfInputs[SLOT_DESCRIPTION];
-		   locationSlot = vectorOfInputs[SLOT_LOCATION];
-		   prioritySlot = vectorOfInputs[SLOT_PRIORITY];
-		   repeatSlot = vectorOfInputs[SLOT_REPEAT];
-		   startDateSlot = vectorOfInputs[SLOT_START_DATE];
-		   startTimeSlot = vectorOfInputs[SLOT_START_TIME];
-		   endDateSlot = vectorOfInputs[SLOT_END_DATE];
-		   endTimeSlot = vectorOfInputs[SLOT_END_TIME];
-		   reminderDateSlot = vectorOfInputs[SLOT_REMIND_DATE];
-		   reminderTimeSlot = vectorOfInputs[SLOT_REMIND_TIME];
-								 
-		   description = descriptionSlot;
-		   location = locationSlot;
-		   priority = convert.convertStringToPriority(prioritySlot);
-		   repeat = convert.convertStringToRepeatType(repeatSlot);
-		   reminderTime = convert.convertStringToTime(reminderDateSlot, reminderTimeSlot);
-		   typeOfTask = convert.convertStringToTime(startDateSlot, 
-			                                        startTimeSlot, 
-									                endDateSlot, 
-									                endTimeSlot, 
-									                startTime, 
-									                endTime);
-		   return true;
+								 descriptionSlot = vectorOfInputs[SLOT_DESCRIPTION];
+								 locationSlot = vectorOfInputs[SLOT_LOCATION];
+								 prioritySlot = vectorOfInputs[SLOT_PRIORITY];
+								 repeatSlot = vectorOfInputs[SLOT_REPEAT];
+								 startDateSlot = vectorOfInputs[SLOT_START_DATE];
+								 startTimeSlot = vectorOfInputs[SLOT_START_TIME];
+								 endDateSlot = vectorOfInputs[SLOT_END_DATE];
+								 endTimeSlot = vectorOfInputs[SLOT_END_TIME];
+								 reminderDateSlot = vectorOfInputs[SLOT_REMIND_DATE];
+								 reminderTimeSlot = vectorOfInputs[SLOT_REMIND_TIME];
+
+								 description = descriptionSlot;
+								 location = locationSlot;
+								 try{
+
+									 priority = convert.convertStringToPriority(prioritySlot);
+									 repeat = convert.convertStringToRepeatType(repeatSlot);
+									 reminderTime = convert.convertStringToTime(reminderDateSlot, reminderTimeSlot);
+									 typeOfTask = convert.convertStringToTime(startDateSlot, 
+										 startTimeSlot, 
+										 endDateSlot, 
+										 endTimeSlot, 
+										 startTime, 
+										 endTime);
+									 return true;
+								 }catch(string error){
+									 throw;
+								 }
 }
 void Executor::assertNotEmptyTask(){
 	assert(taskGlobal != NULL);
 }
-
 Task Executor::tempTaskCreator(Task* task)
 {
 	long long id;

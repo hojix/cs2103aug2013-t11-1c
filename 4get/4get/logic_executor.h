@@ -65,10 +65,11 @@ public:
 	bool markFunction(vector<string> vectorOfInputs);
 	bool undoFunction();
 	bool redoFunction();
+	bool searchFunction(vector<string> vectorOfInputs);
 	
 	//helper functions
 	bool isEqual(string str1, const string str2);
-	long long retrieveID();
+	long long retrieveTaskID();
 	bool storeIntoUndoTaskStack(Task taskTemp);
 	bool storeIntoUndoCommandStack(Command command);
 	bool storeIntoRedoTaskStack(Task taskTemp);
