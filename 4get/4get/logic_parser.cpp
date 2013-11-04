@@ -51,6 +51,16 @@ const std::size_t Parser::MARKER_UNDONE_LENGTH = 6;
 const string Parser::MARKER_INCOMPLETE = "incomplete";
 const std::size_t Parser::MARKER_INCOMPLETE_LENGTH = 10;
 
+const int Parser::DICTIONARY_ADD = 0;
+const int Parser::DICTIONARY_DELETE = 1;
+const int Parser::DICTIONARY_MARK = 2;
+const int Parser::DICTIONARY_MODIFY = 3;
+const int Parser::DICTIONARY_UNDO = 4;
+const int Parser::DICTIONARY_REDO = 5;
+const int Parser::DICTIONARY_SHOW = 6;
+const int Parser::DICTIONARY_SHOWALL = 7;
+
+
 
 Parser::Parser()
 {
@@ -76,120 +86,216 @@ void Parser::parseReset()
 	textRemind = INITIALIZE_STRING_BLANK;
 	textRemindDate = INITIALIZE_STRING_BLANK;
 	textRemindTime = INITIALIZE_STRING_BLANK;
-	textSlotNumber = INITIALIZE_STRING_BLANK;
+	textSlotStartNumber = INITIALIZE_STRING_BLANK;
+	textSlotEndNumber = INITIALIZE_STRING_BLANK;
 }
 void Parser::processCommand(string commandString, vector<string>& inputBits)
 {
-	try{
-		if(commandString.compare(COMMAND_A)==COMPARE_SUCCESS || commandString.compare(COMMAND_ADD)==COMPARE_SUCCESS || commandString.compare(COMMAND_CREATE)==COMPARE_SUCCESS){
-			inputBits[SLOT_COMMAND] = COMMAND_ADD;
+	string command;
+	try {
+		try{
+			command = scanCommandDictionary(commandString);
+			if(command == COMMAND_NULL)
+				throw MESSAGE_ERROR_COMMAND_ERROR;
+		}
+		catch(string error){
+			throw;
+		}
+		inputBits[SLOT_COMMAND] = command;
+		if(command == COMMAND_ADD){
 			try{
-				if(!separateInput(commandAdd, inputBits)){
+				if(!separateFunctionAdd(inputBits))
 					throw MESSAGE_ERROR_COMMAND_ADD;
-				}
 			}
+
 			catch(string error){
-				throw;
+				throw error;
 			}
-
 		}
-
-		else if(commandString.compare(COMMAND_DEL)==COMPARE_SUCCESS || commandString.compare(COMMAND_DELETE)==COMPARE_SUCCESS || commandString.compare(COMMAND_ERASE)==COMPARE_SUCCESS ||commandString.compare(COMMAND_REM)==COMPARE_SUCCESS || commandString.compare(COMMAND_REMOVE)==COMPARE_SUCCESS) {
-			inputBits[SLOT_COMMAND] = COMMAND_DELETE;
+		else if(command == COMMAND_DELETE){
 			try{
-				if(!separateInput(commandDelete, inputBits)){
+				if(!separateFunctionDelete(inputBits))
 					throw MESSAGE_ERROR_COMMAND_DELETE;
-				}
 			}
-			catch(string error){
-				throw;
-			}
-		}
-		else if(commandString.compare(COMMAND_M)==COMPARE_SUCCESS || commandString.compare(COMMAND_MARK)==COMPARE_SUCCESS || commandString.compare(COMMAND_DONE)==COMPARE_SUCCESS) {
-			inputBits[SLOT_COMMAND] = COMMAND_MARK;
-			try{
-				if(!separateInput(commandMark, inputBits)){
-					throw MESSAGE_ERROR_COMMAND_MARK;
-				}
-			}
-			catch(string error){
-				throw;
-			}
-		}
-		else if(commandString.compare(COMMAND_MOD)==COMPARE_SUCCESS || commandString.compare(COMMAND_MODIFY)==COMPARE_SUCCESS || commandString.compare(COMMAND_UPDATE)==COMPARE_SUCCESS) {
-			inputBits[SLOT_COMMAND] = COMMAND_MODIFY;
-			try{
-				if(!separateInput(commandModify, inputBits)){
-					throw MESSAGE_ERROR_COMMAND_MODIFY;
-				}
-			}
-			catch(string error){
-				throw;
-			}
-		}
-		else if(commandString.compare(COMMAND_UNDO)==COMPARE_SUCCESS) {
-			inputBits[SLOT_COMMAND] = COMMAND_UNDO;
-			try{
-				if(!separateInput(commandUndo, inputBits)){
-					throw MESSAGE_ERROR_COMMAND_UNDO;
-				}
-			}
-			catch(string error){
-				throw;
-			}
-		}
-		else if(commandString.compare(COMMAND_SHOW)==COMPARE_SUCCESS || commandString.compare(COMMAND_DISPLAY)==COMPARE_SUCCESS || commandString.compare(COMMAND_SEARCH)==COMPARE_SUCCESS){
-			inputBits[SLOT_COMMAND] = COMMAND_SHOW;
-			try{
-				if(!separateInput(commandShow, inputBits)){
-					throw MESSAGE_ERROR_COMMAND_SHOW;
-				}
-			}
-			catch(string error){
-				throw;
-			}
-		}
-		else if(commandString.compare(COMMAND_SHOWALL)==COMPARE_SUCCESS || commandString.compare(COMMAND_DISPLAYALL)==COMPARE_SUCCESS || commandString.compare(COMMAND_SEARCHALL)==COMPARE_SUCCESS){
-			inputBits[SLOT_COMMAND] = COMMAND_SHOWALL;
-			try{
-				if(!separateInput(commandShow, inputBits)){
-					throw MESSAGE_ERROR_COMMAND_SHOW;
-				}
-			}
-			catch(string error){
-				throw;
-			}
-		}
 
-		/*else if(commandString.compare(COMMAND_WHAT)==COMPARE_SUCCESS){
-		inputBits[SLOT_COMMAND] = COMMAND_WHAT;
-		if(!separateInput(commandQuery, inputBits)){
-		throw MESSAGE_ERROR_COMMAND_QUERY;
+			catch(string error){
+				throw error;
+			}
 		}
-		}
-		else if(commandString.compare(COMMAND_WHEN)==COMPARE_SUCCESS){
-		inputBits[SLOT_COMMAND] = COMMAND_WHEN;
-		if(!separateInput(commandQuery, inputBits)){
-		throw MESSAGE_ERROR_COMMAND_QUERY;
-		}
-		}*/
-		else if(commandString.compare(COMMAND_REDO)==COMPARE_SUCCESS) {
-			inputBits[SLOT_COMMAND] = COMMAND_REDO;
+		else if(command == COMMAND_MARK){
 			try{
-				if(!separateInput(commandRedo, inputBits)){
+				if(!separateFunctionMark(inputBits))
+					throw MESSAGE_ERROR_COMMAND_MARK;
+			}
+
+			catch(string error){
+				throw error;
+			}
+		}
+		else if(command == COMMAND_MODIFY){
+			try{
+				if(!separateFunctionModify(inputBits))
+					throw MESSAGE_ERROR_COMMAND_MODIFY;
+			}
+
+			catch(string error){
+				throw error;
+			}
+		}
+		else if(command == COMMAND_UNDO){
+			try{
+				if(!separateFunctionUndo(inputBits))
+					throw MESSAGE_ERROR_COMMAND_UNDO;
+			}
+
+			catch(string error){
+				throw error;
+			}
+		}
+		else if(command == COMMAND_REDO){
+			try{
+				if(!separateFunctionRedo(inputBits))
 					throw MESSAGE_ERROR_COMMAND_REDO;
-				}
+			}
+
+			catch(string error){
+				throw error;
+			}
+		}
+		else if(command == COMMAND_SHOW){
+			try{
+				if(!separateFunctionShow(inputBits))
+					throw MESSAGE_ERROR_COMMAND_SHOW;
+			}
+
+			catch(string error){
+				throw error;
+			}
+		}
+		else if(command == COMMAND_SHOWALL){
+			try{
+				if(!separateFunctionShowAll(inputBits))
+					throw MESSAGE_ERROR_COMMAND_SHOW;
 			}
 			catch(string error){
-				throw;
+				throw error;
 			}
 		}
+	}
+	catch(string error){
+		throw error;
+	}
+	/*
+	try{
+	if(commandString.compare(COMMAND_A)==COMPARE_SUCCESS || commandString.compare(COMMAND_ADD)==COMPARE_SUCCESS || commandString.compare(COMMAND_CREATE)==COMPARE_SUCCESS){
+	inputBits[SLOT_COMMAND] = COMMAND_ADD;
+	try{
+	if(!separateInput(commandAdd, inputBits)){
+	throw MESSAGE_ERROR_COMMAND_ADD;
+	}
+	}
+	catch(string error){
+	throw;
+	}
+
+	}
+
+	else if(commandString.compare(COMMAND_DEL)==COMPARE_SUCCESS || commandString.compare(COMMAND_DELETE)==COMPARE_SUCCESS || commandString.compare(COMMAND_ERASE)==COMPARE_SUCCESS ||commandString.compare(COMMAND_REM)==COMPARE_SUCCESS || commandString.compare(COMMAND_REMOVE)==COMPARE_SUCCESS) {
+	inputBits[SLOT_COMMAND] = COMMAND_DELETE;
+	try{
+	if(!separateInput(commandDelete, inputBits)){
+	throw MESSAGE_ERROR_COMMAND_DELETE;
+	}
+	}
+	catch(string error){
+	throw;
+	}
+	}
+	else if(commandString.compare(COMMAND_M)==COMPARE_SUCCESS || commandString.compare(COMMAND_MARK)==COMPARE_SUCCESS || commandString.compare(COMMAND_DONE)==COMPARE_SUCCESS) {
+	inputBits[SLOT_COMMAND] = COMMAND_MARK;
+	try{
+	if(!separateInput(commandMark, inputBits)){
+	throw MESSAGE_ERROR_COMMAND_MARK;
+	}
+	}
+	catch(string error){
+	throw;
+	}
+	}
+	else if(commandString.compare(COMMAND_MOD)==COMPARE_SUCCESS || commandString.compare(COMMAND_MODIFY)==COMPARE_SUCCESS || commandString.compare(COMMAND_UPDATE)==COMPARE_SUCCESS) {
+	inputBits[SLOT_COMMAND] = COMMAND_MODIFY;
+	try{
+	if(!separateInput(commandModify, inputBits)){
+	throw MESSAGE_ERROR_COMMAND_MODIFY;
+	}
+	}
+	catch(string error){
+	throw;
+	}
+	}
+	else if(commandString.compare(COMMAND_UNDO)==COMPARE_SUCCESS) {
+	inputBits[SLOT_COMMAND] = COMMAND_UNDO;
+	try{
+	if(!separateInput(commandUndo, inputBits)){
+	throw MESSAGE_ERROR_COMMAND_UNDO;
+	}
+	}
+	catch(string error){
+	throw;
+	}
+	}
+	else if(commandString.compare(COMMAND_SHOW)==COMPARE_SUCCESS || commandString.compare(COMMAND_DISPLAY)==COMPARE_SUCCESS || commandString.compare(COMMAND_SEARCH)==COMPARE_SUCCESS){
+	inputBits[SLOT_COMMAND] = COMMAND_SHOW;
+	try{
+	if(!separateInput(commandShow, inputBits)){
+	throw MESSAGE_ERROR_COMMAND_SHOW;
+	}
+	}
+	catch(string error){
+	throw;
+	}
+	}
+	else if(commandString.compare(COMMAND_SHOWALL)==COMPARE_SUCCESS || commandString.compare(COMMAND_DISPLAYALL)==COMPARE_SUCCESS || commandString.compare(COMMAND_SEARCHALL)==COMPARE_SUCCESS){
+	inputBits[SLOT_COMMAND] = COMMAND_SHOWALL;
+	try{
+	if(!separateInput(commandShow, inputBits)){
+	throw MESSAGE_ERROR_COMMAND_SHOW;
+	}
+	}
+	catch(string error){
+	throw;
+	}
+	}
+
+	/*else if(commandString.compare(COMMAND_WHAT)==COMPARE_SUCCESS){
+	inputBits[SLOT_COMMAND] = COMMAND_WHAT;
+	if(!separateInput(commandQuery, inputBits)){
+	throw MESSAGE_ERROR_COMMAND_QUERY;
+	}
+	}
+	else if(commandString.compare(COMMAND_WHEN)==COMPARE_SUCCESS){
+	inputBits[SLOT_COMMAND] = COMMAND_WHEN;
+	if(!separateInput(commandQuery, inputBits)){
+	throw MESSAGE_ERROR_COMMAND_QUERY;
+	}
+	}
+	else if(commandString.compare(COMMAND_REDO)==COMPARE_SUCCESS) {
+	inputBits[SLOT_COMMAND] = COMMAND_REDO;
+	try{
+	if(!separateInput(commandRedo, inputBits)){
+	throw MESSAGE_ERROR_COMMAND_REDO;
+	}
+	}
+	catch(string error){
+	throw;
+	}
+	}
 	}
 	catch(string error)
 	{
-		throw error;
+	throw error;
 	}
-
+	*/
 }
 void Parser::parseInput(string input, vector<string>& inputBits)
 {
@@ -688,19 +794,42 @@ bool Parser::determineReminder()
 bool Parser::determineSlot()
 {
 	std::size_t extractStartPos = INITIALIZE_SIZE_T;
+	size_t extractEndPos = INITIALIZE_SIZE_T;
 	std::size_t found = INITIALIZE_SIZE_T;
-	int slotNumber =0;
-	istringstream iss(_textInput);
+	bool hasRange = false;
+	bool startSlotFilled = false;
+	int slotNumber = INITIALIZE_INT;
+	int count = INITIALIZE_INT;
+	istringstream buffer(textInput);
 	string temp;
-	iss >> temp;
-
-	if(!isParseInt(temp, slotNumber))
-		return false;
-	textSlotNumber = std::to_string(slotNumber);
-	found = textInput.find(MARKER_ENCLOSE);
-	shortenInput(extractStartPos, ++found);
-
-	return true;
+	while(!buffer.eof()){
+		buffer >> temp;
+		count++;
+		if(isParseInt(temp, slotNumber) && !startSlotFilled){
+			textSlotStartNumber = std::to_string(slotNumber);
+			startSlotFilled = true;
+			continue;
+		}
+		if(scanMarkerDictionary(temp) && temp!=MARKER_TO)
+			break;
+		else{
+			if (temp==MARKER_TO)
+				hasRange = true;
+			else if(hasRange && startSlotFilled && isParseInt(temp, slotNumber)){
+				textSlotEndNumber = std::to_string(slotNumber);
+			}
+			else
+				throw MESSAGE_ERROR_WRONG_FORMAT;
+		}
+	}
+	if((count == 1 || count == 3) && startSlotFilled){
+		found = textInput.find(temp);
+		extractEndPos = found + temp.size();
+		shortenInput(extractStartPos, extractEndPos);
+		return true;
+	}
+	else
+		throw MESSAGE_ERROR_WRONG_FORMAT;
 }
 /*
 bool Parser::determineTaskList()
@@ -786,7 +915,7 @@ else
 return false;
 }
 */
-std::size_t Parser::determindExtractLength(std::size_t found, std::size_t foundComma, string markConstant, std::size_t& extractStartPos)
+std::size_t Parser::determindExtractLength(std::size_t partitionStart, std::size_t partitionEnd, string markConstant, std::size_t& extractStartPos)
 {
 	extractStartPos = INITIALIZE_SIZE_T;
 	std::size_t extractEndPos;
@@ -796,8 +925,8 @@ std::size_t Parser::determindExtractLength(std::size_t found, std::size_t foundC
 		shiftPos = shiftPos;
 	}
 	else if(markConstant == MARKER_REMIND){
-		if(textInput.find(MARKER_ON,found)!=std::string::npos){
-			found = textInput.find(MARKER_ON,found);
+		if(textInput.find(MARKER_ON,partitionStart)!=std::string::npos){
+			partitionStart = textInput.find(MARKER_ON,partitionStart);
 			shiftPos = MARKER_ON_LENGTH;
 		}
 		else{
@@ -808,8 +937,8 @@ std::size_t Parser::determindExtractLength(std::size_t found, std::size_t foundC
 	else
 		shiftPos = markConstant.size();
 
-	extractStartPos = found + (++shiftPos); //shift the pos to first pos of text to be extracted.
-	extractEndPos = --foundComma;
+	extractStartPos = partitionStart + (++shiftPos); //shift the pos to first pos of text to be extracted.
+	extractEndPos = --partitionEnd;
 
 	return extractEndPos - extractStartPos;
 }
@@ -834,7 +963,8 @@ void Parser::removeAllBorderSpace()
 	removeBorderSpaces(textPriority);
 	removeBorderSpaces(textRemindDate);
 	removeBorderSpaces(textRemindTime);
-	removeBorderSpaces(textSlotNumber);
+	removeBorderSpaces(textSlotStartNumber);
+	removeBorderSpaces(textSlotEndNumber);
 }
 void Parser::removeBorderSpaces(string& str)
 {
@@ -973,7 +1103,8 @@ void Parser::populateContainer(vector<string>& inputBits)
 	inputBits[SLOT_START_TIME] = textStartTime;
 	inputBits[SLOT_END_DATE] = textEndDate;
 	inputBits[SLOT_END_TIME] = textEndTime;
-	inputBits[SLOT_SLOT_NUMBER] = textSlotNumber;
+	inputBits[SLOT_SLOT_START_NUMBER] = textSlotStartNumber;
+	inputBits[SLOT_SLOT_END_NUMBER] = textSlotEndNumber;
 	//inputBits[SLOT_STATUS] = textStatus;
 }
 void Parser::toLowerCase(string &str)
@@ -1003,14 +1134,31 @@ void Parser::removeFirstWord(string &input)
 //Check if the first character is a valid digit
 bool Parser::isParseInt(string input, int &value)
 {	
-	if (isdigit(input[0]))
-	{
+	int stringLength = input.size();
+	int i = 0;
+	bool isDigit = isInt(input);
+	if(isDigit){
 		value = atoi(input.c_str());
-		return true;
+		return isDigit;
 	}
 	else
-		return false;
+		return isDigit;
 }
+bool Parser::isInt(string input)
+{
+	int stringLength = input.size();
+	int i = 0;
+	bool isDigit = true;
+	while(i != stringLength){
+		isDigit = isdigit(input[i]) != 0;
+		if(!isDigit){
+			return isDigit;
+		}
+		i++;
+	}
+	return isDigit;
+}
+
 string Parser::getCommand()
 {
 	return textCommand;
@@ -1397,8 +1545,6 @@ void Parser::loadDateDictionary()
 	dictionaryDates.push_back(TIMER_NEXT);
 	dictionaryDates.push_back(TIMER_LATER);
 	dictionaryDates.push_back(TIMER_TODAY);
-
-
 }
 void Parser::loadMonthDictionary()
 {
@@ -1457,6 +1603,20 @@ void Parser::loadCommandDictionary()
 
 	dictionaryShowCommands.push_back(COMMAND_SHOW);
 	dictionaryShowCommands.push_back(COMMAND_DISPLAY);
+	dictionaryShowCommands.push_back(COMMAND_SEARCH);
+
+	dictionaryShowAllCommands.push_back(COMMAND_SHOWALL);
+	dictionaryShowAllCommands.push_back(COMMAND_DISPLAYALL);
+	dictionaryShowAllCommands.push_back(COMMAND_SEARCHALL);
+
+	dictionaryCommands.push_back(dictionaryAddCommands);
+	dictionaryCommands.push_back(dictionaryDeleteCommands);
+	dictionaryCommands.push_back(dictionaryMarkCommands);
+	dictionaryCommands.push_back(dictionaryModifyCommands);
+	dictionaryCommands.push_back(dictionaryUndoCommands);
+	dictionaryCommands.push_back(dictionaryRedoCommands);
+	dictionaryCommands.push_back(dictionaryShowCommands);
+	dictionaryCommands.push_back(dictionaryShowAllCommands);
 }
 
 void Parser::loadMarkerDictionary()
@@ -1474,8 +1634,6 @@ void Parser::loadMarkerDictionary()
 	dictionaryMarker.push_back(MARKER_PRIORITY_NORMAL);
 	dictionaryMarker.push_back(MARKER_DONE);
 	dictionaryMarker.push_back(MARKER_UNDONE);
-	dictionaryMarker.push_back(MARKER_COMPLETED);
-	dictionaryMarker.push_back(MARKER_INCOMPLETE);
 }
 
 bool Parser::scanDictionary(string word)
@@ -1515,44 +1673,41 @@ bool Parser::scanMonthDictionary(string word)
 
 	return false;
 }
-string Parser::scanCommandDictonary(string word)
+string Parser::scanCommandDictionary(string word)
 {
-	for(size_t i=0; i<dictionaryAddCommands.size(); i++){
-		if(dictionaryAddCommands[i]==word)
-			return COMMAND_ADD;
+	int foundCommand;
+	bool found = false;;
+	for(size_t i=0; i<dictionaryCommands.size() && !found; i++){
+		size_t currentDictionarySize = dictionaryCommands[i].size();
+		for(size_t k=0; k<currentDictionarySize; k++){
+			if(dictionaryCommands[i][k]==word){
+				foundCommand = i;
+				found = true;
+				break;
+			}
+		}
 	}
 
-	for(size_t i=0; i<dictionaryDeleteCommands.size(); i++){
-		if(dictionaryDeleteCommands[i]==word)
-			return COMMAND_DELETE;
+	switch(foundCommand){
+	case DICTIONARY_ADD:
+		return COMMAND_ADD;
+	case DICTIONARY_DELETE:
+		return COMMAND_DELETE;
+	case DICTIONARY_MARK:
+		return COMMAND_MARK;
+	case DICTIONARY_MODIFY:
+		return COMMAND_MODIFY;
+	case DICTIONARY_UNDO:
+		return COMMAND_UNDO;
+	case DICTIONARY_REDO:
+		return COMMAND_UNDO;
+	case DICTIONARY_SHOW:
+		return COMMAND_SHOW;
+	case DICTIONARY_SHOWALL:
+		return COMMAND_SHOWALL;
+	default:
+		return COMMAND_NULL;
 	}
-
-	for(size_t i=0; i<dictionaryMarkCommands.size(); i++){
-		if(dictionaryMarkCommands[i]==word)
-			return COMMAND_MARK;
-	}
-
-	for(size_t i=0; i<dictionaryModifyCommands.size(); i++){
-		if(dictionaryModifyCommands[i]==word)
-			return COMMAND_MODIFY;
-	}
-
-	for(size_t i=0; i<dictionaryUndoCommands.size(); i++){
-		if(dictionaryUndoCommands[i]==word)
-			return COMMAND_UNDO;
-	}
-
-	for(size_t i=0; i<dictionaryRedoCommands.size(); i++){
-		if(dictionaryRedoCommands[i]==word)
-			return COMMAND_REDO;
-	}
-
-	for(size_t i=0; i<dictionaryShowCommands.size(); i++){
-		if(dictionaryShowCommands[i]==word)
-			return COMMAND_SHOW;
-	}
-
-	return COMMAND_NULL;
 }
 bool Parser::scanMarkerDictionary(string word)
 {

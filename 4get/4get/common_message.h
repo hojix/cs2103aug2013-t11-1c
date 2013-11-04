@@ -186,9 +186,10 @@ namespace Constants{
 	const int SLOT_START_TIME = 8;
 	const int SLOT_END_DATE = 9;
 	const int SLOT_END_TIME = 10;
-	const int SLOT_SLOT_NUMBER = 11;
-	const int SLOT_STATUS = 12;
-	const int SLOT_USER_RESPONSE = 13;
+	const int SLOT_SLOT_START_NUMBER = 11;
+	const int SLOT_SLOT_END_NUMBER = 12;
+	const int SLOT_STATUS = 13;
+	const int SLOT_USER_RESPONSE = 14;
 
 	//Time Container slots;
 	const int TIME_SLOT_SIZE = 10;

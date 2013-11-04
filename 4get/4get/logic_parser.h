@@ -20,6 +20,7 @@ using namespace Message;
 using namespace Constants;
 class Parser
 {
+	vector< vector<string> > dictionaryCommands;
 	vector<string> dictionaryAddCommands;
 	vector<string> dictionaryDeleteCommands;
 	vector<string> dictionaryModifyCommands;
@@ -27,6 +28,7 @@ class Parser
 	vector<string> dictionaryUndoCommands;
 	vector<string> dictionaryRedoCommands;
 	vector<string> dictionaryShowCommands;
+	vector<string> dictionaryShowAllCommands;
 	vector<string> dictionaryDates;
 	vector<string> dictionaryMonth;
 	vector<string> dictionaryTime;
@@ -71,6 +73,14 @@ private:
 	static const string MARKER_INCOMPLETE;
 	static const std::size_t MARKER_INCOMPLETE_LENGTH;
 
+	static const int DICTIONARY_ADD;
+	static const int DICTIONARY_DELETE;
+	static const int DICTIONARY_MODIFY;
+	static const int DICTIONARY_MARK;
+	static const int DICTIONARY_UNDO;
+	static const int DICTIONARY_REDO;
+	static const int DICTIONARY_SHOW;
+	static const int DICTIONARY_SHOWALL;
 
 	//istringstream iss;
 	string _textInput; // Main input
@@ -90,7 +100,8 @@ private:
 	string textRemind;
 	string textRemindDate;
 	string textRemindTime;
-	string textSlotNumber;
+	string textSlotStartNumber;
+	string textSlotEndNumber;
 
 public:
 	Parser();
@@ -140,6 +151,7 @@ private:
 	string getFirstWord(string input);
 	void removeFirstWord(string &input);
 	bool isParseInt(string input, int &value);
+	bool isInt(string input);
 
 	//parser dictionary setup
 	void loadDictionary();
@@ -152,7 +164,7 @@ private:
 	bool scanTimeDictionary(string);
 	bool scanDatesDictionary(string);
 	bool scanMonthDictionary(string);
-	string scanCommandDictonary(string);
+	string scanCommandDictionary(string);
 	bool scanMarkerDictionary(string);
 };
 #endif
