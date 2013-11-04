@@ -343,6 +343,9 @@ bool Parser::separateFunctionShow(vector<string>& inputBits)
 		return true;
 	}
 
+	if(!textInput.empty())
+		textDescription = _textInput;
+
 	logging(MESSAGE_ERROR_COMMAND_SHOW, Info, Pass);
 	return false;
 }
