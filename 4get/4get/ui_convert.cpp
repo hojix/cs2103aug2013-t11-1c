@@ -36,26 +36,11 @@ void UiConvert::printItem(System::Windows::Forms::ListViewItem^ item, list<Task*
 {
 	Task* t1 = list->front();
 	char timeBuffer[32] = "";
-	/****stub start*****/
-	/*time_t rawTime;
-	time(&rawTime);
-	tm *testTime = localtime(&rawTime);*/
-	/*****stub end*****/
 
 	System::String^ sys_index = System::Convert::ToString(taskIndex); //index
 	System::String^ sys_desc = gcnew System::String(t1->getTaskDescription().c_str()); //description
 	System::String^ sys_venue = gcnew System::String(t1->getTaskLocation().c_str()); //venue
 
-	//if(t1.getTaskStart() != NULL){
-	//	asctime_s(timeBuffer, 32, testTime);
-	//	sys_time = gcnew System::String(timeBuffer); //start time
-	//}
-	//if(t1.getTaskEnd() != NULL){
-	//	asctime_s(timeBuffer, 32, testTime);
-	//	sys_due = gcnew System::String(timeBuffer); //due
-	//}
-
-	//for when time becomes time_t
 	time_t timeAsTimeT;
 	tm*  timeAsTm=NULL;
 	System::String^ sys_time = "";
@@ -74,8 +59,6 @@ void UiConvert::printItem(System::Windows::Forms::ListViewItem^ item, list<Task*
 		asctime_s(timeBuffer, 32, timeAsTm);
 		sys_due = gcnew System::String(timeBuffer);
 	}
-	/*System::String^ sys_time = gcnew System::String(timetToStdString(t1.getTaskStart()).c_str());
-	System::String^ sys_due = gcnew System::String(timetToStdString(t1.getTaskEnd()).c_str());*/
 
 	System::String^ sys_priority = gcnew System::String(enumPriorityToStdString(t1->getTaskPriority()).c_str()); //priority
 
@@ -83,7 +66,6 @@ void UiConvert::printItem(System::Windows::Forms::ListViewItem^ item, list<Task*
 
 	item->BeginEdit();
 	item->SubItems[0]->Text = sys_index;
-	//creating item for listview
 	item->SubItems->Add(sys_desc); //add description
 	item->SubItems->Add(sys_venue); //add venue	 
 	item->SubItems->Add(sys_time); //add time

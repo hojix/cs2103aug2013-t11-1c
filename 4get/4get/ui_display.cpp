@@ -323,6 +323,7 @@ void ui_display::InitializeComponent(void){
 	this->itemDisplayLabel->Name = L"itemDisplayLabel";
 	this->itemDisplayLabel->Size = System::Drawing::Size(0, 24);
 	this->itemDisplayLabel->TabIndex = 4;
+	this->itemDisplayLabel->Text = "label is here";
 	// 
 	// ui_display
 	// 
@@ -356,7 +357,12 @@ void ui_display::InitializeComponent(void){
 }
 
 Void ui_display::timerRefresh_Tick(System::Object^  sender, System::EventArgs^  e){
-	//call executor which call task list to check if any task is overdue
+ 	try{
+		execute->refreshAll();
+	}
+	catch(string &error){
+		this->printError(error);
+	}
 }
 
 Void ui_display::notifyIcon1_DoubleClick(System::Object^  sender, System::EventArgs^  e){
@@ -539,16 +545,16 @@ Void ui_display::ui_display_KeyDown(System::Object^  sender, System::Windows::Fo
 		this->focusItem();
 	}
 	/*else if(e->Alt && e->KeyCode==Keys::D4){
-		if(this->WindowState == FormWindowState::Normal){
-			this->WindowState = FormWindowState::Minimized;
-			this->Hide();
-			this->notifyIcon1->Visible = true;
-		}
-		else if (this->WindowState == FormWindowState::Minimized){
-			this->WindowState = FormWindowState::Normal;
-			this->Show();
-			this->notifyIcon1->Visible = false;
-		}
+	if(this->WindowState == FormWindowState::Normal){
+	this->WindowState = FormWindowState::Minimized;
+	this->Hide();
+	this->notifyIcon1->Visible = true;
+	}
+	else if (this->WindowState == FormWindowState::Minimized){
+	this->WindowState = FormWindowState::Normal;
+	this->Show();
+	this->notifyIcon1->Visible = false;
+	}
 	}*/
 }
 Void ui_display::ui_display_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e){
@@ -589,11 +595,10 @@ void ui_display::focusOverdueItem(){
 	}
 }
 void ui_display::focusToDoItem(){
-	if(todoListView->Items->Count > 0){
-		if(SetFocus(todoListView)){
-			todoListView->Items[0]->Selected = true;
-		}
-	}
+	/*if(todoListView->Items->Count > 0){
+		if(todoListView->Focused){
+		SetFocus(todoListView);
+	}*/
 }
 
 bool ui_display::SetFocus(Control ^ control){
@@ -740,23 +745,21 @@ Void ui_display::printHelpMessage(){
 }
 
 Void ui_display::todoListView_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e){
-	/*list<Task*> taskList;
-	taskList = execute->getUpdatedList(activeListType);
-	*listOfTasks = taskList;
-	int size = listOfTasks->size();
-	for(int i=0; i<size; i++){
-	if(todoListView->Items[i]->Selected != true){
-		listOfTasks->pop_front();
-	}
-	else{
-		Task* task = listOfTasks->front();
 	list<Task*> taskList;
-	taskList = execute->getUpdatedList(activeListType);
+	taskList = execute->getUpdatedList(listToDo);
 	*listOfTasks = taskList;
+	ListViewItem^ item = gcnew ListViewItem;
 	int size = listOfTasks->size();
 	for(int i=0; i<size; i++){
-		Task* task = listOfTasks->front();
-
-	ListViewItem^ item = gcnew ListViewItem;
-	converter->printItem(item, listOfTasks, */
+		if(todoListView->Items[i]->Selected != true){
+			listOfTasks->pop_front();
+		}
+		else{
+			converter->printItem(item, &taskList, i+1);
+		}
+	} 
+	if(this->itemDisplayLabel->Text == "label is here")
+		this->itemDisplayLabel->Text = "hi";
+	else
+		this->itemDisplayLabel->Text = "label is here";
 }

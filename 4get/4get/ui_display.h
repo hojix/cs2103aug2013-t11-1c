@@ -33,7 +33,7 @@ namespace UIDisplay {
 	private: UiConvert* converter;
 	private: Executor* execute;
 	private: list<Task*>* listOfTasks;
-
+	private: int selectedItem;
 	private: bool loaded;
 	private: string *commandKeyword;
 
@@ -49,7 +49,7 @@ namespace UIDisplay {
 	private: System::Windows::Forms::FlowLayoutPanel^  messageContainer;
 	private: System::Windows::Forms::RichTextBox^  messageBox;
 
-	//to do list view
+			 //to do list view
 	private: System::Windows::Forms::ListView^  todoListView;
 	private: System::Windows::Forms::ColumnHeader^  tIndex;
 	private: System::Windows::Forms::ColumnHeader^  tDescription;
@@ -57,7 +57,7 @@ namespace UIDisplay {
 	private: System::Windows::Forms::ColumnHeader^  tTime;
 	private: System::Windows::Forms::ColumnHeader^  tDueDate;
 	private: System::Windows::Forms::ColumnHeader^  tPriority;
-	//completed list view
+			 //completed list view
 	private: System::Windows::Forms::ListView^  completedListView;
 	private: System::Windows::Forms::ColumnHeader^  cIndex;
 	private: System::Windows::Forms::ColumnHeader^  cDescription;
@@ -65,7 +65,7 @@ namespace UIDisplay {
 	private: System::Windows::Forms::ColumnHeader^  cTime;
 	private: System::Windows::Forms::ColumnHeader^  cDueDate;
 	private: System::Windows::Forms::ColumnHeader^  cPriority;
-	//overdue list view
+			 //overdue list view
 	private: System::Windows::Forms::ListView^  overdueListView;
 	private: System::Windows::Forms::ColumnHeader^  oIndex;
 	private: System::Windows::Forms::ColumnHeader^  oDescription;
@@ -78,76 +78,6 @@ namespace UIDisplay {
 	private: System::Windows::Forms::Timer^  timerRefresh;
 	private: System::Windows::Forms::Label^  itemDisplayLabel;
 	private: System::ComponentModel::IContainer^  components;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	private:
@@ -191,5 +121,5 @@ namespace UIDisplay {
 	private: void focusOverdueItem();
 	private: System::Void timerRefresh_Tick(System::Object^  sender, System::EventArgs^  e);
 	private: System::Void todoListView_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e);
-};
+	};
 }
