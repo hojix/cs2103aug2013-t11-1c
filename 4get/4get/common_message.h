@@ -81,7 +81,7 @@ namespace Message{
 	const string MESSAGE_ERROR_INVALID_MONTH = "Error: Month input is invalid.";
 	const string MESSAGE_ERROR_INVALID_DAY = "Error: Day input is invalid.";
 	const string MESSAGE_ERROR_MISSING_DAY = "Error: Missing day of the month";
-
+	const string MESSAGE_ERROR_LIMIT_ONE_SLOT = "Error: Please specify only one slot.";
 	const string MESSAGE_ERROR_START_AFTER_END = "Error: Start time is before end time.";
 	const string MESSAGE_ERROR_NO_END_TIME = "Error: Please enter end time for task.";
 

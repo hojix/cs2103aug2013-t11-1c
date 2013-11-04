@@ -401,6 +401,8 @@ bool Parser::separateFunctionModify(vector<string>& inputBits)
 		logging(MESSAGE_ERROR_NO_SLOT_NUM,Error,None);
 		throw MESSAGE_ERROR_NO_SLOT_NUM;
 	}
+	if(!textSlotEndNumber.empty())
+		throw MESSAGE_ERROR_LIMIT_ONE_SLOT;
 
 	determineVenue();
 	//cout << "no venue" << endl;
