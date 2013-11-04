@@ -475,15 +475,18 @@ int TaskList::getTime(time_t dateAndTime){
 void TaskList::refreshAll(time_t timeNow){
 	assert(!_toDoList.empty());
 	int listSize = _toDoList.size();
+	int marker = 0;
 	list<Task*>::iterator iterator = _toDoList.begin();
 	for(int i=0; i<listSize; i++){
 		if(isExpiredTask((*iterator),timeNow)){
 			moveTask(iterator, _toDoList, _overdueList);
 			iterator = _toDoList.begin();
-			advance(iterator,i);
+			advance(iterator,marker);
 		}
-		else
+		else{
+			marker++;
 			++iterator;
+		}
 	}
 	saveAll();
 }
