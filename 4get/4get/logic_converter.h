@@ -23,6 +23,8 @@ private:
 	vector<string> _timeVector;
 	int _dayDigit;
 	int _yearDigit;
+	bool _isNext;
+	int _matchedIndex;
 
 	enum DateTimeType{
 		dateEnum,
@@ -83,47 +85,7 @@ private:
 	static const int INDEX_OCT;
 	static const int INDEX_NOV;
 	static const int INDEX_DEC;
-
-	//static const int INDEX_TOMORROW_START;
-	//static const int INDEX_TOMORROW_END;
-	//static const int INDEX_MONDAY_START;
-	//static const int INDEX_MONDAY_END;
-	//static const int INDEX_TUESDAY_START;
-	//static const int INDEX_TUESDAY_END;
-	//static const int INDEX_WEDNESDAY_START;
-	//static const int INDEX_WEDNESDAY_END;
-	//static const int INDEX_THURSDAY_START;
-	//static const int INDEX_THURSDAY_END;
-	//static const int INDEX_FRIDAY_START;
-	//static const int INDEX_FRIDAY_END;
-	//static const int INDEX_SATURDAY_START;
-	//static const int INDEX_SATURDAY_END;
-	//static const int INDEX_SUNDAY_START;
-	//static const int INDEX_SUNDAY_END;
-	//static const int INDEX_JAN_START;
-	//static const int INDEX_JAN_END;
-	//static const int INDEX_FEB_START;
-	//static const int INDEX_FEB_END;
-	//static const int INDEX_MAR_START;
-	//static const int INDEX_MAR_END;
-	//static const int INDEX_APR_START;
-	//static const int INDEX_APR_END;
-	//static const int INDEX_MAY_START;
-	//static const int INDEX_MAY_END;
-	//static const int INDEX_JUN_START;
-	//static const int INDEX_JUN_END;
-	//static const int INDEX_JUL_START;
-	//static const int INDEX_JUL_END;
-	//static const int INDEX_AUG_START;
-	//static const int INDEX_AUG_END;
-	//static const int INDEX_SEP_START;
-	//static const int INDEX_SEP_END;
-	//static const int INDEX_OCT_START;
-	//static const int INDEX_OCT_END;
-	//static const int INDEX_NOV_START;
-	//static const int INDEX_NOV_END;
-	//static const int INDEX_DEC_START;
-	//static const int INDEX_DEC_END;
+	static const int INDEX_NXT;
 
 	static const int DAY_SUNDAY;
 	static const int DAY_MONDAY;
@@ -146,6 +108,7 @@ private:
 	static const int MONTH_NUMBER_DEC;
 	static const int TIME_SPECIFIER_LENGTH;
 	static const int TIME_PM_CORRECTION;
+	static const int DATE_NEXT_CORRECTION;
 	static const int YEAR_INT_MULTIPLIER;
 	static const int MONTH_INT_MULTIPLIER;
 	static const int DAY_INT_MULTIPLIER;
@@ -153,19 +116,18 @@ private:
 	static const string TIME_DELIMITER;
 
 	void initialiseDateDictionary();
-	void initialiseDateVector();
 	void initialiseTimeVector();
 
 	//functions to determine type of string
 	//returns true if format is in words
-	bool determineFormat(DateTimeType dateTime, string compareStr, int& index);
-	bool checkDictionary(vector<vector<string>> dictionary, string compareStr, int& index);
-	bool checkWord(vector<vector<string>> dictionary, string compareStr, int& index);
+	bool determineFormat(DateTimeType dateTime, string compareStr);
+	bool checkDictionary(vector<vector<string>> dictionary, string compareStr);
+	bool checkWord(vector<vector<string>> dictionary, string compareStr);
 	bool checkNumber(string compareStr);
 
-	void determineDate(int index, int& year, int& month, int& day);
-	void dayCorrection(int index, int& year, int& month, int& day);
-	void monthCorrection(int index, int& year, int& month, int& day);
+	void determineDate(int& year, int& month, int& day);
+	void dayCorrection(int& year, int& month, int& day);
+	void monthCorrection(int& year, int& month, int& day);
 	void declareDate(vector<string>& dateVector, int& year, int& month, int& day);
 
 	void getDate(bool isNoDate, int& year, int& month, int& day, string endDate);
@@ -190,6 +152,8 @@ private:
 	bool isEqual(string string1, const string string2);
 	bool isNumber(const string& str);
 	bool isKeyWord(vector<string> keyWordVector, string compareStr);
+
+	void saveIndex(int index);
 
 public:
 	Converter();
