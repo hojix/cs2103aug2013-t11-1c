@@ -7,6 +7,7 @@ ui_display::ui_display(){
 	converter = new UiConvert;
 	listOfTasks = new std::list<Task*>;
 	commandKeyword = new string;
+	commandKeyword->clear();
 	loaded = false;
 	activeListType = listToDo;
 	execute->setListType(activeListType);
@@ -281,6 +282,7 @@ void ui_display::InitializeComponent(void){
 	this->textboxInput->Text = L"Enter Command Here";
 	this->textboxInput->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &ui_display::textboxInput_MouseClick);
 	this->textboxInput->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &ui_display::textboxInput_KeyDown);
+	this->textboxInput->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &ui_display::textboxInput_KeyPress);
 	// 
 	// messageContainer
 	// 
@@ -566,8 +568,7 @@ Void ui_display::ui_display_KeyDown(System::Object^  sender, System::Windows::Fo
 	}*/
 }
 Void ui_display::ui_display_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e){
-	if(!textboxInput->Focused){
-		SetFocus(textboxInput);
+	if(SetFocus(textboxInput)){
 		this->textboxInput->Text = System::Convert::ToString(e->KeyChar);
 		this->textboxInput->SelectionStart = 1;
 		converter->stringSysToStdConversion(System::Convert::ToString(e->KeyChar), *commandKeyword); 
@@ -620,28 +621,21 @@ void ui_display::focusToDoItem(){
 void ui_display::printLabel(){
 	ListView::SelectedListViewItemCollection^ pdt = this->todoListView->SelectedItems;
 	ListViewItem^ item = pdt[0];
-	string newline= "\n";
 	//display selected item in product details
-	this->itemDisplayLabel->Text =item->SubItems[0]->Text->ToString();
-	//if(item->SubItems[1]->Text==""){
-		this->itemDisplayLabel->Text +=gcnew System::String(newline.c_str());
-		this->itemDisplayLabel->Text +=item->SubItems[1]->Text->ToString();
-	//}
-	//if(item->SubItems[2]->Text==""){
-		this->itemDisplayLabel->Text +=gcnew System::String(newline.c_str());
-		this->itemDisplayLabel->Text +=item->SubItems[2]->Text->ToString();
-	//}
-	//if(item->SubItems[3]->Text==""){
-		this->itemDisplayLabel->Text +=gcnew System::String(newline.c_str());
-		this->itemDisplayLabel->Text +=item->SubItems[3]->Text->ToString();
-	//}
-	//if(item->SubItems[4]->Text==""){
-		this->itemDisplayLabel->Text +=gcnew System::String(newline.c_str());
-		this->itemDisplayLabel->Text +=item->SubItems[4]->Text->ToString();
-	//}
-	//if(item->SubItems[5]->Text==""){
-		this->itemDisplayLabel->Text +=gcnew System::String(newline.c_str());
-		this->itemDisplayLabel->Text +=item->SubItems[5]->Text->ToString();
+	this->itemDisplayLabel->Text = TAG_NAME;
+	this->itemDisplayLabel->Text +=item->SubItems[1]->Text->ToString();
+	this->itemDisplayLabel->Text += NEWLINE;
+	this->itemDisplayLabel->Text += TAG_LOCATION;
+	this->itemDisplayLabel->Text +=item->SubItems[2]->Text->ToString();
+	this->itemDisplayLabel->Text += NEWLINE;
+	this->itemDisplayLabel->Text += TAG_START_TIME;
+	this->itemDisplayLabel->Text +=item->SubItems[3]->Text->ToString();
+	this->itemDisplayLabel->Text += NEWLINE;
+	this->itemDisplayLabel->Text += TAG_END_TIME;
+	this->itemDisplayLabel->Text +=item->SubItems[4]->Text->ToString();
+	this->itemDisplayLabel->Text += NEWLINE;
+	this->itemDisplayLabel->Text += TAG_PRIORITY;
+	this->itemDisplayLabel->Text +=item->SubItems[5]->Text->ToString();
 	//}
 }
 
@@ -649,11 +643,13 @@ Void ui_display::todoListView_ItemActivate(System::Object^  sender, System::Even
 	this->printLabel();
 }
 
-void ui_display::SetFocus(Control ^ control){
+bool ui_display::SetFocus(Control ^ control){
 	if(!(control->Focused)){
 		control->Focus();
 		selectedItem=0;
+		return true;
 	}
+	return false;
 }
 
 Void ui_display::textboxInput_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e){
@@ -679,9 +675,14 @@ Void ui_display::tabContainer_Selected(System::Object^  sender, System::Windows:
 	}
 }
 Void ui_display::textboxInput_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e){
-	if(commandKeyword->size() < 3){
+	if(commandKeyword->size() < 3 ){
+		//MessageBox::Show("keypress inside");
 		commandKeyword->clear();
 		converter->stringSysToStdConversion(this->textboxInput->Text, *commandKeyword);
+		if(iswalpha(e->KeyChar)){
+			commandKeyword->push_back((char)e->KeyChar);
+			//MessageBox::Show("alpha keypress");
+		}
 	}
 	this->checkInput();
 }
@@ -691,7 +692,8 @@ Void ui_display::textboxInput_KeyDown(System::Object^  sender, System::Windows::
 		if(e->KeyCode == Keys::Enter){
 			commandKeyword->clear();
 			this->printHelpMessage();
-			this->passUserInput();
+			if(!this->textboxInput->Text->Empty)
+				this->passUserInput();
 			this->textboxInput->Clear();
 			this->printList();
 		}
@@ -699,6 +701,7 @@ Void ui_display::textboxInput_KeyDown(System::Object^  sender, System::Windows::
 
 			if(this->textboxInput->Text->Length <= 1){
 				this->printHelpMessage();
+
 			}
 			else{
 				commandKeyword->clear();
@@ -709,6 +712,7 @@ Void ui_display::textboxInput_KeyDown(System::Object^  sender, System::Windows::
 				commandKeyword->pop_back();
 				this->checkInput();
 			}
+
 		}
 		else if(e->KeyCode == Keys::Down || e->KeyCode == Keys::Up){
 			focusItem();
@@ -721,12 +725,13 @@ Void ui_display::textboxInput_KeyDown(System::Object^  sender, System::Windows::
 
 Void ui_display::checkInput(){
 	if(commandKeyword->size()==3){
-		array<String ^> ^  emptyLines ={};
-		this->messageBox->Lines=emptyLines;
+		/*array<String ^> ^  emptyLines ={};
+		this->messageBox->Lines=emptyLines;*/
+		//MessageBox::Show("check input");
 		if(*commandKeyword == "add" || *commandKeyword == "cre"){
 			this->printAddMessage();
 		}
-		else if(*commandKeyword == "del"){
+		else if(*commandKeyword == "del" || *commandKeyword == "rem"){
 			this->printDelMessage();
 		}
 		else if(*commandKeyword == "mod"){
@@ -740,52 +745,49 @@ Void ui_display::checkInput(){
 }
 Void ui_display::printAddMessage(){
 	array<String ^> ^  addLines ={
-		"add <task description>",
-		",at <venue>",
-		",from <start time of timed task>",
-		",to <end time of timed task>",
-		",by <due time>",
-		",remind on <reminder time>",
-		",repeat <daily, weekly or monthly>",
-		",!"
+		COMMAND_ADD_HELP,
+		COMMAND_ADD_HELP_LOCATION,
+		COMMAND_ADD_HELP_START,
+		COMMAND_ADD_HELP_END,
+		COMMAND_ADD_HELP_DUE,
+		COMMAND_ADD_HELP_REMIND,
+		COMMAND_ADD_HELP_PRIORITY
 	};
 	this->messageBox->Lines= addLines;
 }
 Void ui_display::printDelMessage(){
 	array<String ^> ^  delLines ={
-		"del <task index>"
+		COMMAND_DEL_HELP,
+		COMMAND_DEL_HELP_MULTIPLE
 	};
 	this->messageBox->Lines= delLines;
 }
 Void ui_display::printModMessage(){
 	array<String ^> ^  modLines ={
-		"mod <taskindex> <task description>",
-		",at <venue>",
-		",from <start time of timed task>",
-		",to <end time of timed task>",
-		",by <due time>",
-		",remind on <reminder time>",
-		",repeat <daily, weekly or monthly>",
-		",!"
+		COMMAND_MOD_HELP,
+		COMMAND_MOD_HELP_LOCATION,
+		COMMAND_MOD_HELP_START,
+		COMMAND_MOD_HELP_END,
+		COMMAND_MOD_HELP_DUE,
+		COMMAND_MOD_HELP_REMIND,
+		COMMAND_MOD_HELP_PRIORITY
 	};
 	this->messageBox->Lines= modLines;
 }
 Void ui_display::printMarMessage(){
 	array<String ^> ^  markLines ={
-		"mark <taskindex> <status>",
-		" ",
-		"statuses available:",
-		"	done / completed",
-		"	undone / incomplete"
+		COMMAND_MARK_HELP,
+		COMMAND_MARK_HELP_MULTIPLE
 	};
 	this->messageBox->Lines = markLines;
 }
 Void ui_display::printHelpMessage(){
 	array<String ^> ^  helpLines = {
-		"type \"add\" to add a task",
-		"type \"del\" to delete a task",
-		"type \"mod\" to modify a task",
-		"type \"mark\" to change the status of a task"
+		MESSAGE_HELP_ADD,
+		MESSAGE_HELP_DEL,
+		MESSAGE_HELP_MOD,
+		MESSAGE_HELP_MARK,
+		MESSAGE_HELP_SEARCH
 	};
 	this->messageBox->Lines = helpLines;
 }
