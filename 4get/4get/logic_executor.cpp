@@ -258,9 +258,9 @@ bool Executor::modifyFunction(vector<string> vectorOfInputs){
 		storeIntoUndoTaskStack(*taskTemp);
 		description = vectorOfInputs[SLOT_DESCRIPTION];
 		location = vectorOfInputs[SLOT_LOCATION];
-		reminderTime = convert.convertStringToTime(vectorOfInputs[SLOT_REMIND_DATE], vectorOfInputs[SLOT_REMIND_TIME]);
-		startTime = convert.convertStringToTime(vectorOfInputs[SLOT_START_DATE], vectorOfInputs[SLOT_START_TIME]);
-		endTime = convert.convertStringToTime(vectorOfInputs[SLOT_END_DATE], vectorOfInputs[SLOT_END_TIME]);
+		reminderTime = convert.convertStringToTime(vectorOfInputs[SLOT_REMIND_DATE], vectorOfInputs[SLOT_REMIND_TIME], false);
+		startTime = convert.convertStringToTime(vectorOfInputs[SLOT_START_DATE], vectorOfInputs[SLOT_START_TIME], true);
+		endTime = convert.convertStringToTime(vectorOfInputs[SLOT_END_DATE], vectorOfInputs[SLOT_END_TIME], false);
 		priority = convert.convertStringToPriority(vectorOfInputs[SLOT_PRIORITY]);
 		repeat = convert.convertStringToRepeatType(vectorOfInputs[SLOT_REPEAT]);
 
@@ -566,8 +566,8 @@ bool Executor::searchFunction(vector<string> vectorOfInputs){
 
 		searchDescription =  vectorOfInputs[SLOT_DESCRIPTION];
 		searchLocation = vectorOfInputs[SLOT_LOCATION];
-		searchStartT = convert.convertStringToTime(vectorOfInputs[SLOT_START_DATE], vectorOfInputs[SLOT_START_TIME]);
-		searchEndT = convert.convertStringToTime(vectorOfInputs[SLOT_END_DATE], vectorOfInputs[SLOT_END_TIME]);
+		searchStartT = convert.convertStringToTime(vectorOfInputs[SLOT_START_DATE], vectorOfInputs[SLOT_START_TIME], true);
+		searchEndT = convert.convertStringToTime(vectorOfInputs[SLOT_END_DATE], vectorOfInputs[SLOT_END_TIME], false);
 
 		if(!vectorOfInputs[SLOT_DESCRIPTION].empty()){
 			taskList.searchDescription(searchDescription);
@@ -681,7 +681,7 @@ bool Executor::setParameters(string &description,
 
 									 priority = convert.convertStringToPriority(prioritySlot);
 									 repeat = convert.convertStringToRepeatType(repeatSlot);
-									 reminderTime = convert.convertStringToTime(reminderDateSlot, reminderTimeSlot);
+									 reminderTime = convert.convertStringToTime(reminderDateSlot, reminderTimeSlot, false);
 									 typeOfTask = convert.convertStringToTime(startDateSlot, 
 										 startTimeSlot, 
 										 endDateSlot, 
