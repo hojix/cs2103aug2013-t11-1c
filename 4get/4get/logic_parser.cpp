@@ -415,13 +415,13 @@ bool Parser::separateFunctionModify(vector<string>& inputBits)
 	determineRepeat();
 	determinePriority();
 	determineReminder();
-	if(!textInput.empty() && textInput != MARKER_SPACE){
-		textDescription = _textInput;
-		logging(MESSAGE_SUCCESS_PARSED, Info, Pass);
-		return true;
-	}
+	//if(!textInput.empty() && textInput != MARKER_SPACE){
+	textDescription = _textInput;
+	logging(MESSAGE_SUCCESS_PARSED, Info, Pass);
+	return true;
+	//}
 
-	throw MESSAGE_ERROR_NO_DESCRIPTION;
+	//throw MESSAGE_ERROR_NO_DESCRIPTION;
 }
 bool Parser::separateFunctionUndo(vector<string>& inputBits)
 {
@@ -733,7 +733,7 @@ bool Parser::determinePriority()
 	bool isPriorityDetermined = !textPriority.empty();
 	if(!isPriorityDetermined){
 		if(textInput.rfind(MARKER_PRIORITY)!=std::string::npos){
-			found = textInput.find(MARKER_PRIORITY);
+			found = textInput.rfind(MARKER_PRIORITY);
 			if(textInput.find(MARKER_ENCLOSE, found+MARKER_PRIORITY_LENGTH)!=std::string::npos){
 				foundEnclose = textInput.find(MARKER_ENCLOSE, found+MARKER_PRIORITY_LENGTH);
 				extractLength = determindExtractLength(found, foundEnclose, MARKER_PRIORITY, extractStartPos);
@@ -745,7 +745,7 @@ bool Parser::determinePriority()
 			else{
 				extractStartPos = found;
 				textPriority = _textInput.substr(++extractStartPos);
-				shortenInput(found, MARKER_PRIORITY_LENGTH);
+				shortenInput(found, stringLength);
 				return true;
 			}
 		}
@@ -894,10 +894,10 @@ bool Parser::determineSlot()
 			return true;
 		}
 		else if(count == 2){
-		found = textInput.find(temp);
-		extractEndPos = --found;
-		shortenInput(extractStartPos, extractEndPos);
-		return true;
+			found = textInput.find(temp);
+			extractEndPos = --found;
+			shortenInput(extractStartPos, extractEndPos);
+			return true;
 
 		}
 		else if(count == 1){
@@ -1558,6 +1558,10 @@ bool Parser::parseTimeAndDate(string& str, string& strDate, string& strTime)
 				strTime = _stringCheck;
 				timeDetermined = true;
 				continue;
+			}
+			else{
+				logging(MESSAGE_ERROR_WRONG_TIME_FORMAT,Error,None);
+				throw MESSAGE_ERROR_WRONG_TIME_FORMAT;
 			}
 		}
 		else{
