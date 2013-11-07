@@ -19,7 +19,7 @@ bool Executor::stringCollector(string task){
 bool Executor::receive(string usercommand, vector<string> vectorOfInputs){
 	try{
 		Command commandType = determineCommandType(usercommand);
-		if(!(commandType == commandRedo || commandType == commandUndo)){
+		if(!(commandType == commandRedo || commandType == commandUndo || commandType == commandShow || commandType == commandShowAll)){
 			storeIntoUndoCommandStack(commandType); 
 			undoListTypeStack.push(listType);
 		}
@@ -352,7 +352,8 @@ bool Executor::modifyFunction(vector<string> vectorOfInputs){
 			string location = taskTemp->getTaskLocation();
 			Priority priority = taskTemp->getTaskPriority();
 			RepeatType repeat = taskTemp->getTaskRepeat();
-			time_t reminderTime = taskTemp->getTaskReminder();		
+			time_t reminderTime = taskTemp->getTaskReminder();	
+			time_t endTime = taskTemp->getTaskEnd();
 			taskNew = new TaskTimed(id, 
 				description, 
 				location, 
