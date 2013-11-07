@@ -32,11 +32,11 @@ namespace UIDisplay {
 
 #pragma region initialise
 	private: UiConvert* converter;
-	private: Executor* execute;
-	private: list<Task*>* listOfTasks;
-	private: int selectedItem;
-	private: bool loaded;
-	private: string *commandKeyword;
+			 Executor* execute;
+			 list<Task*>* listOfTasks;
+			 int selectedItem;
+			 bool loaded, up;
+			 string *commandKeyword;
 
 	private: static String^ TAG_NAME = "Name: ";
 			 static String^ TAG_LOCATION = "Location: ";
@@ -151,14 +151,15 @@ namespace UIDisplay {
 	private: System::Void ui_display_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e);
 	private: System::Void notifyIcon1_DoubleClick(System::Object^  sender, System::EventArgs^  e);
 	private: System::Void ui_display_Resize(System::Object^  sender, System::EventArgs^  e);
-	private: void focusItem();
-	private: void focusToDoItem();
-	private: void focusCompletedItem();
-	private: void focusOverdueItem();
+			 /*private: void focusItem();
+			 private: void focusToDoItem();
+			 private: void focusCompletedItem();
+			 private: void focusOverdueItem();*/
 	private: System::Void timerRefresh_Tick(System::Object^  sender, System::EventArgs^  e);
-	private: System::Void todoListView_ItemActivate(System::Object^  sender, System::EventArgs^  e);
-	private: System::Void completedListView_ItemActivate(System::Object^  sender, System::EventArgs^  e);
-	private: System::Void overdueListView_ItemActivate(System::Object^  sender, System::EventArgs^  e);	
+			 /*private: System::Void todoListView_ItemActivate(System::Object^  sender, System::EventArgs^  e);
+			 private: System::Void completedListView_ItemActivate(System::Object^  sender, System::EventArgs^  e);
+			 private: System::Void overdueListView_ItemActivate(System::Object^  sender, System::EventArgs^  e);	*/
 	private: void printLabel(ListViewItem^ item);
+	private: void focusList(ListType activeListType);
 	};
 }
