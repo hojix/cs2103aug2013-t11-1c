@@ -59,9 +59,13 @@ bool Executor::setListType(ListType uiListType)
 bool Executor::receive(string usercommand, vector<string> vectorOfInputs){
 	try{
 		Command commandType = determineCommandType(usercommand);
-		if(!(commandType == commandRedo || commandType == commandUndo || commandType == commandShow || commandType == commandShowAll)){
+		if(!(commandType == commandRedo || commandType == commandUndo || commandType == commandShow || commandType == commandShowAll || commandType == commandAdd)){
 			storeIntoUndoCommandStack(commandType); 
 			undoListTypeStack.push(listType);
+		}
+		if(commandType == commandAdd){
+			storeIntoUndoCommandStack(commandType);
+			undoListTypeStack.push(listToDo);
 		}
 		if(commandType != commandRedo && commandType != commandUndo){
 			if(!redoCommandStack.empty()){
