@@ -171,6 +171,7 @@ bool Executor::deleteFunction(vector<string> vectorOfInputs){
 			deleteSize;
 		deleteStartNumber = convert.convertStringToInt(vectorOfInputs[SLOT_SLOT_START_NUMBER]);
 		if (deleteStartNumber < ONE){
+			undoCommandStack.pop();
 			throw string(MESSAGE_ERROR_COMMAND_DELETE);
 		}
 		if(!vectorOfInputs[SLOT_SLOT_END_NUMBER].empty()){
@@ -212,6 +213,7 @@ bool Executor::markFunction(vector<string> vectorOfInputs){
 
 		markStartNumber = convert.convertStringToInt(vectorOfInputs[SLOT_SLOT_START_NUMBER]);
 		if(markStartNumber < ONE){
+			undoCommandStack.pop();
 			throw string(MESSAGE_ERROR_COMMAND_MARK);
 		}
 		if(!vectorOfInputs[SLOT_SLOT_END_NUMBER].empty()){
@@ -259,7 +261,9 @@ bool Executor::modifyFunction(vector<string> vectorOfInputs){
 		Priority priority;
 		RepeatType repeat;
 		TaskType typeOfOldTask;
-		bool flag = false;
+		bool downgradeEndTime = false;
+		bool downgradeStartTime = false;
+		bool flagModify = false;
 
 		modifyNumber = convert.convertStringToInt(vectorOfInputs[SLOT_SLOT_START_NUMBER]);
 		if(modifyNumber < ONE){
@@ -267,11 +271,11 @@ bool Executor::modifyFunction(vector<string> vectorOfInputs){
 		}
 		for(int i = SLOT_DESCRIPTION; i < SLOT_SIZE; i++){
 			if(!vectorOfInputs[i].empty()){
-				flag = true;
+				flagModify = true;
 				break;
 			}
 		}
-		if(flag == false){
+		if(flagModify == false){
 			throw string(MESSAGE_ERROR_COMMAND_MODIFY);
 		}
 		taskTemp = taskList.obtainTask(modifyNumber);
@@ -279,8 +283,18 @@ bool Executor::modifyFunction(vector<string> vectorOfInputs){
 		storeIntoUndoTaskStack(*taskTemp);
 		description = vectorOfInputs[SLOT_DESCRIPTION];
 		location = vectorOfInputs[SLOT_LOCATION];
-		startTime = convert.convertStringToTime(vectorOfInputs[SLOT_START_DATE], vectorOfInputs[SLOT_START_TIME], true);
-		endTime = convert.convertStringToTime(vectorOfInputs[SLOT_END_DATE], vectorOfInputs[SLOT_END_TIME], false);
+		if(vectorOfInputs[SLOT_START_DATE] != "*"){
+			startTime = convert.convertStringToTime(vectorOfInputs[SLOT_START_DATE], vectorOfInputs[SLOT_START_TIME], true);
+		}
+		if(vectorOfInputs[SLOT_END_DATE] != "*"){
+			endTime = convert.convertStringToTime(vectorOfInputs[SLOT_END_DATE], vectorOfInputs[SLOT_END_TIME], false);
+		}
+		if(vectorOfInputs[SLOT_START_DATE] == "*"){
+			downgradeStartTime = true;
+		}
+		if(vectorOfInputs[SLOT_END_DATE] == "*"){
+			downgradeEndTime = true;
+		}
 		priority = convert.convertStringToPriority(vectorOfInputs[SLOT_PRIORITY]);
 		repeat = convert.convertStringToRepeatType(vectorOfInputs[SLOT_REPEAT]);
 
@@ -369,8 +383,49 @@ bool Executor::modifyFunction(vector<string> vectorOfInputs){
 			taskList.addToList(taskNew, listType);
 		}
 		//change deadline task to floating
+		if(typeOfOldTask == deadline && downgradeEndTime){
+			id = taskTemp->getTaskId();									//set another task
+			string description = taskTemp->getTaskDescription();
+			string location = taskTemp->getTaskLocation();
+			Priority priority = taskTemp->getTaskPriority();
+			RepeatType repeat = taskTemp->getTaskRepeat();
+			taskNew = new TaskFloating(id,
+				description,
+				location,
+				priority);
+			taskList.deleteIndexFromList(modifyNumber, true);
+			taskList.addToList(taskNew, listType);
+		}
 		//change timed to deadline 
+		if(typeOfOldTask == timed && downgradeStartTime && !downgradeEndTime){
+			id = taskTemp->getTaskId();									//set another task
+			string description = taskTemp->getTaskDescription();
+			string location = taskTemp->getTaskLocation();
+			Priority priority = taskTemp->getTaskPriority();
+			RepeatType repeat = taskTemp->getTaskRepeat();
+			time_t endTime = taskTemp->getTaskEnd();
+			taskNew = new TaskDeadline(id,
+				description, 
+				location, 
+				priority,
+				repeat, 
+				endTime);
+			taskList.deleteIndexFromList(modifyNumber, true);
+			taskList.addToList(taskNew, listType);
+		}
 		//change timed to floating
+		if(typeOfOldTask == timed && downgradeStartTime && downgradeEndTime){
+			id = taskTemp->getTaskId();									//set another task
+			string description = taskTemp->getTaskDescription();
+			string location = taskTemp->getTaskLocation();
+			Priority priority = taskTemp->getTaskPriority();
+			taskNew = new TaskFloating(id,
+				description,
+				location,
+				priority);
+			taskList.deleteIndexFromList(modifyNumber, true);
+			taskList.addToList(taskNew, listType);
+		}
 		return true;
 	}catch(string error){
 		throw;
