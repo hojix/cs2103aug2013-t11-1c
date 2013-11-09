@@ -52,14 +52,17 @@ private:
 	stack<ListType> redoListTypeStack;
 	ListType listType;
 	Task* createTaskPtr(Task taskToCreate);
-	static const int ONE;
+	static const int LEAST_INDEX;
+	static const int SIZE_CORRECTION;
 	static const int ID_MULTIPLIER;
+	static const string DOWNGRADE_INDICATOR;
+	static const string LOGGING_MESSAGE_STRINGCOLLECTOR;
 
 public:
 	//constructor
 	Executor();
 
-	//UI call these functions
+	//Functions to be used by UI
 	bool stringCollector(string task);
 	void refreshAll();
 	bool receive(string command, vector<string> vectorOfInputs);
@@ -96,6 +99,7 @@ public:
 						vector<string> &vectorOfInputs);
 	int swapValueAndGetSizeFunction(int start, int end);
 	int getSizeFunction(int start, int end);
+	
 	//assertions
 	void assertNotEmptyTask();
 };

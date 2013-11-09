@@ -1,17 +1,24 @@
 /*
- * =====================================================================================
- *
- *       Filename:  logic_executor.cpp
- *
- *         Author:  POH HUAN YU (A0101831X), a0101831@nus.edu.sg
- *   Organization:  NUS, School of Computing
- *
- * =====================================================================================
- */
+* =====================================================================================
+*
+*       Filename:  logic_executor.cpp
+*
+*         Author:  POH HUAN YU (A0101831X), a0101831@nus.edu.sg
+*   Organization:  NUS, School of Computing
+*
+* =====================================================================================
+*/
 #include "logic_executor.h"
 
-const int Executor::ONE = 1;
+const int Executor::LEAST_INDEX = 1;
+const int Executor::SIZE_CORRECTION = 1;
 const int Executor::ID_MULTIPLIER = 1000;
+const string Executor::DOWNGRADE_INDICATOR = "*";
+const string Executor::LOGGING_MESSAGE_STRINGCOLLECTOR = "Number of times UI call stringCollector";
+
+/*************************************
+PUBLIC FUNCTIONS                      
+*************************************/
 
 Executor::Executor(){
 	refreshAll();
@@ -21,7 +28,7 @@ bool Executor::stringCollector(string task){
 		vector<string> vectorOfInputs(SLOT_SIZE);
 		parser.parseInput(task, (vectorOfInputs));
 		if(receive(vectorOfInputs[SLOT_COMMAND], vectorOfInputs)){
-			logging("Number of times UI call stringCollector", Info, Pass);
+			logging(LOGGING_MESSAGE_STRINGCOLLECTOR, Info, Pass);
 			return true;
 		}
 		else{ 
@@ -170,7 +177,7 @@ bool Executor::deleteFunction(vector<string> vectorOfInputs){
 			deleteEndNumber,
 			deleteSize;
 		deleteStartNumber = convert.convertStringToInt(vectorOfInputs[SLOT_SLOT_START_NUMBER]);
-		if (deleteStartNumber < ONE){
+		if (deleteStartNumber < LEAST_INDEX){
 			undoCommandStack.pop();
 			throw string(MESSAGE_ERROR_COMMAND_DELETE);
 		}
@@ -202,6 +209,9 @@ bool Executor::deleteFunction(vector<string> vectorOfInputs){
 		}
 		return true;
 	}catch(string error){
+		if(error == MESSAGE_ERROR_INVALID_INDEX){
+			undoCommandStack.pop();
+		}
 		throw;
 	}
 }
@@ -212,7 +222,7 @@ bool Executor::markFunction(vector<string> vectorOfInputs){
 		int	markSize;
 
 		markStartNumber = convert.convertStringToInt(vectorOfInputs[SLOT_SLOT_START_NUMBER]);
-		if(markStartNumber < ONE){
+		if(markStartNumber < LEAST_INDEX){
 			undoCommandStack.pop();
 			throw string(MESSAGE_ERROR_COMMAND_MARK);
 		}
@@ -244,6 +254,9 @@ bool Executor::markFunction(vector<string> vectorOfInputs){
 		}
 		return true;
 	}catch (string errorStr){
+		if(errorStr == MESSAGE_ERROR_INVALID_INDEX){
+			undoCommandStack.pop();
+		}
 		throw;
 	}
 }
@@ -257,7 +270,7 @@ bool Executor::modifyFunction(vector<string> vectorOfInputs){
 		string description, 
 			location;
 		time_t startTime, 
-			   endTime;
+			endTime;
 		Priority priority;
 		RepeatType repeat;
 		TaskType typeOfOldTask;
@@ -266,7 +279,8 @@ bool Executor::modifyFunction(vector<string> vectorOfInputs){
 		bool flagModify = false;
 
 		modifyNumber = convert.convertStringToInt(vectorOfInputs[SLOT_SLOT_START_NUMBER]);
-		if(modifyNumber < ONE){
+		if(modifyNumber < LEAST_INDEX){
+			undoCommandStack.pop();
 			throw string(MESSAGE_ERROR_COMMAND_MODIFY);
 		}
 		for(int i = SLOT_DESCRIPTION; i < SLOT_SIZE; i++){
@@ -283,16 +297,16 @@ bool Executor::modifyFunction(vector<string> vectorOfInputs){
 		storeIntoUndoTaskStack(*taskTemp);
 		description = vectorOfInputs[SLOT_DESCRIPTION];
 		location = vectorOfInputs[SLOT_LOCATION];
-		if(vectorOfInputs[SLOT_START_DATE] != "*"){
+		if(vectorOfInputs[SLOT_START_DATE] != DOWNGRADE_INDICATOR){
 			startTime = convert.convertStringToTime(vectorOfInputs[SLOT_START_DATE], vectorOfInputs[SLOT_START_TIME], true);
 		}
-		if(vectorOfInputs[SLOT_END_DATE] != "*"){
+		if(vectorOfInputs[SLOT_END_DATE] != DOWNGRADE_INDICATOR){
 			endTime = convert.convertStringToTime(vectorOfInputs[SLOT_END_DATE], vectorOfInputs[SLOT_END_TIME], false);
 		}
-		if(vectorOfInputs[SLOT_START_DATE] == "*"){
+		if(vectorOfInputs[SLOT_START_DATE] == DOWNGRADE_INDICATOR){
 			downgradeStartTime = true;
 		}
-		if(vectorOfInputs[SLOT_END_DATE] == "*"){
+		if(vectorOfInputs[SLOT_END_DATE] == DOWNGRADE_INDICATOR){
 			downgradeEndTime = true;
 		}
 		priority = convert.convertStringToPriority(vectorOfInputs[SLOT_PRIORITY]);
@@ -384,7 +398,7 @@ bool Executor::modifyFunction(vector<string> vectorOfInputs){
 		}
 		//change deadline task to floating
 		if(typeOfOldTask == deadline && downgradeEndTime){
-			id = taskTemp->getTaskId();									//set another task
+			id = taskTemp->getTaskId();									
 			string description = taskTemp->getTaskDescription();
 			string location = taskTemp->getTaskLocation();
 			Priority priority = taskTemp->getTaskPriority();
@@ -398,7 +412,7 @@ bool Executor::modifyFunction(vector<string> vectorOfInputs){
 		}
 		//change timed to deadline 
 		if(typeOfOldTask == timed && downgradeStartTime && !downgradeEndTime){
-			id = taskTemp->getTaskId();									//set another task
+			id = taskTemp->getTaskId();									
 			string description = taskTemp->getTaskDescription();
 			string location = taskTemp->getTaskLocation();
 			Priority priority = taskTemp->getTaskPriority();
@@ -415,7 +429,7 @@ bool Executor::modifyFunction(vector<string> vectorOfInputs){
 		}
 		//change timed to floating
 		if(typeOfOldTask == timed && downgradeStartTime && downgradeEndTime){
-			id = taskTemp->getTaskId();									//set another task
+			id = taskTemp->getTaskId();									
 			string description = taskTemp->getTaskDescription();
 			string location = taskTemp->getTaskLocation();
 			Priority priority = taskTemp->getTaskPriority();
@@ -428,6 +442,9 @@ bool Executor::modifyFunction(vector<string> vectorOfInputs){
 		}
 		return true;
 	}catch(string error){
+		if(error == MESSAGE_ERROR_INVALID_INDEX){
+			undoCommandStack.pop();
+		}
 		throw;
 	}
 }
@@ -761,9 +778,6 @@ bool Executor::setParameters(string &description,
 									 throw;
 								 }
 }
-void Executor::assertNotEmptyTask(){
-	assert(taskGlobal != NULL);
-}
 Task* Executor::createTaskPtr(Task taskToCreate){
 	try{
 		Task* taskPtr;
@@ -846,9 +860,12 @@ int Executor::swapValueAndGetSizeFunction(int start, int end){
 	temp = end;
 	end = start;
 	start = temp;
-	return size = end - start + ONE;
+	return size = end - start + SIZE_CORRECTION;
 }
 int Executor::getSizeFunction(int start, int end){
 	int size;
-	return size = end - start + ONE;
+	return size = end - start + SIZE_CORRECTION;
+}
+void Executor::assertNotEmptyTask(){
+	assert(taskGlobal != NULL);
 }
