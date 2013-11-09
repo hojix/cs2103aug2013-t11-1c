@@ -91,7 +91,6 @@ private:
 	Task*  getNewTask();
 	Task*  constructTask(TaskType taskType, string IDString);
 
-
 	//Functions to convert to string
 	string convertToStr(tm* time);
 	string convertToStr(time_t time);

@@ -1,13 +1,13 @@
 /*
- * =====================================================================================
- *
- *       Filename:  storage.cpp
- *
- *         Author:  KOH WEN YAO (A0097210M), kwenyao@nus.edu.sg
- *   Organization:  NUS, School of Computing
- *
- * =====================================================================================
- */
+* =====================================================================================
+*
+*       Filename:  storage.cpp
+*
+*         Author:  KOH WEN YAO (A0097210M), kwenyao@nus.edu.sg
+*   Organization:  NUS, School of Computing
+*
+* =====================================================================================
+*/
 
 #include "storage.h"
 
@@ -55,21 +55,29 @@ void Storage::clearFile(ListType listType){
 
 void Storage::save(const list<Task*>& list, ListType listType){
 	string fileName;
-	fileName = determineFile(listType);
-	writeFileSetup(fileName, ios_base::trunc);
-	saveList(list);
-	closeFileWrite();
+	try{
+		fileName = determineFile(listType);
+		writeFileSetup(fileName, ios_base::trunc);
+		saveList(list);
+		closeFileWrite();
+	} catch (string errString) {
+		throw;
+	}
 }
 
 void Storage::load(list<Task*>& list,ListType listType ){
-	string fileName = determineFile(listType);
-	readFileSetup(fileName);
-	loadIntoList(list);
-	closeFileRead();
+	try{
+		string fileName = determineFile(listType);
+		readFileSetup(fileName);
+		loadIntoList(list);
+		closeFileRead();
+	} catch (string errString) {
+		throw;
+	}
 }
 
 /*************************************
-           PRIVATE FUNCTIONS            
+          PRIVATE FUNCTIONS            
 *************************************/
 
 string Storage::determineFile(ListType listType){
@@ -99,9 +107,13 @@ void Storage::saveList(const list<Task*>& listToSave){
 	list<Task*>::const_iterator endOfList;
 	iterator = listToSave.begin();
 	endOfList = listToSave.end();
-	while(iterator != endOfList){
-		saveTaskToFile(**iterator);	
-		++iterator;
+	try{
+		while(iterator != endOfList){
+			saveTaskToFile(**iterator);	
+			++iterator;
+		}
+	} catch (string errString) {
+		throw;
 	}
 }
 

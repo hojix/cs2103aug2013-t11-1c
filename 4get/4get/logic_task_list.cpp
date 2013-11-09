@@ -376,7 +376,7 @@ void TaskList::searchSetup(){
 	_currentDisplayed = listFiltered;
 	if(_activeList->empty())
 		throw string(Message::MESSAGE_ERROR_LIST_EMPTY);
-	searchIterator = _activeList->begin();
+	_searchIterator = _activeList->begin();
 }
 
 void TaskList::populateFilteredList(AttributeType attrType, string searchStr){
@@ -385,8 +385,8 @@ void TaskList::populateFilteredList(AttributeType attrType, string searchStr){
 	assert(listSize != 0);
 	for(int i=0; i<listSize; i++){
 		if(isEqual(attrType, searchStr))
-			_filteredList.push_back(*searchIterator);
-		++searchIterator;
+			_filteredList.push_back(*_searchIterator);
+		++_searchIterator;
 	}
 	if(_filteredList.empty())
 		throw string(Message::MESSAGE_NO_SEARCH_RESULT);
@@ -399,8 +399,8 @@ void TaskList::populateFilteredList(AttributeType attrType, time_t searchTime, S
 	assert(listSize != 0);
 	for(int i=0; i<listSize; i++){
 		if(isEqual(attrType, searchTime, searchType))
-			_filteredList.push_back(*searchIterator);
-		++searchIterator;
+			_filteredList.push_back(*_searchIterator);
+		++_searchIterator;
 	}
 	_isFiltered = true;
 }
@@ -431,10 +431,10 @@ bool TaskList::isEqual(AttributeType attType, string searchStr){
 	string compareStr;
 	switch (attType){
 	case Enum::descriptionAttr:
-		compareStr = (*searchIterator)->getTaskDescription();
+		compareStr = (*_searchIterator)->getTaskDescription();
 		break;
 	case Enum::locationAttr:
-		compareStr = (*searchIterator)->getTaskLocation();
+		compareStr = (*_searchIterator)->getTaskLocation();
 		break;
 	default:
 		return false;
@@ -446,10 +446,10 @@ bool TaskList::isEqual(AttributeType attType, time_t searchTime, SearchTimeType 
 	time_t compareTime;
 	switch (attType){
 	case Enum::startAttr:
-		compareTime = (*searchIterator)->getTaskStart();
+		compareTime = (*_searchIterator)->getTaskStart();
 		break;
 	case Enum::endAttr:
-		compareTime = (*searchIterator)->getTaskEnd();
+		compareTime = (*_searchIterator)->getTaskEnd();
 		break;
 	default:
 		return false;
@@ -544,4 +544,9 @@ void TaskList::clearList(ListType listType){
 			delete *iterator;
 	}
 	listToClear->clear();
+}
+
+int TaskList::getCurrentListSize(){
+	list<Task*>* currentList = determineList(_currentDisplayed);
+	return currentList->size();
 }

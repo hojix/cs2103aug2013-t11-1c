@@ -32,7 +32,7 @@ private:
 	list<Task*> _filteredList;
 	list<Task*> _tempList;
 	list<Task*>* _activeList;
-	list<Task*>::iterator searchIterator;
+	list<Task*>::iterator _searchIterator;
 	Storage _storage;
 	ListType _currentDisplayed;
 	ListType _actualList;
