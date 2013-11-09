@@ -97,6 +97,19 @@ private:
 	static const string REPEAT_EVERY;
 	static const string REPEAT_NULL;
 
+	static const int SLOT_COUNT_1;
+	static const int SLOT_COUNT_2;
+	static const int SPACE_DIFF_0;
+	static const int SPACE_DIFF_3;
+	static const int LENGTH_0;
+	static const int LENGTH_3;
+	static const int LENGTH_4;
+	static const int LENGTH_5;
+	static const int LENGTH_6;
+	static const int LENGTH_10;
+	static const int LENGTH_11;
+	static const int DATE_MAX;
+
 	//istringstream iss;
 	string _textInput; // Main input
 	string textInput; // lower case input

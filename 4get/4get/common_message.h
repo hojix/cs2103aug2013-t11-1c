@@ -184,6 +184,7 @@ namespace Constants{
 	const int COMPARE_SUCCESS = 0;
 	const int FOUND_SUCCESS = 0;
 	const int FOUND_FAILED = -1;
+	const int IS_COMPARE_FAIL = 0;
 
 	//Initializer
 	const string INITIALIZE_STRING_BLANK = "";

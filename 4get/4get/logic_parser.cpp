@@ -69,6 +69,20 @@ const string Parser::REPEAT_EVERY_YEAR = "every year";
 const string Parser::REPEAT_EVERY = "every";
 const string Parser::REPEAT_NULL = "";
 
+const int Parser::SLOT_COUNT_1 = 1;
+const int Parser::SLOT_COUNT_2 = 2;
+const int Parser::SPACE_DIFF_0 = 0;
+const int Parser::SPACE_DIFF_3 = 3;
+const int Parser::LENGTH_0 = 0;
+const int Parser::LENGTH_3 = 3;
+const int Parser::LENGTH_4 = 4;
+const int Parser::LENGTH_5 = 5;
+const int Parser::LENGTH_6 = 6;
+const int Parser::LENGTH_10 = 10;
+const int Parser::LENGTH_11 = 11;
+const int Parser::DATE_MAX = 31;
+
+
 /*************************************
 PUBLIC FUNCTIONS            
 *************************************/
@@ -746,7 +760,7 @@ bool Parser::determineSlot()
 		if(scanMarkerDictionary(temp) && temp!=MARKER_TO) // this statement handles if the word is keyword
 			break;
 		else{
-			if (temp==MARKER_TO && count == 2)
+			if (temp==MARKER_TO && count == SLOT_COUNT_2)
 				hasRange = true;
 			else if(hasRange && startSlotFilled && isParseInt(temp, slotNumber)){
 				textSlotEndNumber = to_string(slotNumber);
@@ -764,14 +778,14 @@ bool Parser::determineSlot()
 			shortenInput(extractStartPos, extractEndPos);
 			return true;
 		}
-		else if(count == 2){
+		else if(count == SLOT_COUNT_2){
 			found = textInput.find(temp);
 			extractEndPos = --found;
 			shortenInput(extractStartPos, extractEndPos);
 			return true;
 
 		}
-		else if(count == 1){
+		else if(count == SLOT_COUNT_1){
 			found = textInput.find(temp);
 			extractEndPos = found+1;
 			shortenInput(extractStartPos, extractEndPos);
@@ -1183,17 +1197,17 @@ bool Parser::parseTimeAndDate(string& str, string& strDate, string& strTime)
 		}
 
 		if(!dateDetermined){
-			if(stringLength > 0 && stringLength < 3 && !dateDayDetermine){					// Date Format: 7 or 07  => Date day fragment, expect Date month fragment 
-				int i = 0;
+			if(stringLength > LENGTH_0 && stringLength < LENGTH_3 && !dateDayDetermine){					// Date Format: 7 or 07  => Date day fragment, expect Date month fragment 
+				int i = INITIALIZE_INT;
 				while(i != stringLength){
-					isDigit = isdigit(stringCheck[i]) != 0;
+					isDigit = isdigit(stringCheck[i]) != IS_COMPARE_FAIL;
 					if(!isDigit){
 						logging(MESSAGE_ERROR_WRONG_DATE_IS_NOT_DIGIT,Error,None);
 						throw MESSAGE_ERROR_WRONG_DATE_IS_NOT_DIGIT;
 					}
 					i++;
 				}
-				if(atoi(stringCheck.c_str()) > 31){						// Date Format: Date cannot be more than 31
+				if(atoi(stringCheck.c_str()) > DATE_MAX){						// Date Format: Date cannot be more than 31
 					logging(MESSAGE_ERROR_WRONG_DATE,Error,None);
 					throw MESSAGE_ERROR_WRONG_DATE;
 				}
@@ -1205,7 +1219,7 @@ bool Parser::parseTimeAndDate(string& str, string& strDate, string& strTime)
 				dateDayDetermine = true;
 				continue;
 			}
-			else if(stringLength >= 3 && stringLength < 6) {				// Date Format: 1/2 || 01/02 || 1/2/3 || MONTH_SHORT_WORD || YYYY
+			else if(stringLength >= LENGTH_3 && stringLength < LENGTH_6) {				// Date Format: 1/2 || 01/02 || 1/2/3 || MONTH_SHORT_WORD || YYYY
 				if(stringCheck.find(TIMER_SLASH)!=string::npos){	
 					foundLeft = stringCheck.find(TIMER_SLASH);
 					if(stringCheck.rfind(TIMER_SLASH)!=string::npos){	
@@ -1238,10 +1252,10 @@ bool Parser::parseTimeAndDate(string& str, string& strDate, string& strTime)
 						}
 					}
 				}
-				else if (stringLength < 5 && scanMonthDictionary(stringCheck)){								// Date Format: May or Sept  => Date month fragment, expect Date day fragment
-					int i = 0;
+				else if (stringLength < LENGTH_5 && scanMonthDictionary(stringCheck)){								// Date Format: May or Sept  => Date month fragment, expect Date day fragment
+					int i = INITIALIZE_INT;
 					while(i != stringLength){
-						isChar = isalpha(stringCheck[i]) != 0;
+						isChar = isalpha(stringCheck[i]) != IS_COMPARE_FAIL;
 						if(!isChar){
 							logging(MESSAGE_ERROR_WRONG_DATE_FORMAT_MONTH,Error,None);
 							throw MESSAGE_ERROR_WRONG_DATE_FORMAT_MONTH;
@@ -1256,10 +1270,10 @@ bool Parser::parseTimeAndDate(string& str, string& strDate, string& strTime)
 					dateMonthDetermined = true;
 					continue;
 				}
-				else if(stringLength == 4 && isdigit(stringCheck.front()) && !(stringCheck.find(TIME_ANTE_MERIDIAN)!=string::npos || stringCheck.find(TIME_POST_MERIDIAN)!=string::npos)){
-					int i = 0;
+				else if(stringLength == LENGTH_4 && isdigit(stringCheck.front()) && !(stringCheck.find(TIME_ANTE_MERIDIAN)!=string::npos || stringCheck.find(TIME_POST_MERIDIAN)!=string::npos)){
+					int i = INITIALIZE_INT;
 					while(i != stringLength){
-						isDigit = isdigit(stringCheck[i]) != 0;
+						isDigit = isdigit(stringCheck[i]) != IS_COMPARE_FAIL;
 						if(!isDigit){
 							logging(MESSAGE_ERROR_WRONG_DATE_FORMAT_YEAR,Error,None);
 							throw MESSAGE_ERROR_WRONG_DATE_FORMAT_YEAR;
@@ -1288,12 +1302,12 @@ bool Parser::parseTimeAndDate(string& str, string& strDate, string& strTime)
 					continue;
 				}
 			}
-			else if(stringLength >= 6 && stringLength < 11){				// Date Format: 1/2/13 == 01/02/2013 || MONTH_FULL_WORD
+			else if(stringLength >= LENGTH_6 && stringLength < LENGTH_11){				// Date Format: 1/2/13 == 01/02/2013 || MONTH_FULL_WORD
 				if(stringCheck.find(TIMER_SLASH)!=string::npos){	
 					foundLeft = stringCheck.find(TIMER_SLASH);
 					if(stringCheck.rfind(TIMER_SLASH)!=string::npos){	
 						foundRight = stringCheck.rfind(TIMER_SLASH);
-						if((foundRight-foundLeft)<3 && (foundRight-foundLeft)>0){
+						if((foundRight-foundLeft)<SPACE_DIFF_3 && (foundRight-foundLeft)>SPACE_DIFF_0){
 							strDate = _stringCheck;							// Date Format: 1/2/13 => Shorter representation of date with year
 							dateDetermined = true;
 							continue;
@@ -1313,7 +1327,7 @@ bool Parser::parseTimeAndDate(string& str, string& strDate, string& strTime)
 					foundLeft = stringCheck.find(TIMER_DASH);
 					if(stringCheck.rfind(TIMER_DASH)!=string::npos){	
 						foundRight = stringCheck.rfind(TIMER_DASH);
-						if((foundRight-foundLeft)<3 && (foundRight-foundLeft)>0){
+						if((foundRight-foundLeft)<SPACE_DIFF_3 && (foundRight-foundLeft)>SPACE_DIFF_0){
 							strDate = _stringCheck;							// Date Format: 1-2-13 => Shorter representation of date
 							dateDetermined = true;
 							continue;
@@ -1328,10 +1342,10 @@ bool Parser::parseTimeAndDate(string& str, string& strDate, string& strTime)
 						throw MESSAGE_ERROR_WRONG_DATE_FORMAT_NOT_2_DASH;
 					}
 				}
-				else if (stringLength < 10 && scanMonthDictionary(stringCheck)){								// Date Format: January or September  => Date month fragment, expect Date day fragment
+				else if (stringLength < LENGTH_10 && scanMonthDictionary(stringCheck)){								// Date Format: January or September  => Date month fragment, expect Date day fragment
 					int i = INITIALIZE_INT;
 					while(i != stringLength){
-						isChar = isalpha(stringCheck[i]) != false;
+						isChar = isalpha(stringCheck[i]) != IS_COMPARE_FAIL;
 						if(!isChar){
 							logging(MESSAGE_ERROR_WRONG_DATE_FORMAT_MONTH,Error,None);
 							throw MESSAGE_ERROR_WRONG_DATE_FORMAT_MONTH;
@@ -1407,7 +1421,7 @@ bool Parser::parseTimeAndDate(string& str, string& strDate, string& strTime)
 				}
 			}
 			else if(stringLength==TIMER_24HR_LENGTH) {
-				int i = 0;
+				int i = INITIALIZE_INT;
 				bool is24hr = stringCheck.find(TIMER_HR)!=string::npos;
 				while(i<TIMER_24_LENGTH && is24hr){
 					if(!isdigit(stringCheck[i]))
@@ -1476,7 +1490,7 @@ bool Parser::parseTimeAndDate(string& str, string& strDate, string& strTime)
 void Parser::toLowerCase(string &str)
 {
 	const int length = str.length();
-	for(int i=0; i < length; ++i)
+	for(int i=INITIALIZE_INT; i < length; ++i)
 	{
 		str[i] = tolower(str[i]);
 	}
@@ -1504,7 +1518,7 @@ void Parser::removeFirstWord(string &input)
 bool Parser::isParseInt(string input, int &value)
 {	
 	int stringLength = input.size();
-	int i = 0;
+	int i = INITIALIZE_INT;
 	bool isDigit = isInt(input);
 	if(isDigit){
 		value = atoi(input.c_str());
@@ -1517,10 +1531,10 @@ bool Parser::isParseInt(string input, int &value)
 bool Parser::isInt(string input)
 {
 	int stringLength = input.size();
-	int i = 0;
+	int i = INITIALIZE_INT;
 	bool isDigit = true;
 	while(i != stringLength){
-		isDigit = isdigit(input[i]) != 0;
+		isDigit = isdigit(input[i]) != IS_COMPARE_FAIL;
 		if(!isDigit){
 			return isDigit;
 		}
