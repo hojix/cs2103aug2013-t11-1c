@@ -800,7 +800,7 @@ size_t Parser::determindExtractLength(size_t partitionStart,
 	else
 		shiftPos = markConstant.size();
 
-	extractStartPos = partitionStart + (++shiftPos); //shift the pos to first pos of text to be extracted.
+	extractStartPos = partitionStart + (shiftPos); //shift the pos to first pos of text to be extracted.
 	extractEndPos = partitionEnd;
 
 	return extractEndPos - extractStartPos;
@@ -1129,7 +1129,7 @@ bool Parser::parseTimeAndDate(string& str, string& strDate, string& strTime)
 	bool isChar = false;
 	bool isDigit = false;
 
-	if(str.empty())
+	if(str.empty() || str==TIMER_SPACE)
 		return true;
 	while(!buffer.eof()){
 		buffer >> _stringCheck;
