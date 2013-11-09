@@ -54,11 +54,11 @@ namespace UIDisplay {
 
 			 static String^ HIGH_PRIORITY_NAME = "high";
 
-			 static String^ TAG_NAME = "Name: ";
+			/* static String^ TAG_NAME = "Name: ";
 			 static String^ TAG_LOCATION = "Location: ";
 			 static String^ TAG_START_TIME = "Start Time: ";
 			 static String^ TAG_END_TIME = "End Time: ";
-			 static String^ TAG_PRIORITY = "Priority: ";
+			 static String^ TAG_PRIORITY = "Priority: ";*/
 			 static String^ NEWLINE = "\n";
 
 			 static String^ COMMAND_ADD_HELP = "add <task description>";
@@ -126,14 +126,14 @@ namespace UIDisplay {
 	private: System::Windows::Forms::TabPage^  tabCompleted;
 	private: System::Windows::Forms::TabPage^  tabOverdue;
 	private: System::Windows::Forms::TextBox^  textboxInput;
-	private: System::Windows::Forms::FlowLayoutPanel^  inputContainer;
+
 
 			 //feedback message box
-	private: System::Windows::Forms::FlowLayoutPanel^  messageContainer;
-	private: System::Windows::Forms::RichTextBox^  messageBox;
+
+
 
 			 //label that display task details
-	private: System::Windows::Forms::Label^  itemDisplayLabel;
+
 
 			 //to do list view
 	private: System::Windows::Forms::ListView^  todoListView;
@@ -161,6 +161,23 @@ namespace UIDisplay {
 private: System::Windows::Forms::ColumnHeader^  tStartTime;
 private: System::Windows::Forms::ColumnHeader^  cStartTime;
 private: System::Windows::Forms::ColumnHeader^  oStartTime;
+private: System::Windows::Forms::RichTextBox^  messageBox;
+private: System::Windows::Forms::GroupBox^  labelContainer;
+private: System::Windows::Forms::Label^  labelTagPriority;
+private: System::Windows::Forms::Label^  labelTagEndTime;
+private: System::Windows::Forms::Label^  labelTagStartTime;
+private: System::Windows::Forms::Label^  labelTagVenue;
+private: System::Windows::Forms::Label^  labelTagDesc;
+private: System::Windows::Forms::Label^  labelTaskPriority;
+
+private: System::Windows::Forms::Label^  labelTaskEndTime;
+
+private: System::Windows::Forms::Label^  labelTaskStartTime;
+
+private: System::Windows::Forms::Label^  labelTaskVenue;
+
+private: System::Windows::Forms::Label^  labelTaskDesc;
+
 
 	private: System::ComponentModel::IContainer^  components;
 
@@ -185,6 +202,7 @@ private: System::Windows::Forms::ColumnHeader^  oStartTime;
 			 void printCompletedList();
 			 void printOverdueList();
 			 void passUserInput();
+			 void changeLabelColour(String^ priority);
 			 void printLabel(ListViewItem^ item);
 			 void printError(string error);
 			 System::Void printAddMessage();
