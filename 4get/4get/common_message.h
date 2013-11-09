@@ -94,6 +94,9 @@ namespace Message{
 	const string MESSAGE_ERROR_INVALID_INDEX = "Error: Please enter a valid task index.";
 	const string MESSAGE_ERROR_INVALID_LIST_TYPE = "Error: Invalid list type.";
 	const string MESSAGE_ERROR_NO_DOUBLE_REPEATS = "Error: Unable to set 2 repeats in one input.";
+	const string MESSAGE_ERROR_START_TIME_MORE_THAN_END_TIME = "Error: Start time should not be later than end time.";
+	const string MESSAGE_ERROR_END_TIME_LESS_THAN_START_TIME = "Error: End Time should not be earlier than start time.";
+	const string MESSAGE_ERROR_INVALID_SIZE = "Error: Invalid range of task requested.";
 
 	const string MESSAGE_NO_SEARCH_RESULT = "Search yielded no results. Please try other keywords.";
 

@@ -19,7 +19,6 @@ const string Executor::LOGGING_MESSAGE_STRINGCOLLECTOR = "Number of times UI cal
 /*************************************
           PUBLIC FUNCTIONS                      
 *************************************/
-
 Executor::Executor(){
 	refreshAll();
 }
@@ -38,6 +37,24 @@ bool Executor::stringCollector(string task){
 		throw;
 	}
 }
+list<Task*> Executor::getUpdatedList(ListType listType){
+	return taskList.obtainList(listType);
+}
+void Executor::refreshAll(){
+	try{
+		taskList.refreshAll(convert.getNow());
+	}catch (string Error){
+		throw;
+	}
+}
+bool Executor::setListType(ListType uiListType)
+{
+	listType = uiListType;
+	return true;
+}
+/*************************************
+           PRIVATE FUNCTIONS            
+*************************************/
 bool Executor::receive(string usercommand, vector<string> vectorOfInputs){
 	try{
 		Command commandType = determineCommandType(usercommand);
@@ -100,9 +117,6 @@ Enum::Command Executor::determineCommandType (string commandTypeString){
 		return Command::commandShowAll;
 	else
 		throw string(MESSAGE_ERROR_WRONG_KEYWORD);
-}
-list<Task*> Executor::getUpdatedList(ListType listType){
-	return taskList.obtainList(listType);
 }
 bool Executor::adderFunction(vector<string> vectorOfInputs){
 	try{
@@ -175,10 +189,14 @@ bool Executor::deleteFunction(vector<string> vectorOfInputs){
 	try{
 		int deleteStartNumber,
 			deleteEndNumber,
-			deleteSize;
+			deleteSize,
+			listSize;
+
+		listSize = taskList.getCurrentListSize();
 		deleteStartNumber = convert.convertStringToInt(vectorOfInputs[SLOT_SLOT_START_NUMBER]);
 		if (deleteStartNumber < LEAST_INDEX){
 			undoCommandStack.pop();
+			undoListTypeStack.pop();
 			throw string(MESSAGE_ERROR_COMMAND_DELETE);
 		}
 		if(!vectorOfInputs[SLOT_SLOT_END_NUMBER].empty()){
@@ -187,10 +205,20 @@ bool Executor::deleteFunction(vector<string> vectorOfInputs){
 		if(!vectorOfInputs[SLOT_SLOT_END_NUMBER].empty()){
 			if(deleteEndNumber > deleteStartNumber){
 				deleteSize = getSizeFunction(deleteStartNumber, deleteEndNumber);
+				if(deleteSize > listSize){
+					undoCommandStack.pop();
+					undoListTypeStack.pop();
+					throw string(MESSAGE_ERROR_INVALID_SIZE);
+				}
 				undoDeleteNumberStack.push(deleteSize);
 			}
 			else if(deleteEndNumber < deleteStartNumber){
 				deleteSize = swapValueAndGetSizeFunction(deleteStartNumber, deleteEndNumber);
+				if(deleteSize > listSize){
+					undoCommandStack.pop();
+					undoListTypeStack.pop();
+					throw string(MESSAGE_ERROR_INVALID_SIZE);
+				}
 				undoDeleteNumberStack.push(deleteSize);
 			}
 		}
@@ -211,6 +239,11 @@ bool Executor::deleteFunction(vector<string> vectorOfInputs){
 	}catch(string error){
 		if(error == MESSAGE_ERROR_INVALID_INDEX){
 			undoCommandStack.pop();
+			undoListTypeStack.pop();
+		}
+		if(error == MESSAGE_ERROR_INVALID_ID){
+			undoCommandStack.pop();
+			undoListTypeStack.pop();
 		}
 		throw;
 	}
@@ -220,7 +253,9 @@ bool Executor::markFunction(vector<string> vectorOfInputs){
 		int markStartNumber;
 		int	markEndNumber;
 		int	markSize;
-
+		int listSize;
+		
+		listSize = taskList.getCurrentListSize();
 		markStartNumber = convert.convertStringToInt(vectorOfInputs[SLOT_SLOT_START_NUMBER]);
 		if(markStartNumber < LEAST_INDEX){
 			undoCommandStack.pop();
@@ -232,10 +267,20 @@ bool Executor::markFunction(vector<string> vectorOfInputs){
 		if(!vectorOfInputs[SLOT_SLOT_END_NUMBER].empty()){
 			if(markEndNumber > markStartNumber){
 				markSize = getSizeFunction(markStartNumber, markEndNumber);
+				if(markSize > listSize){
+					undoCommandStack.pop();
+					undoListTypeStack.pop();
+					throw string(MESSAGE_ERROR_INVALID_SIZE);
+				}
 				undoMarkNumberStack.push(markSize);
 			}
 			else if(markEndNumber < markStartNumber){
 				markSize = swapValueAndGetSizeFunction(markStartNumber, markEndNumber);
+				if(markSize > listSize){
+					undoCommandStack.pop();
+					undoListTypeStack.pop();
+					throw string(MESSAGE_ERROR_INVALID_SIZE);
+				}
 				undoMarkNumberStack.push(markSize);
 			}
 		}
@@ -256,6 +301,7 @@ bool Executor::markFunction(vector<string> vectorOfInputs){
 	}catch (string errorStr){
 		if(errorStr == MESSAGE_ERROR_INVALID_INDEX){
 			undoCommandStack.pop();
+			undoListTypeStack.pop();
 		}
 		throw;
 	}
@@ -326,10 +372,16 @@ bool Executor::modifyFunction(vector<string> vectorOfInputs){
 			taskList.saveToDoList();
 		}
 		if(!vectorOfInputs[SLOT_START_TIME].empty() || !vectorOfInputs[SLOT_START_DATE].empty()){
+			if(startTime > taskTemp->getTaskEnd()){
+				throw string(MESSAGE_ERROR_START_TIME_MORE_THAN_END_TIME);
+			}
 			taskTemp->setTaskStart(startTime);
 			taskList.saveToDoList();
 		}
 		if(!vectorOfInputs[SLOT_END_TIME].empty() || !vectorOfInputs[SLOT_END_DATE].empty()){
+			if(endTime < taskTemp->getTaskStart()){
+				throw string(MESSAGE_ERROR_END_TIME_LESS_THAN_START_TIME);
+			}
 			taskTemp->setTaskEnd(endTime);
 			taskList.saveToDoList();
 		}
@@ -364,6 +416,9 @@ bool Executor::modifyFunction(vector<string> vectorOfInputs){
 			string location = taskTemp->getTaskLocation();
 			Priority priority = taskTemp->getTaskPriority();
 			RepeatType repeat = taskTemp->getTaskRepeat();
+			if(startTime > endTime){
+				throw string(MESSAGE_ERROR_START_TIME_MORE_THAN_END_TIME);
+			}
 			taskNew = new TaskTimed(id, 
 				description, 
 				location, 
@@ -384,7 +439,7 @@ bool Executor::modifyFunction(vector<string> vectorOfInputs){
 			RepeatType repeat = taskTemp->getTaskRepeat();
 			time_t endTime = taskTemp->getTaskEnd();
 			if(startTime > endTime){
-				throw string(MESSAGE_ERROR_COMMAND_MODIFY);
+				throw string(MESSAGE_ERROR_START_TIME_MORE_THAN_END_TIME);
 			}
 			taskNew = new TaskTimed(id, 
 				description, 
@@ -444,6 +499,7 @@ bool Executor::modifyFunction(vector<string> vectorOfInputs){
 	}catch(string error){
 		if(error == MESSAGE_ERROR_INVALID_INDEX){
 			undoCommandStack.pop();
+			undoListTypeStack.pop();
 		}
 		throw;
 	}
@@ -730,11 +786,6 @@ bool Executor::storeIntoRedoCommandStack(Command command){
 	redoCommandStack.push(command);
 	return true;
 }
-bool Executor::setListType(ListType uiListType)
-{
-	listType = uiListType;
-	return true;
-}
 bool Executor::setParameters(string &description,
 							 string &location,
 							 Priority &priority,
@@ -843,13 +894,6 @@ void Executor::helperMarkFunction(int markStartNumber){
 		storeIntoUndoTaskStack(taskTemp);
 		taskList.markDone(markStartNumber);
 	}catch(string error){
-		throw;
-	}
-}
-void Executor::refreshAll(){
-	try{
-		taskList.refreshAll(convert.getNow());
-	}catch (string Error){
 		throw;
 	}
 }

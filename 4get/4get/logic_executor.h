@@ -31,7 +31,6 @@ using namespace Message;
 using namespace Enum;
 using namespace Constants;
 
-
 class Executor
 {
 private:
@@ -58,18 +57,9 @@ private:
 	static const string DOWNGRADE_INDICATOR;
 	static const string LOGGING_MESSAGE_STRINGCOLLECTOR;
 
-public:
-	//constructor
-	Executor();
-
-	//Functions to be used by UI
-	bool stringCollector(string task);
-	void refreshAll();
+	//Functions to be executed
 	bool receive(string command, vector<string> vectorOfInputs);
 	Command determineCommandType (string commandTypeString); 
-	list<Task*> getUpdatedList(ListType listType);
-
-	//Functions to be executed
 	bool adderFunction(vector<string> vectorOfInputs);
 	bool modifyFunction(vector<string> vectorOfInputs);
 	bool deleteFunction(vector<string> vectorOfInputs);
@@ -88,7 +78,7 @@ public:
 	bool storeIntoUndoCommandStack(Command command);
 	bool storeIntoRedoTaskStack(Task taskTemp);
 	bool storeIntoRedoCommandStack(Command command);
-	bool setListType(ListType listType);
+	
 	bool setParameters(string &description, 
 						string &location, 
 						Priority &priority,
@@ -102,5 +92,15 @@ public:
 	
 	//assertions
 	void assertNotEmptyTask();
+
+public:
+	//constructor
+	Executor();
+
+	//Functions to be used by UI
+	bool stringCollector(string task);
+	void refreshAll();
+	list<Task*> getUpdatedList(ListType listType);
+	bool setListType(ListType listType);
 };
 #endif
