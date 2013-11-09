@@ -1136,6 +1136,13 @@ bool Parser::parseTimeAndDate(string& str, string& strDate, string& strTime)
 		if(dateDayDetermine && dateMonthDetermined && dateYearDetermine)
 			dateDetermined = dateDayDetermine && dateMonthDetermined && dateYearDetermine; // if components of date are determined, turn dateDetermined as true
 
+		if(stringCheck==TIMER_REMOVE_TIME){
+			strDate = TIMER_REMOVE_TIME;
+			strTime = TIMER_REMOVE_TIME;
+			dateDetermined = true;
+			timeDetermined = true;
+			return true;
+		}
 		/*scanResult = scanRepeatDictionary(stringCheck);
 		if(scanResult!=REPEAT_NULL && !foundRepeat){
 		repeatCheck = scanResult;

@@ -196,6 +196,7 @@ namespace Constants{
 
 
 	//parser timer constants
+	const string TIMER_REMOVE_TIME = "*";
 	const string TIMER_SLASH = "/";
 	const string TIMER_SPACE = " ";
 	const string TIMER_DASH = "-";
