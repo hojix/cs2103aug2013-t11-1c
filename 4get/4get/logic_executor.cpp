@@ -187,8 +187,7 @@ bool Executor::adderFunction(vector<string> vectorOfInputs){
 		taskList.addToList(taskGlobal, listToDo);
 		return true;
 	}catch(string error){
-		undoCommandStack.pop();
-		undoListTypeStack.pop();
+		undoCorrector();
 		throw;
 	}
 }
@@ -239,8 +238,7 @@ bool Executor::deleteFunction(vector<string> vectorOfInputs){
 		}
 		return true;
 	}catch(string error){
-			undoCommandStack.pop();
-			undoListTypeStack.pop();
+			undoCorrector();
 		throw;
 	}
 }
@@ -293,8 +291,7 @@ bool Executor::markFunction(vector<string> vectorOfInputs){
 		}
 		return true;
 	}catch (string errorStr){
-			undoCommandStack.pop();
-			undoListTypeStack.pop();
+			undoCorrector();
 		throw;
 	}
 }
@@ -491,8 +488,7 @@ bool Executor::modifyFunction(vector<string> vectorOfInputs){
 		}
 		return true;
 	}catch(string error){
-		undoCommandStack.pop();
-		undoListTypeStack.pop();
+		undoCorrector();
 		throw;
 	}
 }
@@ -762,21 +758,21 @@ long long Executor::retrieveTaskID(){
 
 	return ID = time(&msec);
 }
-bool Executor::storeIntoUndoTaskStack(Task taskTemp){
+void Executor::storeIntoUndoTaskStack(Task taskTemp){
 	undoTaskStack.push(taskTemp);
-	return true;
 }
-bool Executor::storeIntoUndoCommandStack(Command command){
+void Executor::storeIntoUndoCommandStack(Command command){
 	undoCommandStack.push(command);
-	return true;
 }
-bool Executor::storeIntoRedoTaskStack(Task taskTemp){
+void Executor::storeIntoRedoTaskStack(Task taskTemp){
 	redoTaskStack.push(taskTemp);
-	return true;
 }
-bool Executor::storeIntoRedoCommandStack(Command command){
+void Executor::storeIntoRedoCommandStack(Command command){
 	redoCommandStack.push(command);
-	return true;
+}
+void Executor::undoCorrector(){
+	undoCommandStack.pop();
+	undoListTypeStack.pop();
 }
 bool Executor::setParameters(string &description,
 							 string &location,
@@ -868,13 +864,12 @@ Task* Executor::createTaskPtr(Task taskToCreate){
 		throw;
 	}
 }
-bool Executor::helperDeleteFunction(int deleteStartNumber){
+void Executor::helperDeleteFunction(int deleteStartNumber){
 	try{
 		Task taskTemp;
 		taskTemp = *taskList.obtainTask(deleteStartNumber);
 		storeIntoUndoTaskStack(taskTemp);
-		taskList.deleteIndexFromList(deleteStartNumber, true);
-		return true;
+		taskList.deleteIndexFromList(deleteStartNumber, true);	
 	}catch(string error){
 		throw;
 	}

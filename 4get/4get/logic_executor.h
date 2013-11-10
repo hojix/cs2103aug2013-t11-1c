@@ -73,13 +73,13 @@ private:
 	//helper functions
 	bool isEqual(string str1, const string str2);
 	long long retrieveTaskID();
-	bool helperDeleteFunction(int deleteStartNumber);
+	void helperDeleteFunction(int deleteStartNumber);
 	void helperMarkFunction(int markStartNumber);
-	bool storeIntoUndoTaskStack(Task taskTemp);
-	bool storeIntoUndoCommandStack(Command command);
-	bool storeIntoRedoTaskStack(Task taskTemp);
-	bool storeIntoRedoCommandStack(Command command);
-	
+	void storeIntoUndoTaskStack(Task taskTemp);
+	void storeIntoUndoCommandStack(Command command);
+	void storeIntoRedoTaskStack(Task taskTemp);
+	void storeIntoRedoCommandStack(Command command);
+	void undoCorrector();
 	bool setParameters(string &description, 
 						string &location, 
 						Priority &priority,
