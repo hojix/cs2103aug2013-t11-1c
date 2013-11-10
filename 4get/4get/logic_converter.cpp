@@ -11,20 +11,21 @@
 
 #include "logic_converter.h"
 
-const string Converter::REPEAT_DAILY = "daily";
-const string Converter::REPEAT_WEEKLY = "weekly";
+const string Converter::REPEAT_DAILY         = "daily";
+const string Converter::REPEAT_WEEKLY        = "weekly";
 const string Converter::REPEAT_FORGHTNIGHTLY = "fortnightly";
-const string Converter::REPEAT_MONTHLY = "monthly";
-const string Converter::REPEAT_ANNUALLY = "annually";
-const string Converter::REPEAT_YEARLY = "yearly";
-const string Converter::PRIORITY_HIGH = "!";
+const string Converter::REPEAT_MONTHLY       = "monthly";
+const string Converter::REPEAT_ANNUALLY      = "annually";
+const string Converter::REPEAT_YEARLY        = "yearly";
+
+const string Converter::PRIORITY_HIGH  = "!";
 const string Converter::PRIORITY_HIGH2 = "high";
 
-const int Converter::DEFAULT_END_HOUR = 23;
-const int Converter::DEFAULT_END_MIN = 59;
+const int Converter::DEFAULT_END_HOUR   = 23;
+const int Converter::DEFAULT_END_MIN    = 59;
 const int Converter::DEFAULT_START_HOUR = 0;
-const int Converter::DEFAULT_START_MIN = 0;
-const int Converter::YEAR_21_CENTURY = 2000;
+const int Converter::DEFAULT_START_MIN  = 0;
+const int Converter::YEAR_21_CENTURY    = 2000;
 
 const int Converter::COMPLETE_DATE_VECTOR_SIZE = 3;
 
@@ -59,13 +60,14 @@ const int Converter::INDEX_NOV = 19;
 const int Converter::INDEX_DEC = 20;
 const int Converter::INDEX_NXT = 21;
 
-const int Converter::DAY_SUNDAY = 0;
-const int Converter::DAY_MONDAY = 1;
-const int Converter::DAY_TUESDAY = 2;
+const int Converter::DAY_SUNDAY    = 0;
+const int Converter::DAY_MONDAY    = 1;
+const int Converter::DAY_TUESDAY   = 2;
 const int Converter::DAY_WEDNESDAY = 3;
-const int Converter::DAY_THURSDAY = 4;
-const int Converter::DAY_FRIDAY = 5;
-const int Converter::DAY_SATURDAY = 6;
+const int Converter::DAY_THURSDAY  = 4;
+const int Converter::DAY_FRIDAY    = 5;
+const int Converter::DAY_SATURDAY  = 6;
+
 const int Converter::MONTH_NUMBER_JAN = 1;
 const int Converter::MONTH_NUMBER_FEB = 2;
 const int Converter::MONTH_NUMBER_MAR = 3;
@@ -80,11 +82,14 @@ const int Converter::MONTH_NUMBER_NOV = 11;
 const int Converter::MONTH_NUMBER_DEC = 12;
 
 const int Converter::TIME_SPECIFIER_LENGTH = 2;
-const int Converter::TIME_PM_CORRECTION = 12;
+
+const int Converter::TIME_PM_CORRECTION   = 12;
 const int Converter::DATE_NEXT_CORRECTION = 7;
-const int Converter::YEAR_INT_MULTIPLIER = 10000;
+
+const int Converter::YEAR_INT_MULTIPLIER  = 10000;
 const int Converter::MONTH_INT_MULTIPLIER = 100;
-const int Converter::DAY_INT_MULTIPLIER = 1;
+const int Converter::DAY_INT_MULTIPLIER   = 1;
+
 const string Converter::DATE_DELIMITER = "/-";
 const string Converter::TIME_DELIMITER = ":.";
 

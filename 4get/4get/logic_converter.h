@@ -55,6 +55,7 @@ private:
 	static const string REPEAT_MONTHLY;
 	static const string REPEAT_ANNUALLY;
 	static const string REPEAT_YEARLY;
+
 	static const string PRIORITY_HIGH;
 	static const string PRIORITY_HIGH2;
 
@@ -103,6 +104,7 @@ private:
 	static const int DAY_THURSDAY;
 	static const int DAY_FRIDAY;
 	static const int DAY_SATURDAY;
+
 	static const int MONTH_NUMBER_JAN;
 	static const int MONTH_NUMBER_FEB;
 	static const int MONTH_NUMBER_MAR;
@@ -115,12 +117,16 @@ private:
 	static const int MONTH_NUMBER_OCT;
 	static const int MONTH_NUMBER_NOV; 
 	static const int MONTH_NUMBER_DEC;
+
 	static const int TIME_SPECIFIER_LENGTH;
+
 	static const int TIME_PM_CORRECTION;
 	static const int DATE_NEXT_CORRECTION;
+
 	static const int YEAR_INT_MULTIPLIER;
 	static const int MONTH_INT_MULTIPLIER;
 	static const int DAY_INT_MULTIPLIER;
+
 	static const string DATE_DELIMITER;
 	static const string TIME_DELIMITER;
 
