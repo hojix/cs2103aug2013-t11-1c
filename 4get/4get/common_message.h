@@ -45,10 +45,6 @@ namespace Commands{
 	
 	const string COMMAND_NULL = "";
 
-	//variants of query
-	//const string COMMAND_WHAT = "what";
-	//const string COMMAND_WHEN = "when";
-
 }
 
 namespace Message{
@@ -104,15 +100,16 @@ namespace Message{
 	const string MESSAGE_ERROR_START_TIME_MORE_THAN_END_TIME = "Error: Start time should not be later than end time.";
 	const string MESSAGE_ERROR_END_TIME_LESS_THAN_START_TIME = "Error: End Time should not be earlier than start time.";
 
-	const string MESSAGE_ERROR_LIST_EMPTY = "Error: List is empty.";
+	const string MESSAGE_ERROR_LIST_EMPTY      = "Error: List is empty.";
 	const string MESSAGE_ERROR_NOTHING_TO_REDO = "Error: There is nothing to redo.";
-	const string MESSAGE_ERROR_EMPTY_INPUT = "Error: Input is empty";
-	const string MESSAGE_ERROR_WRONG_KEYWORD = "Error: Wrong Keyword.";
-	const string MESSAGE_ERROR_UNABLE_TO_FORM_TIMED_TASK = "Error: Unable to find 'to' in input.";
-	const string MESSAGE_ERROR_DATE_TIME_ALREADY_FOUND = "Error: More than one date or time indication has been entered.\nUnable to process input.";
-	const string MESSAGE_ERROR_MISSING_DAY = "Error: Missing day of the month";
-	const string MESSAGE_ERROR_LIMIT_ONE_SLOT = "Error: Please specify only one slot.";
+	const string MESSAGE_ERROR_EMPTY_INPUT     = "Error: Input is empty";
+	const string MESSAGE_ERROR_WRONG_KEYWORD   = "Error: Wrong Keyword.";
+	const string MESSAGE_ERROR_MISSING_DAY     = "Error: Missing day of the month";
+	const string MESSAGE_ERROR_LIMIT_ONE_SLOT  = "Error: Please specify only one slot.";
 	
+	const string MESSAGE_ERROR_UNABLE_TO_FORM_TIMED_TASK = "Error: Unable to find 'to' in input.";
+	const string MESSAGE_ERROR_DATE_TIME_ALREADY_FOUND   = "Error: More than one date or time indication has been entered.\nUnable to process input.";
+
 	const string MESSAGE_NO_SEARCH_RESULT = "Search yielded no results. Please try other keywords.";
 
 	const string MESSAGE_SUCCESS_PARSED = "Input has been parsed.";
@@ -230,14 +227,20 @@ namespace Constants{
 	const int TIME_SLOT_HOUR  = 3;
 	const int TIME_SLOT_MIN   = 4;
 	const int TIME_SLOT_DAY   = 5;
+	
+	//Time Constant
+	const string TIME_ANTE_MERIDIAN = "am";
+	const string TIME_POST_MERIDIAN = "pm";
 
-	//parser timer constants
+	const int MONTH_CORRECTION = 1;
+	const int YEAR_CORRECTION  = 1900;
+
 	const string TIMER_REMOVE_TIME = "*";
-	const string TIMER_SLASH = "/";
-	const string TIMER_SPACE = " ";
-	const string TIMER_DASH = "-";
-	const string TIMER_COLON = ":";
-	const string TIMER_DOT = ".";
+	const string TIMER_SLASH       = "/";
+	const string TIMER_SPACE       = " ";
+	const string TIMER_DASH        = "-";
+	const string TIMER_COLON       = ":";
+	const string TIMER_DOT         = ".";
 	
 	const string TIMER_SQUARE_BRACKETS_OPEN  = " [";
 	const string TIMER_SQUARE_BRACKETS_CLOSE = "] ";
@@ -268,6 +271,12 @@ namespace Constants{
 	const string TIMER_SUNDAY    = "sunday";
 	const string TIMER_SUN       = "sun";
 
+	const size_t TIMER_24HR_LENGTH          = 6;
+	const size_t TIMER_24_LENGTH            = 4;
+	const size_t TIMER_TIME_LOWER_LENGTH    = 2;
+	const size_t TIMER_TIME_UPPER_LENGTH    = 8;
+	const size_t TIMER_TIME_EXCLUDED_LENGTH = 5;
+
 	const string MONTH_JANUARY   = "january";
 	const string MONTH_JAN       = "jan";
 	const string MONTH_FEBRUARY  = "february";
@@ -292,25 +301,7 @@ namespace Constants{
 	const string MONTH_NOV       = "nov";
 	const string MONTH_DECEMBER  = "december";
 	const string MONTH_DEC       = "dec";
-
-	const std::size_t TIMER_24HR_LENGTH = 6;
-	const std::size_t TIMER_24_LENGTH = 4;
-	const std::size_t TIMER_TIME_LOWER_LENGTH = 2;
-	const std::size_t TIMER_TIME_UPPER_LENGTH = 8;
-	const std::size_t TIMER_TIME_EXCLUDED_LENGTH = 5;
-
-	//tasklist constants
-	const string LIST_COMPLETED = " listcompleted";
-	const std::size_t LIST_COMPLETED_LENGTH = 14;
-	const string LIST_TO_DO = " listtodo";
-	const std::size_t LIST_TO_DO_LENGTH = 9;
-	const string LIST_OVERDUED = " listoverdued";
-	const std::size_t LIST_OVERDUED_LENGTH = 13;
-
-	const string TIME_ANTE_MERIDIAN = "am";
-	const string TIME_POST_MERIDIAN = "pm";
-	const int MONTH_CORRECTION = 1;
-	const int YEAR_CORRECTION = 1900;
+	
 };
 
 #endif

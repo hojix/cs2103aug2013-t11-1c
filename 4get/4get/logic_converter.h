@@ -29,18 +29,12 @@ class Converter
 {
 private:
 	vector<vector<string>> _dateDictionary;
-	vector<vector<string>> _timeDictionary;
 	vector<string> _dateVector;
 	vector<string> _timeVector;
 	int _dayDigit;
 	int _yearDigit;
 	bool _isNext;
 	int _matchedIndex;
-
-	enum DateTimeType{
-		dateEnum,
-		timeEnum
-	};
 
 	enum DateType{
 		weekDayEnum,
@@ -135,8 +129,7 @@ private:
 
 	//functions to determine type of string
 	//returns true if format is in words
-	bool determineFormat(DateTimeType dateTime, string compareStr);
-	bool checkDictionary(vector<vector<string>> dictionary, string compareStr);
+	bool checkDictionary(string compareStr);
 	bool checkWord(vector<vector<string>> dictionary, string compareStr);
 	bool checkNumber(string compareStr);
 

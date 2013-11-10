@@ -91,7 +91,6 @@ const string Converter::TIME_DELIMITER = ":.";
 Converter::Converter(){
 	_dateDictionary.resize(DATE_DICTIONARY_SIZE);
 	initialiseDateDictionary();
-	initialiseTimeVector();
 }
 
 void Converter::initialiseDateDictionary(){
@@ -162,10 +161,6 @@ void Converter::initialiseDateDictionary(){
 
 	_dateDictionary[INDEX_TDY].push_back(TIMER_TODAY);
 	_dateDictionary[INDEX_NXT].push_back(TIMER_NEXT);
-}
-
-void Converter::initialiseTimeVector(){
-
 }
 
 int Converter::convertStringToInt(string str)
@@ -394,7 +389,7 @@ void Converter::extractDate(string dateStr, int& year, int& month, int& day){
 	_yearDigit = 0;
 	_matchedIndex = -1;
 	_isNext = false;
-	bool isWordFormat = determineFormat(dateEnum, dateStr);
+	bool isWordFormat = checkDictionary(dateStr);
 	try{
 		if(isWordFormat)
 			determineDate(year, month, day);
@@ -601,29 +596,14 @@ void Converter::toLowerCase(string &str){
 	}
 }
 
-bool Converter::determineFormat(DateTimeType dateTime, string compareStr){
-	vector<vector<string>> dictionary;
-	switch (dateTime){
-	case Converter::dateEnum:
-		dictionary = _dateDictionary;
-		break;
-	case Converter::timeEnum:
-		dictionary = _timeDictionary;
-		break;
-	default:
-		break;
-	}
-	return checkDictionary(dictionary,compareStr);
-}
-
-bool Converter::checkDictionary(vector<vector<string>> dictionary, string compareStr){
+bool Converter::checkDictionary(string compareStr){
 	stringstream tempStream(compareStr);
 	string tempString;
 	bool isWord = false;
 	while(tempStream>>tempString){
 		if(isNumber(tempString))
 			checkNumber(tempString);
-		else if(checkWord(dictionary, tempString))
+		else if(checkWord(_dateDictionary, tempString))
 			isWord = true;
 	}
 	return isWord;
