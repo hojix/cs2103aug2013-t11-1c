@@ -544,6 +544,7 @@ void Converter::extractTime(string timeStr, int& hour, int& min){
 	vector<string> timeVector;
 	bool isAM;
 	bool isPM;
+	bool isHour12;
 	bool is24HR;
 	int stringLength = timeStr.size();
 	string timeAMPM = timeStr.substr(stringLength - TIME_SPECIFIER_LENGTH);
@@ -568,8 +569,11 @@ void Converter::extractTime(string timeStr, int& hour, int& min){
 		hour = convertStringToInt(timeVector[SLOT_HOUR]);
 		min = convertStringToInt(timeVector[SLOT_MIN]);
 	}
-	if(isPM)
+	isHour12 = hour == 12;
+	if(isPM && !isHour12)
 		hour = hour + TIME_PM_CORRECTION;
+	else if(isAM && isHour12)
+		hour = 0;
 }
 
 time_t Converter::createTime(int year, int month, int day, int hour, int min){

@@ -246,6 +246,7 @@ private: System::Windows::Forms::Label^  labelTagRepeat;
 			//refresh list
 	private: System::Void timerRefresh_Tick(System::Object^  sender, System::EventArgs^  e);
 
-
-	};
+private: System::Void labelContainer_Enter(System::Object^  sender, System::EventArgs^  e) {
+		 }
+};
 }

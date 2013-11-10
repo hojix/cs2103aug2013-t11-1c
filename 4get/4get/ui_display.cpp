@@ -17,6 +17,9 @@ UiDisplay::UiDisplay(){
 	InitializeComponent();
 	this->printList();
 	this->printHelpMessage();
+	this->todoListView->AutoResizeColumns(ColumnHeaderAutoResizeStyle::HeaderSize);
+	this->overdueListView->AutoResizeColumns(ColumnHeaderAutoResizeStyle::HeaderSize);
+	this->completedListView->AutoResizeColumns(ColumnHeaderAutoResizeStyle::HeaderSize);
 }
 
 UiDisplay::~UiDisplay(){
@@ -51,6 +54,10 @@ void UiDisplay::InitializeComponent(void){
 	this->timerRefresh = (gcnew System::Windows::Forms::Timer(this->components));
 	this->messageBox = (gcnew System::Windows::Forms::RichTextBox());
 	this->labelContainer = (gcnew System::Windows::Forms::GroupBox());
+	this->labelTaskType = (gcnew System::Windows::Forms::Label());
+	this->labelTaskRepeat = (gcnew System::Windows::Forms::Label());
+	this->labelTagTaskType = (gcnew System::Windows::Forms::Label());
+	this->labelTagRepeat = (gcnew System::Windows::Forms::Label());
 	this->labelTaskPriority = (gcnew System::Windows::Forms::Label());
 	this->labelTaskEndTime = (gcnew System::Windows::Forms::Label());
 	this->labelTaskStartTime = (gcnew System::Windows::Forms::Label());
@@ -61,10 +68,6 @@ void UiDisplay::InitializeComponent(void){
 	this->labelTagStartTime = (gcnew System::Windows::Forms::Label());
 	this->labelTagVenue = (gcnew System::Windows::Forms::Label());
 	this->labelTagDesc = (gcnew System::Windows::Forms::Label());
-	this->labelTaskType = (gcnew System::Windows::Forms::Label());
-	this->labelTaskRepeat = (gcnew System::Windows::Forms::Label());
-	this->labelTagTaskType = (gcnew System::Windows::Forms::Label());
-	this->labelTagRepeat = (gcnew System::Windows::Forms::Label());
 	this->tabContainer->SuspendLayout();
 	this->tabTodo->SuspendLayout();
 	this->tabCompleted->SuspendLayout();
@@ -77,10 +80,10 @@ void UiDisplay::InitializeComponent(void){
 	this->tabContainer->Controls->Add(this->tabTodo);
 	this->tabContainer->Controls->Add(this->tabCompleted);
 	this->tabContainer->Controls->Add(this->tabOverdue);
-	this->tabContainer->Location = System::Drawing::Point(385, 34);
+	this->tabContainer->Location = System::Drawing::Point(392, 34);
 	this->tabContainer->Name = L"tabContainer";
 	this->tabContainer->SelectedIndex = 0;
-	this->tabContainer->Size = System::Drawing::Size(677, 330);
+	this->tabContainer->Size = System::Drawing::Size(670, 330);
 	this->tabContainer->TabIndex = 0;
 	this->tabContainer->Selected += gcnew System::Windows::Forms::TabControlEventHandler(this, &UiDisplay::tabContainer_Selected);
 	// 
@@ -90,7 +93,7 @@ void UiDisplay::InitializeComponent(void){
 	this->tabTodo->Location = System::Drawing::Point(4, 22);
 	this->tabTodo->Name = L"tabTodo";
 	this->tabTodo->Padding = System::Windows::Forms::Padding(3);
-	this->tabTodo->Size = System::Drawing::Size(669, 304);
+	this->tabTodo->Size = System::Drawing::Size(662, 304);
 	this->tabTodo->TabIndex = 0;
 	this->tabTodo->Text = L"To Do";
 	this->tabTodo->UseVisualStyleBackColor = true;
@@ -110,7 +113,7 @@ void UiDisplay::InitializeComponent(void){
 	this->todoListView->LabelEdit = true;
 	this->todoListView->Location = System::Drawing::Point(-4, 0);
 	this->todoListView->Name = L"todoListView";
-	this->todoListView->Size = System::Drawing::Size(677, 303);
+	this->todoListView->Size = System::Drawing::Size(670, 308);
 	this->todoListView->TabIndex = 1;
 	this->todoListView->UseCompatibleStateImageBehavior = false;
 	this->todoListView->View = System::Windows::Forms::View::Details;
@@ -142,7 +145,7 @@ void UiDisplay::InitializeComponent(void){
 	this->tabCompleted->Location = System::Drawing::Point(4, 22);
 	this->tabCompleted->Name = L"tabCompleted";
 	this->tabCompleted->Padding = System::Windows::Forms::Padding(3);
-	this->tabCompleted->Size = System::Drawing::Size(669, 304);
+	this->tabCompleted->Size = System::Drawing::Size(662, 304);
 	this->tabCompleted->TabIndex = 1;
 	this->tabCompleted->Text = L"Completed";
 	this->tabCompleted->UseVisualStyleBackColor = true;
@@ -193,7 +196,7 @@ void UiDisplay::InitializeComponent(void){
 	this->tabOverdue->Controls->Add(this->overdueListView);
 	this->tabOverdue->Location = System::Drawing::Point(4, 22);
 	this->tabOverdue->Name = L"tabOverdue";
-	this->tabOverdue->Size = System::Drawing::Size(669, 304);
+	this->tabOverdue->Size = System::Drawing::Size(662, 304);
 	this->tabOverdue->TabIndex = 2;
 	this->tabOverdue->Text = L"Overdue";
 	this->tabOverdue->UseVisualStyleBackColor = true;
@@ -299,10 +302,57 @@ void UiDisplay::InitializeComponent(void){
 	this->labelContainer->ForeColor = System::Drawing::SystemColors::ControlDark;
 	this->labelContainer->Location = System::Drawing::Point(392, 370);
 	this->labelContainer->Name = L"labelContainer";
-	this->labelContainer->Size = System::Drawing::Size(671, 190);
+	this->labelContainer->Size = System::Drawing::Size(670, 190);
 	this->labelContainer->TabIndex = 2;
 	this->labelContainer->TabStop = false;
 	this->labelContainer->Text = L"Task Details";
+	this->labelContainer->Enter += gcnew System::EventHandler(this, &UiDisplay::labelContainer_Enter);
+	// 
+	// labelTaskType
+	// 
+	this->labelTaskType->AutoSize = true;
+	this->labelTaskType->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+		static_cast<System::Byte>(0)));
+	this->labelTaskType->ForeColor = System::Drawing::SystemColors::ControlLightLight;
+	this->labelTaskType->Location = System::Drawing::Point(483, 122);
+	this->labelTaskType->Name = L"labelTaskType";
+	this->labelTaskType->Size = System::Drawing::Size(0, 18);
+	this->labelTaskType->TabIndex = 13;
+	// 
+	// labelTaskRepeat
+	// 
+	this->labelTaskRepeat->AutoSize = true;
+	this->labelTaskRepeat->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, 
+		System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+	this->labelTaskRepeat->ForeColor = System::Drawing::SystemColors::ControlLightLight;
+	this->labelTaskRepeat->Location = System::Drawing::Point(483, 86);
+	this->labelTaskRepeat->Name = L"labelTaskRepeat";
+	this->labelTaskRepeat->Size = System::Drawing::Size(0, 18);
+	this->labelTaskRepeat->TabIndex = 12;
+	// 
+	// labelTagTaskType
+	// 
+	this->labelTagTaskType->AutoSize = true;
+	this->labelTagTaskType->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+		static_cast<System::Byte>(0)));
+	this->labelTagTaskType->ForeColor = System::Drawing::SystemColors::Control;
+	this->labelTagTaskType->Location = System::Drawing::Point(386, 122);
+	this->labelTagTaskType->Name = L"labelTagTaskType";
+	this->labelTagTaskType->Size = System::Drawing::Size(91, 18);
+	this->labelTagTaskType->TabIndex = 11;
+	this->labelTagTaskType->Text = L"Task Type:";
+	// 
+	// labelTagRepeat
+	// 
+	this->labelTagRepeat->AutoSize = true;
+	this->labelTagRepeat->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+		static_cast<System::Byte>(0)));
+	this->labelTagRepeat->ForeColor = System::Drawing::SystemColors::Control;
+	this->labelTagRepeat->Location = System::Drawing::Point(411, 86);
+	this->labelTagRepeat->Name = L"labelTagRepeat";
+	this->labelTagRepeat->Size = System::Drawing::Size(66, 18);
+	this->labelTagRepeat->TabIndex = 10;
+	this->labelTagRepeat->Text = L"Repeat:";
 	// 
 	// labelTaskPriority
 	// 
@@ -310,7 +360,7 @@ void UiDisplay::InitializeComponent(void){
 	this->labelTaskPriority->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, 
 		System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 	this->labelTaskPriority->ForeColor = System::Drawing::SystemColors::ControlLightLight;
-	this->labelTaskPriority->Location = System::Drawing::Point(141, 156);
+	this->labelTaskPriority->Location = System::Drawing::Point(122, 156);
 	this->labelTaskPriority->Name = L"labelTaskPriority";
 	this->labelTaskPriority->Size = System::Drawing::Size(0, 18);
 	this->labelTaskPriority->TabIndex = 9;
@@ -321,7 +371,7 @@ void UiDisplay::InitializeComponent(void){
 	this->labelTaskEndTime->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, 
 		System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 	this->labelTaskEndTime->ForeColor = System::Drawing::SystemColors::ControlLightLight;
-	this->labelTaskEndTime->Location = System::Drawing::Point(141, 122);
+	this->labelTaskEndTime->Location = System::Drawing::Point(122, 122);
 	this->labelTaskEndTime->Name = L"labelTaskEndTime";
 	this->labelTaskEndTime->Size = System::Drawing::Size(0, 18);
 	this->labelTaskEndTime->TabIndex = 8;
@@ -332,7 +382,7 @@ void UiDisplay::InitializeComponent(void){
 	this->labelTaskStartTime->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, 
 		System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 	this->labelTaskStartTime->ForeColor = System::Drawing::SystemColors::ControlLightLight;
-	this->labelTaskStartTime->Location = System::Drawing::Point(141, 86);
+	this->labelTaskStartTime->Location = System::Drawing::Point(122, 86);
 	this->labelTaskStartTime->Name = L"labelTaskStartTime";
 	this->labelTaskStartTime->Size = System::Drawing::Size(0, 18);
 	this->labelTaskStartTime->TabIndex = 7;
@@ -343,7 +393,7 @@ void UiDisplay::InitializeComponent(void){
 	this->labelTaskVenue->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 		static_cast<System::Byte>(0)));
 	this->labelTaskVenue->ForeColor = System::Drawing::SystemColors::ControlLightLight;
-	this->labelTaskVenue->Location = System::Drawing::Point(141, 52);
+	this->labelTaskVenue->Location = System::Drawing::Point(122, 52);
 	this->labelTaskVenue->Name = L"labelTaskVenue";
 	this->labelTaskVenue->Size = System::Drawing::Size(0, 18);
 	this->labelTaskVenue->TabIndex = 6;
@@ -354,7 +404,7 @@ void UiDisplay::InitializeComponent(void){
 	this->labelTaskDesc->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 		static_cast<System::Byte>(0)));
 	this->labelTaskDesc->ForeColor = System::Drawing::SystemColors::ControlLightLight;
-	this->labelTaskDesc->Location = System::Drawing::Point(141, 20);
+	this->labelTaskDesc->Location = System::Drawing::Point(122, 20);
 	this->labelTaskDesc->Name = L"labelTaskDesc";
 	this->labelTaskDesc->Size = System::Drawing::Size(0, 18);
 	this->labelTaskDesc->TabIndex = 5;
@@ -418,52 +468,6 @@ void UiDisplay::InitializeComponent(void){
 	this->labelTagDesc->Size = System::Drawing::Size(99, 18);
 	this->labelTagDesc->TabIndex = 0;
 	this->labelTagDesc->Text = L"Description:";
-	// 
-	// labelTaskType
-	// 
-	this->labelTaskType->AutoSize = true;
-	this->labelTaskType->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-		static_cast<System::Byte>(0)));
-	this->labelTaskType->ForeColor = System::Drawing::SystemColors::ControlLightLight;
-	this->labelTaskType->Location = System::Drawing::Point(434, 122);
-	this->labelTaskType->Name = L"labelTaskType";
-	this->labelTaskType->Size = System::Drawing::Size(0, 18);
-	this->labelTaskType->TabIndex = 13;
-	// 
-	// labelTaskRepeat
-	// 
-	this->labelTaskRepeat->AutoSize = true;
-	this->labelTaskRepeat->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, 
-		System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-	this->labelTaskRepeat->ForeColor = System::Drawing::SystemColors::ControlLightLight;
-	this->labelTaskRepeat->Location = System::Drawing::Point(434, 86);
-	this->labelTaskRepeat->Name = L"labelTaskRepeat";
-	this->labelTaskRepeat->Size = System::Drawing::Size(0, 18);
-	this->labelTaskRepeat->TabIndex = 12;
-	// 
-	// labelTagTaskType
-	// 
-	this->labelTagTaskType->AutoSize = true;
-	this->labelTagTaskType->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
-		static_cast<System::Byte>(0)));
-	this->labelTagTaskType->ForeColor = System::Drawing::SystemColors::Control;
-	this->labelTagTaskType->Location = System::Drawing::Point(325, 122);
-	this->labelTagTaskType->Name = L"labelTagTaskType";
-	this->labelTagTaskType->Size = System::Drawing::Size(91, 18);
-	this->labelTagTaskType->TabIndex = 11;
-	this->labelTagTaskType->Text = L"Task Type:";
-	// 
-	// labelTagRepeat
-	// 
-	this->labelTagRepeat->AutoSize = true;
-	this->labelTagRepeat->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
-		static_cast<System::Byte>(0)));
-	this->labelTagRepeat->ForeColor = System::Drawing::SystemColors::Control;
-	this->labelTagRepeat->Location = System::Drawing::Point(350, 86);
-	this->labelTagRepeat->Name = L"labelTagRepeat";
-	this->labelTagRepeat->Size = System::Drawing::Size(66, 18);
-	this->labelTagRepeat->TabIndex = 10;
-	this->labelTagRepeat->Text = L"Repeat:";
 	// 
 	// UiDisplay
 	// 
