@@ -4,6 +4,7 @@
 #include <vector>
 
 using namespace std;
+
 namespace Commands{
 	//variants of add
 	const string COMMAND_ADD    = "add";
@@ -56,8 +57,8 @@ namespace Message{
 	const string MESSAGE_ERROR_COMMAND_UNDO   = "System was unable to undo to your previous task.";
 	const string MESSAGE_ERROR_COMMAND_REDO   = "System was unable to redo your previous task.";
 	const string MESSAGE_ERROR_COMMAND_SHOW   = "System was unable to display your task(s).";
-	const string MESSAGE_ERROR_COMMAND_ERROR  = "You have entered a wrong command, pls try again.";
 	const string MESSAGE_ERROR_COMMAND_QUERY  = "System was unable to process your query.";
+	const string MESSAGE_ERROR_COMMAND_ERROR  = "You have entered a wrong command, pls try again.";
 
 	const string MESSAGE_ERROR_INVALID_LIST            = "Error: Invalid List.";
 	const string MESSAGE_ERROR_INVALID_ID              = "Error: Task ID does not exist.";
@@ -83,7 +84,6 @@ namespace Message{
 	const string MESSAGE_ERROR_WRONG_TIME_FORMAT             = "Error: Wrong time format.";
 	const string MESSAGE_ERROR_WRONG_TIME_FORMAT_2_COLONS    = "Error: 2 or more ':' detected";
 	const string MESSAGE_ERROR_WRONG_TIME_FORMAT_2_DOTS      = "Error: 2 or more '.' detected";
-	//const string MESSAGE_ERROR_WRONG_TIME_FORMAT_COLON_DOT = "Error: Please use ':' or '.' to separate time details.\nEg. use 09:00am or 09.00am";
 	const string MESSAGE_ERROR_WRONG_TIME_FORMAT_NO_AM_PM    = "Error: Please enter AM or PM behind the time.\nEg. use 09:00am or 09.00am.";
 	const string MESSAGE_ERROR_WRONG_TIME_FORMAT_AM_PM       = "Error: Use 10AM or 1PM instead of 10 AM or 1 PM.";
 	const string MESSAGE_ERROR_WRONG_TIME_FORMAT_NOT_24HR    = "Error: Please ensure that hr is added behind the time.\nEg. use 1500hr.";
