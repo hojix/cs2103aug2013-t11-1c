@@ -27,6 +27,10 @@ const int Converter::DEFAULT_START_HOUR = 0;
 const int Converter::DEFAULT_START_MIN  = 0;
 const int Converter::YEAR_21_CENTURY    = 2000;
 
+const int Converter::MAXIMUM_HOUR_24HR = 23;
+const int Converter::MAXIMUM_HOUR_AMPM = 12;
+const int Converter::MAXIMUM_MIN       = 59;
+
 const int Converter::COMPLETE_DATE_VECTOR_SIZE = 3;
 
 const int Converter::SLOT_DAY   = 0;
@@ -36,6 +40,7 @@ const int Converter::SLOT_HOUR  = 0;
 const int Converter::SLOT_MIN   = 1;
 
 const int Converter::DATE_DICTIONARY_SIZE = 22;
+
 const int Converter::INDEX_TMR = 0;
 const int Converter::INDEX_MON = 1;
 const int Converter::INDEX_TUE = 2;
@@ -569,7 +574,13 @@ void Converter::extractTime(string timeStr, int& hour, int& min){
 		hour = convertStringToInt(timeVector[SLOT_HOUR]);
 		min = convertStringToInt(timeVector[SLOT_MIN]);
 	}
-	isHour12 = hour == 12;
+	isHour12 = (hour == 12);
+	if(is24HR && hour > MAXIMUM_HOUR_24HR)
+		throw string(Message::MESSAGE_ERROR_INVALID_TIME_24HR);
+	else if(!is24HR && hour > MAXIMUM_HOUR_AMPM)
+		throw string(Message::MESSAGE_ERROR_INVALID_TIME_AMPM);
+	if(min > MAXIMUM_MIN)
+		throw string(Message::MESSAGE_ERROR_INVALID_TIME_MIN);
 	if(isPM && !isHour12)
 		hour = hour + TIME_PM_CORRECTION;
 	else if(isAM && isHour12)

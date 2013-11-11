@@ -69,6 +69,9 @@ namespace Message{
 	const string MESSAGE_ERROR_INVALID_LIST_TYPE       = "Error: Invalid list type.";
 	const string MESSAGE_ERROR_INVALID_DAY             = "Error: Day input is invalid.";
 	const string MESSAGE_ERROR_INVALID_SIZE            = "Error: Invalid range of task requested.";
+	const string MESSAGE_ERROR_INVALID_TIME_AMPM       = "Error: Invalid time entered. Please enter a time between 1pm to 12pm.";
+	const string MESSAGE_ERROR_INVALID_TIME_24HR       = "Error: Invalid time entered. Please enter a time between 0000hr to 2359hr.";
+	const string MESSAGE_ERROR_INVALID_TIME_MIN        = "Error: Invalid time entered. Minute cannot be greater than 60.";
 
 	const string MESSAGE_ERROR_WRONG_DATE                    = "Error: No such date exists.";
 	const string MESSAGE_ERROR_WRONG_DATE_IS_NOT_DIGIT       = "Error: Please enter the date correctly.";

@@ -65,6 +65,10 @@ private:
 	static const int DEFAULT_START_MIN;
 	static const int YEAR_21_CENTURY;
 
+	static const int MAXIMUM_HOUR_24HR;
+	static const int MAXIMUM_HOUR_AMPM;
+	static const int MAXIMUM_MIN;
+
 	static const int COMPLETE_DATE_VECTOR_SIZE;
 
 	static const int SLOT_DAY;
