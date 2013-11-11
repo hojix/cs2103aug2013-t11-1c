@@ -92,9 +92,9 @@ TEST_F(TaskListTest, TestMarkDone){
 	list<Task*> tempToDoList;
 	list<Task*> tempCompletedList;
 	int toDoSize, completedSize;
-	TaskListTester.setCurrentDisplayed(listToDo);
 	tempToDoList = TaskListTester.obtainList(listToDo);
 	tempCompletedList = TaskListTester.obtainList(listCompleted);
+	TaskListTester.setCurrentDisplayed(listToDo);
 	toDoSize = tempToDoList.size();
 	completedSize = tempCompletedList.size();
 	EXPECT_EQ(toDoSize, 3);
