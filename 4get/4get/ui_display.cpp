@@ -499,6 +499,9 @@ void UiDisplay::InitializeComponent(void){
 }
 
 Void UiDisplay::timerRefresh_Tick(System::Object^  sender, System::EventArgs^  e){
+	this->refreshList();
+}
+void UiDisplay::refreshList(){
 	try{
 		if(todoListView->Items->Count!=EMPTY_LIST_COUNT){
 			execute->refreshAll();
@@ -681,7 +684,10 @@ Void UiDisplay::UiDisplay_KeyDown(System::Object^  sender, System::Windows::Form
 		this->focusList(activeListType);
 		up = false;
 	}
-	else if(e->Alt && e->KeyCode==Keys::D4){
+	else if(e->KeyCode == Keys::F5){
+		this->refreshList();
+	}
+	/*else if(e->Alt && e->KeyCode==Keys::D4){
 		if(this->WindowState == FormWindowState::Normal){
 			this->WindowState = FormWindowState::Minimized;
 			this->Hide();
@@ -692,7 +698,7 @@ Void UiDisplay::UiDisplay_KeyDown(System::Object^  sender, System::Windows::Form
 			this->Show();
 			this->notifyIcon1->Visible = false;
 		}
-	}
+	}*/
 }
 Void UiDisplay::UiDisplay_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e){
 	if(SetFocus(textboxInput)){

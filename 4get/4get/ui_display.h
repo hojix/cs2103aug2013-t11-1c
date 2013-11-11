@@ -215,6 +215,7 @@ namespace UIDisplay {
 			 //check user input to react appropriately
 			 System::Void checkInput();
 			 void checkIfExit(String^ userInput);
+			 void refreshList();
 			 //check keyboard shortcuts
 			 System::Void UiDisplay_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e);
 			 System::Void UiDisplay_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e);
